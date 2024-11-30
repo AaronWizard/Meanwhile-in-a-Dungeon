@@ -1,2 +1,1 @@
-# meanwhile-in-a-dungeon
- 
+# Meanwhile In A Dungeon
