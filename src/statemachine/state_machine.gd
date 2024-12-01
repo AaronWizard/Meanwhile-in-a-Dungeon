@@ -2,6 +2,10 @@
 class_name StateMachine
 extends Node
 
+## A state machine.
+##
+## A state machine node with child [State] nodes. The initial state is the first
+## child node.
 
 var _current_state: State
 
@@ -55,6 +59,8 @@ func _physics_process(delta: float) -> void:
 	_try_switch_state(next_state_name)
 
 
+## Switches the current state to the child state node whose name is
+## [param next_state_name].
 func switch_state(next_state_name: StringName) -> void:
 	var next_state := get_node(NodePath(next_state_name)) as State
 	if not next_state:

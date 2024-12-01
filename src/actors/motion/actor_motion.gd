@@ -1,26 +1,52 @@
+@tool
 class_name ActorMotion
 extends Node
 
-@export var motion_vector := Vector2.ZERO:
+## Controls the velocity and facing of a parent [CharacterBody2D] node.
+##
+## Controls the velocity of a parent [CharacterBody2D] node. Also remembers its
+## last non-zero velocity to represent the parent body's "facing" even when
+## stationary.
+
+
+## The velocity the parent [CharacterBody2D] moves at. Also sets
+## [member direction] when not zero.
+@export var velocity := Vector2.ZERO:
 	set(value):
-		motion_vector = value
-		if motion_vector.length_squared() > 0:
-			_direction = motion_vector.normalized()
+		velocity = value
+		if velocity.length_squared() > 0:
+			_direction = velocity.normalized()
 
 
+## The normalized direction of [member velocity]. Is the direction of the last
+## non-zero velocity if [member velocity] is currently zero, representing the
+## "facing" of the parent body.[br]
+## Defaults to [constant Vector2.DOWN] if the velocity has never been set; the
+## parent body faces south by default.
 var direction: Vector2:
 	get:
 		return _direction
 
 
-var body: CharacterBody2D:
-	get:
-		return owner as CharacterBody2D
-
-
 var _direction := Vector2.DOWN # Default to facing south
 
 
+func _get_configuration_warnings() -> PackedStringArray:
+	var result: PackedStringArray = []
+	if not _get_body():
+		result.append("Does nothing unless the parent is a CharacterBody2D")
+	return result
+
+
 func _physics_process(_delta: float) -> void:
-	body.velocity = motion_vector
-	body.move_and_slide()
+	if Engine.is_editor_hint():
+		return
+
+	var body := _get_body()
+	if body:
+		body.velocity = velocity
+		body.move_and_slide()
+
+
+func _get_body() -> CharacterBody2D:
+	return get_parent() as CharacterBody2D

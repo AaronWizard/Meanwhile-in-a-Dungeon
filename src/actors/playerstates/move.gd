@@ -15,10 +15,10 @@ func enter() -> void:
 
 
 func exit() -> void:
-	actor_motion.motion_vector = Vector2.ZERO
+	actor_motion.velocity = Vector2.ZERO
 	_motion_direction_animation.active = false
 
 
 func process(_delta: float) -> StringName:
-	actor_motion.motion_vector = player_input.move_vector * max_speed
+	actor_motion.velocity = player_input.move_vector * max_speed
 	return player_input.desired_state
