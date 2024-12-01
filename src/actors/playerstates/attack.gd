@@ -1,4 +1,4 @@
-extends ActorState
+extends State
 
 @export var player_input: PlayerInput
 @export var body: CanvasItem

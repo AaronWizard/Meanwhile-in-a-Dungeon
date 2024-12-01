@@ -1,4 +1,4 @@
-class_name ActorState
+class_name State
 extends Node
 
 

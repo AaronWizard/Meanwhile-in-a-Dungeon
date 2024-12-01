@@ -3,7 +3,7 @@ class_name ActorStateMachine
 extends Node
 
 
-var _current_state: ActorState
+var _current_state: State
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -13,8 +13,8 @@ func _get_configuration_warnings() -> PackedStringArray:
 		result.append("No child states")
 
 	for c in get_children():
-		if c is not ActorState:
-			result.append("'%s' is not an ActorState" % c.name)
+		if c is not State:
+			result.append("'%s' is not an State" % c.name)
 
 	return result
 
@@ -25,11 +25,11 @@ func _ready() -> void:
 	if get_child_count() == 0:
 		push_error("No initial state")
 		return
-	if get_child(0) is not ActorState:
-		push_error("'%s' is not an ActorState" % get_child(0).name)
+	if get_child(0) is not State:
+		push_error("'%s' is not an State" % get_child(0).name)
 		return
 
-	_current_state = get_child(0) as ActorState
+	_current_state = get_child(0) as State
 	_current_state.enter()
 
 
@@ -56,9 +56,9 @@ func _physics_process(delta: float) -> void:
 
 
 func switch_state(next_state_name: StringName) -> void:
-	var next_state := get_node(NodePath(next_state_name)) as ActorState
+	var next_state := get_node(NodePath(next_state_name)) as State
 	if not next_state:
-		push_error("'%s' is not an ActorState" % next_state_name)
+		push_error("'%s' is not an State" % next_state_name)
 		return
 	if next_state not in get_children():
 		push_error("'%s' is not a child state" % next_state_name)
