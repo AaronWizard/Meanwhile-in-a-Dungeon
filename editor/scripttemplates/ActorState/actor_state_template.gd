@@ -9,5 +9,9 @@ func exit() -> void:
 	pass
 
 
-func update(_delta: float) -> StringName:
+func process(_delta: float) -> StringName:
+	return &""
+
+
+func physics_process(_delta: float) -> StringName:
 	return &""

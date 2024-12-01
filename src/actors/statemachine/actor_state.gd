@@ -10,6 +10,9 @@ func exit() -> void:
 	pass
 
 
-## Called during [method Node._physics_process].
-func update(_delta: float) -> StringName:
+func process(_delta: float) -> StringName:
+	return &""
+
+
+func physics_process(_delta: float) -> StringName:
 	return &""

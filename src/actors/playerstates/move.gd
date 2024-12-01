@@ -6,7 +6,11 @@ extends ActorState
 @export var max_speed := 100.0
 
 
-func update(_delta: float) -> StringName:
+func process(_delta: float) -> StringName:
 	body.velocity = player_input.move_vector * max_speed
-	body.move_and_slide()
 	return player_input.desired_state
+
+
+func physics_process(_delta: float) -> StringName:
+	body.move_and_slide()
+	return &""

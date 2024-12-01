@@ -15,7 +15,7 @@ func exit() -> void:
 	body.modulate = Color.WHITE
 
 
-func update(_delta: float) -> StringName:
+func process(_delta: float) -> StringName:
 	if _timer.is_stopped():
 		return player_input.desired_state
 	return &""
