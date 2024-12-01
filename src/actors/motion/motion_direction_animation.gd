@@ -1,16 +1,36 @@
 class_name MotionDirectionAnimation
 extends Node
 
+## Plays an animation depending on the direction of an [ActorMotion] node.
+##
+## Plays an animation depending on the [member ActorMotion.direction] property
+## of an [ActorMotion] node.
+
+## The current animation finished.
 signal animation_finished
 
+## The [ActorMotion] motion node whose direction determines the current
+## animaiton.
 @export var motion: ActorMotion
 
+## The animation player that has the animations.
 @export var anim_player: AnimationPlayer
+
+## The animation when the current direction is closest to [constant Vector2.UP].
+## Ignored if empty.
 @export var anim_north := &""
+## The animation when the current direction is closest to
+## [constant Vector2.RIGHT]. Ignored if empty.
 @export var anim_east := &""
+## The animation when the current direction is closest to
+## [constant Vector2.DOWN]. Ignored if empty.
 @export var anim_south := &""
+## The animation when the current direction is closest to
+## [constant Vector2.LEFT]. Ignored if empty.
 @export var anim_west := &""
 
+## When true, will change the current animation based on the
+## [member ActorMotion.direction] property of [member motion].
 var active := false
 
 var _current_animation := &""
