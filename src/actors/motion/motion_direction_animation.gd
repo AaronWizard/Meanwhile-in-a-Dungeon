@@ -97,7 +97,7 @@ func _find_closest_cardinal() -> Vector2:
 	if not anim_west.is_empty():
 		possible_cardinals.append(Vector2.LEFT)
 
-	var result = Vector2.DOWN # Default to facing south
+	var result := Vector2.DOWN # Default to facing south
 	var min_angle := absf(motion.direction.angle_to(result))
 
 	for cardinal in possible_cardinals:
