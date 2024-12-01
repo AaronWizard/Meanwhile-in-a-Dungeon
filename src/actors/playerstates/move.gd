@@ -2,15 +2,23 @@ extends ActorState
 
 
 @export var player_input: PlayerInput
-@export var body: CharacterBody2D
+@export var actor_motion: ActorMotion
+
 @export var max_speed := 100.0
+
+@onready var _motion_direction_animation := $MotionDirectionAnimation \
+		as MotionDirectionAnimation
+
+
+func enter() -> void:
+	_motion_direction_animation.active = true
+
+
+func exit() -> void:
+	actor_motion.motion_vector = Vector2.ZERO
+	_motion_direction_animation.active = false
 
 
 func process(_delta: float) -> StringName:
-	body.velocity = player_input.move_vector * max_speed
+	actor_motion.motion_vector = player_input.move_vector * max_speed
 	return player_input.desired_state
-
-
-func physics_process(_delta: float) -> StringName:
-	body.move_and_slide()
-	return &""

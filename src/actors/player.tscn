@@ -1,11 +1,13 @@
-[gd_scene load_steps=27 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=29 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://assets/graphics/actors/warrior.png" id="1_a74gn"]
 [ext_resource type="Script" path="res://src/actors/statemachine/actor_state_machine.gd" id="2_i32bm"]
 [ext_resource type="Script" path="res://src/actors/player_input.gd" id="2_jafpg"]
 [ext_resource type="Script" path="res://src/actors/playerstates/move.gd" id="4_81ai4"]
 [ext_resource type="Script" path="res://src/actors/playerstates/idle.gd" id="4_axnin"]
+[ext_resource type="Script" path="res://src/actors/motion/motion_direction_animation.gd" id="6_3asxm"]
 [ext_resource type="Script" path="res://src/actors/playerstates/attack.gd" id="6_n4wsn"]
+[ext_resource type="Script" path="res://src/actors/motion/actor_motion.gd" id="7_l23td"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -180,9 +182,9 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_n78om"]
 resource_name = "idle_east"
-length = 0.50001
+length = 0.625013
 loop_mode = 1
-step = 0.1
+step = 0.125
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -190,7 +192,7 @@ tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [72, 73, 74, 75, 76]
@@ -198,9 +200,9 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_1nrwe"]
 resource_name = "idle_north"
-length = 0.50001
+length = 0.625013
 loop_mode = 1
-step = 0.1
+step = 0.125
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -208,7 +210,7 @@ tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [80, 81, 82, 83, 84]
@@ -216,9 +218,9 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_sx0yx"]
 resource_name = "idle_south"
-length = 0.50001
+length = 0.625013
 loop_mode = 1
-step = 0.1
+step = 0.125
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -226,7 +228,7 @@ tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [88, 89, 90, 91, 92]
@@ -234,9 +236,9 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="Animation_wyy3t"]
 resource_name = "idle_west"
-length = 0.50001
+length = 0.625013
 loop_mode = 1
-step = 0.1
+step = 0.125
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -244,7 +246,7 @@ tracks/0/path = NodePath("Sprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
+"times": PackedFloat32Array(0, 0.125, 0.25, 0.375, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [96, 97, 98, 99, 100]
@@ -361,6 +363,9 @@ libraries = {
 "": SubResource("AnimationLibrary_0om0s")
 }
 
+[node name="ActorMotion" type="Node" parent="."]
+script = ExtResource("7_l23td")
+
 [node name="PlayerInput" type="Node" parent="."]
 script = ExtResource("2_jafpg")
 
@@ -371,16 +376,39 @@ script = ExtResource("2_i32bm")
 script = ExtResource("4_axnin")
 player_input = NodePath("../../PlayerInput")
 
-[node name="Move" type="Node" parent="ActorStateMachine" node_paths=PackedStringArray("player_input", "body")]
+[node name="MotionDirectionAnimation" type="Node" parent="ActorStateMachine/Idle" node_paths=PackedStringArray("motion", "anim_player")]
+script = ExtResource("6_3asxm")
+motion = NodePath("../../../ActorMotion")
+anim_player = NodePath("../../../AnimationPlayer")
+anim_north = &"idle_north"
+anim_east = &"idle_east"
+anim_south = &"idle_south"
+anim_west = &"idle_west"
+
+[node name="Move" type="Node" parent="ActorStateMachine" node_paths=PackedStringArray("player_input", "actor_motion")]
 script = ExtResource("4_81ai4")
 player_input = NodePath("../../PlayerInput")
-body = NodePath("../..")
+actor_motion = NodePath("../../ActorMotion")
+
+[node name="MotionDirectionAnimation" type="Node" parent="ActorStateMachine/Move" node_paths=PackedStringArray("motion", "anim_player")]
+script = ExtResource("6_3asxm")
+motion = NodePath("../../../ActorMotion")
+anim_player = NodePath("../../../AnimationPlayer")
+anim_north = &"move_north"
+anim_east = &"move_east"
+anim_south = &"move_south"
+anim_west = &"move_west"
 
 [node name="Attack" type="Node" parent="ActorStateMachine" node_paths=PackedStringArray("player_input", "body")]
 script = ExtResource("6_n4wsn")
 player_input = NodePath("../../PlayerInput")
 body = NodePath("../../Sprite")
 
-[node name="Timer" type="Timer" parent="ActorStateMachine/Attack"]
-wait_time = 0.4
-one_shot = true
+[node name="MotionDirectionAnimation" type="Node" parent="ActorStateMachine/Attack" node_paths=PackedStringArray("motion", "anim_player")]
+script = ExtResource("6_3asxm")
+motion = NodePath("../../../ActorMotion")
+anim_player = NodePath("../../../AnimationPlayer")
+anim_north = &"attack_north"
+anim_east = &"attack_east"
+anim_south = &"attack_south"
+anim_west = &"attack_west"
