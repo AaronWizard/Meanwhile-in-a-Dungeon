@@ -33,31 +33,14 @@ func _ready() -> void:
 	_current_state.enter()
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if not _current_state:
-		push_error("No current state")
-		return
-	var next_state_name := _current_state.input(event)
-	_try_switch_state(next_state_name)
-
-
-func _process(delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
-	if not _current_state:
-		push_error("No current state")
-		return
-	var next_state_name := _current_state.process(delta)
-	_try_switch_state(next_state_name)
-
-
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	if not _current_state:
 		push_error("No current state")
 		return
-	var next_state_name := _current_state.process(delta)
+
+	var next_state_name := _current_state.update(delta)
 	_try_switch_state(next_state_name)
 
 

@@ -1,7 +1,11 @@
-[gd_scene load_steps=23 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=27 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://assets/graphics/actors/warrior.png" id="1_a74gn"]
 [ext_resource type="Script" path="res://src/actors/statemachine/actor_state_machine.gd" id="2_i32bm"]
+[ext_resource type="Script" path="res://src/actors/player_input.gd" id="2_jafpg"]
+[ext_resource type="Script" path="res://src/actors/playerstates/move.gd" id="4_81ai4"]
+[ext_resource type="Script" path="res://src/actors/playerstates/idle.gd" id="4_axnin"]
+[ext_resource type="Script" path="res://src/actors/playerstates/attack.gd" id="6_n4wsn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -357,5 +361,26 @@ libraries = {
 "": SubResource("AnimationLibrary_0om0s")
 }
 
+[node name="PlayerInput" type="Node" parent="."]
+script = ExtResource("2_jafpg")
+
 [node name="ActorStateMachine" type="Node" parent="."]
 script = ExtResource("2_i32bm")
+
+[node name="Idle" type="Node" parent="ActorStateMachine" node_paths=PackedStringArray("player_input")]
+script = ExtResource("4_axnin")
+player_input = NodePath("../../PlayerInput")
+
+[node name="Move" type="Node" parent="ActorStateMachine" node_paths=PackedStringArray("player_input", "body")]
+script = ExtResource("4_81ai4")
+player_input = NodePath("../../PlayerInput")
+body = NodePath("../..")
+
+[node name="Attack" type="Node" parent="ActorStateMachine" node_paths=PackedStringArray("player_input", "body")]
+script = ExtResource("6_n4wsn")
+player_input = NodePath("../../PlayerInput")
+body = NodePath("../../Sprite")
+
+[node name="Timer" type="Timer" parent="ActorStateMachine/Attack"]
+wait_time = 0.4
+one_shot = true
