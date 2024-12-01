@@ -23,11 +23,6 @@ var move_vector: Vector2:
 		return _move_vector
 
 
-var is_moving:
-	get:
-		return move_vector.length_squared() > 0
-
-
 var _desired_state := STATE_IDLE
 var _move_vector := Vector2.ZERO
 
@@ -38,7 +33,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 	_move_vector = Input.get_vector(
 			"move_west", "move_east", "move_north", "move_south")
 
-	if is_moving:
+	if move_vector.length_squared() > 0:
 		all_desired_states.append(STATE_MOVE)
 
 	if Input.is_action_pressed("attack"):
