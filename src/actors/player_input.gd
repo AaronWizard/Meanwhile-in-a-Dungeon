@@ -1,23 +1,30 @@
 class_name PlayerInput
 extends Node
 
+## Reads the player's input to determine what state a player actor ought to be
+## in, corresponding to [State] nodes in a [StateMachine].
+
+## The state for the player actor to stand idle, doing no actions.
 const STATE_IDLE := &"Idle"
+## The state for player actor to move.
 const STATE_MOVE := &"Move"
+## The state for the player actor to attack.
 const STATE_ATTACK := &"Attack"
 
-
-const STATE_PRIORITIES := {
+const _STATE_PRIORITIES := {
 	STATE_IDLE: 0,
 	STATE_MOVE: 1,
 	STATE_ATTACK: 2
 }
 
 
+## The desired state for the player actor based on current input.
 var desired_state: StringName:
 	get:
 		return _desired_state
 
 
+## The movement vector for the player actor based on current directional inputs.
 var move_vector: Vector2:
 	get:
 		return _move_vector
@@ -47,4 +54,4 @@ func _unhandled_input(_event: InputEvent) -> void:
 
 
 static func _state_sort(a: StringName, b: StringName) -> bool:
-	return STATE_PRIORITIES[a] > STATE_PRIORITIES[b]
+	return _STATE_PRIORITIES[a] > _STATE_PRIORITIES[b]
