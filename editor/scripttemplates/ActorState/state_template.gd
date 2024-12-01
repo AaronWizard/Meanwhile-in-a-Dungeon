@@ -1,4 +1,4 @@
-extends ActorState
+extends _BASE_
 
 
 func enter() -> void:
