@@ -340,7 +340,7 @@ _data = {
 "move_west": SubResource("Animation_68456")
 }
 
-[node name="Actor" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D"]
 
 [node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(0, -15)
