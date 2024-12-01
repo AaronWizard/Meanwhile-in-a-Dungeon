@@ -34,6 +34,7 @@ signal animation_finished
 var active := false
 
 var _current_animation := &""
+var _last_cardinal := Vector2.ZERO
 
 
 func _ready() -> void:
@@ -43,7 +44,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	var anim_name := &""
 	if active:
-		var cardinal := _get_cardinal_direction()
+		var cardinal := _get_current_cardinal()
 		match cardinal:
 			Vector2.UP:
 				anim_name = anim_north
@@ -58,10 +59,33 @@ func _process(_delta: float) -> void:
 				return
 
 		_current_animation = anim_name
+		_last_cardinal = cardinal
+
 		anim_player.play(anim_name)
 
 
-func _get_cardinal_direction() -> Vector2:
+func _get_current_cardinal() -> Vector2:
+	var result: Vector2
+	# If moving perfectly diagonal, face in last cardinal direction if it's an
+	# equivalent facing.
+	if \
+			( \
+				absf(motion.direction.x) == absf(motion.direction.y)
+			) \
+			and \
+			( \
+				(signf(_last_cardinal.x) == signf(motion.direction.x)) \
+				or \
+				(signf(_last_cardinal.y) == signf(motion.direction.y)) \
+			):
+		result = _last_cardinal
+	else:
+		result = _find_closest_cardinal()
+
+	return result
+
+
+func _find_closest_cardinal() -> Vector2:
 	var possible_cardinals: Array[Vector2] = []
 
 	if not anim_north.is_empty():
