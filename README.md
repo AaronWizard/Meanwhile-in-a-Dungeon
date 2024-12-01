@@ -7,3 +7,4 @@
 ## Assets
 
 - <https://foozlecc.itch.io/lucifer-warrior>
+- <https://foozlecc.itch.io/lucifer-exterior-tileset>
