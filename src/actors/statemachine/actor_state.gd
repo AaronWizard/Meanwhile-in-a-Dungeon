@@ -10,17 +10,13 @@ func exit() -> void:
 	pass
 
 
-func next_state() -> StringName:
+func input(_event: InputEvent) -> StringName:
 	return &""
 
 
-func input(_event: InputEvent) -> void:
-	pass
+func process(_delta: float) -> StringName:
+	return &""
 
 
-func process(_delta: float) -> void:
-	pass
-
-
-func physics_process(_delta: float) -> void:
-	pass
+func physics_process(_delta: float) -> StringName:
+	return &""

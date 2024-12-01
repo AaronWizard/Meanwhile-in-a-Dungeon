@@ -37,8 +37,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if not _current_state:
 		push_error("No current state")
 		return
-	_try_switch_state()
-	_current_state.input(event)
+	var next_state_name := _current_state.input(event)
+	_try_switch_state(next_state_name)
 
 
 func _process(delta: float) -> void:
@@ -47,8 +47,8 @@ func _process(delta: float) -> void:
 	if not _current_state:
 		push_error("No current state")
 		return
-	_try_switch_state()
-	_current_state.process(delta)
+	var next_state_name := _current_state.process(delta)
+	_try_switch_state(next_state_name)
 
 
 func _physics_process(delta: float) -> void:
@@ -57,8 +57,8 @@ func _physics_process(delta: float) -> void:
 	if not _current_state:
 		push_error("No current state")
 		return
-	_try_switch_state()
-	_current_state.process(delta)
+	var next_state_name := _current_state.process(delta)
+	_try_switch_state(next_state_name)
 
 
 func switch_state(next_state_name: StringName) -> void:
@@ -77,8 +77,7 @@ func switch_state(next_state_name: StringName) -> void:
 	_current_state.enter()
 
 
-func _try_switch_state() -> void:
-	var next_state_name := _current_state.next_state()
+func _try_switch_state(next_state_name: StringName) -> void:
 	if not next_state_name.is_empty() \
 			and (next_state_name != _current_state.name):
 		switch_state(next_state_name)
