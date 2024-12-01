@@ -1,5 +1,5 @@
 @tool
-class_name ActorStateMachine
+class_name StateMachine
 extends Node
 
 
