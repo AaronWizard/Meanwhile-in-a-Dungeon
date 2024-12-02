@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://dqht7pif72evs"]
+
+[ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="1_ojnvy"]
+[ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://src/game/actors/skeleton/skeleton.png" id="1_t3vwc"]
+[ext_resource type="AnimationLibrary" uid="uid://2se816hxeawh" path="res://src/game/actors/skeleton/animlib_skeleton.tres" id="2_j3i52"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
+radius = 6.0
+
+[node name="Skeleton" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+texture = ExtResource("1_t3vwc")
+hframes = 8
+vframes = 17
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_huaup")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"animlib_skeleton": ExtResource("2_j3i52")
+}
+
+[node name="ActorMotion" type="Node" parent="."]
+script = ExtResource("1_ojnvy")
