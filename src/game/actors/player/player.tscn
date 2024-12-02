@@ -1,6 +1,6 @@
 [gd_scene load_steps=29 format=3 uid="uid://bkt17j2t2gujw"]
 
-[ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://assets/graphics/actors/warrior.png" id="1_a74gn"]
+[ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://src/game/actors/player/warrior.png" id="1_a74gn"]
 [ext_resource type="Script" path="res://src/core/statemachine/state_machine.gd" id="2_i32bm"]
 [ext_resource type="Script" path="res://src/game/actors/player/player_input.gd" id="2_jafpg"]
 [ext_resource type="Script" path="res://src/game/actors/player/move.gd" id="4_81ai4"]
@@ -62,10 +62,10 @@ tracks/1/path = NodePath("Sprite:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -17)]
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2, 0.266667, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(0, -17), Vector2(0, -17), Vector2(2, -18), Vector2(2, -18), Vector2(2, -18), Vector2(0, -17)]
 }
 
 [sub_resource type="Animation" id="Animation_56fta"]
@@ -149,10 +149,10 @@ tracks/1/path = NodePath("Sprite:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -18)]
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2, 0.266667, 0.333333),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [Vector2(0, -18), Vector2(0, -18), Vector2(-3, -19), Vector2(-3, -19), Vector2(-3, -19), Vector2(0, -18)]
 }
 
 [sub_resource type="Animation" id="Animation_0nxm3"]
