@@ -4,16 +4,19 @@
 [ext_resource type="AnimationLibrary" uid="uid://d1wjy8llanui3" path="res://src/game/actors/player/animlib_warrior.tres" id="2_f55i4"]
 [ext_resource type="Script" path="res://src/core/statemachine/state_machine.gd" id="2_i32bm"]
 [ext_resource type="Script" path="res://src/game/actors/player/player_input.gd" id="2_jafpg"]
-[ext_resource type="Script" path="res://src/game/actors/player/move.gd" id="4_81ai4"]
-[ext_resource type="Script" path="res://src/game/actors/player/idle.gd" id="4_axnin"]
+[ext_resource type="Script" path="res://src/game/actors/player/states/move.gd" id="4_81ai4"]
+[ext_resource type="Script" path="res://src/game/actors/player/states/idle.gd" id="4_axnin"]
 [ext_resource type="Script" path="res://src/core/actors/motion_direction_animation.gd" id="6_3asxm"]
-[ext_resource type="Script" path="res://src/game/actors/player/attack.gd" id="6_n4wsn"]
+[ext_resource type="Script" path="res://src/game/actors/player/states/attack.gd" id="6_n4wsn"]
 [ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="7_l23td"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
 
 [node name="Player" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 3
+motion_mode = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -15)
