@@ -1,19 +1,28 @@
-[gd_scene load_steps=5 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=10 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="1_ojnvy"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://src/game/actors/skeleton/skeleton.png" id="1_t3vwc"]
 [ext_resource type="AnimationLibrary" uid="uid://2se816hxeawh" path="res://src/game/actors/skeleton/animlib_skeleton.tres" id="2_j3i52"]
+[ext_resource type="Script" path="res://src/core/statemachine/state_machine.gd" id="4_5f16l"]
+[ext_resource type="Script" path="res://src/game/actors/skeleton/states/wander.gd" id="5_7jxfx"]
+[ext_resource type="Script" path="res://src/core/actors/motion_direction_animation.gd" id="6_chsbl"]
+[ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="7_dhxxv"]
+[ext_resource type="Script" path="res://src/game/actors/skeleton/states/attack.gd" id="8_pj4ig"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
 
 [node name="Skeleton" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 3
+motion_mode = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -16)
+position = Vector2(0, -17)
 texture = ExtResource("1_t3vwc")
 hframes = 8
 vframes = 17
+frame = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)
@@ -26,3 +35,42 @@ libraries = {
 
 [node name="ActorMotion" type="Node" parent="."]
 script = ExtResource("1_ojnvy")
+
+[node name="MoveAnimations" type="Node" parent="." node_paths=PackedStringArray("motion", "anim_player")]
+script = ExtResource("6_chsbl")
+motion = NodePath("../ActorMotion")
+anim_player = NodePath("../AnimationPlayer")
+anim_north = &"animlib_skeleton/move_north"
+anim_east = &"animlib_skeleton/move_east"
+anim_south = &"animlib_skeleton/move_south"
+anim_west = &"animlib_skeleton/move_west"
+
+[node name="IdleAnimations" type="Node" parent="." node_paths=PackedStringArray("motion", "anim_player")]
+script = ExtResource("6_chsbl")
+motion = NodePath("../ActorMotion")
+anim_player = NodePath("../AnimationPlayer")
+anim_north = &"animlib_skeleton/idle_north"
+anim_east = &"animlib_skeleton/idle_east"
+anim_south = &"animlib_skeleton/idle_south"
+anim_west = &"animlib_skeleton/idle_west"
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("4_5f16l")
+
+[node name="Wander" type="Node" parent="StateMachine"]
+script = ExtResource("5_7jxfx")
+
+[node name="Chase" type="Node" parent="StateMachine"]
+script = ExtResource("7_dhxxv")
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("8_pj4ig")
+
+[node name="AttackAnimations" type="Node" parent="StateMachine/Attack" node_paths=PackedStringArray("motion", "anim_player")]
+script = ExtResource("6_chsbl")
+motion = NodePath("../../../ActorMotion")
+anim_player = NodePath("../../../AnimationPlayer")
+anim_north = &"animlib_skeleton/attack_north"
+anim_east = &"animlib_skeleton/attack_east"
+anim_south = &"animlib_skeleton/attack_south"
+anim_west = &"animlib_skeleton/attack_west"
