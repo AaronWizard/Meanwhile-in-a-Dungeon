@@ -370,14 +370,14 @@ script = ExtResource("7_l23td")
 [node name="PlayerInput" type="Node" parent="."]
 script = ExtResource("2_jafpg")
 
-[node name="ActorStateMachine" type="Node" parent="."]
+[node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_i32bm")
 
-[node name="Idle" type="Node" parent="ActorStateMachine" node_paths=PackedStringArray("player_input")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input")]
 script = ExtResource("4_axnin")
 player_input = NodePath("../../PlayerInput")
 
-[node name="MotionDirectionAnimation" type="Node" parent="ActorStateMachine/Idle" node_paths=PackedStringArray("motion", "anim_player")]
+[node name="MotionDirectionAnimation" type="Node" parent="StateMachine/Idle" node_paths=PackedStringArray("motion", "anim_player")]
 script = ExtResource("6_3asxm")
 motion = NodePath("../../../ActorMotion")
 anim_player = NodePath("../../../AnimationPlayer")
@@ -386,12 +386,12 @@ anim_east = &"idle_east"
 anim_south = &"idle_south"
 anim_west = &"idle_west"
 
-[node name="Move" type="Node" parent="ActorStateMachine" node_paths=PackedStringArray("player_input", "actor_motion")]
+[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion")]
 script = ExtResource("4_81ai4")
 player_input = NodePath("../../PlayerInput")
 actor_motion = NodePath("../../ActorMotion")
 
-[node name="MotionDirectionAnimation" type="Node" parent="ActorStateMachine/Move" node_paths=PackedStringArray("motion", "anim_player")]
+[node name="MotionDirectionAnimation" type="Node" parent="StateMachine/Move" node_paths=PackedStringArray("motion", "anim_player")]
 script = ExtResource("6_3asxm")
 motion = NodePath("../../../ActorMotion")
 anim_player = NodePath("../../../AnimationPlayer")
@@ -400,12 +400,12 @@ anim_east = &"move_east"
 anim_south = &"move_south"
 anim_west = &"move_west"
 
-[node name="Attack" type="Node" parent="ActorStateMachine" node_paths=PackedStringArray("player_input", "body")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "body")]
 script = ExtResource("6_n4wsn")
 player_input = NodePath("../../PlayerInput")
 body = NodePath("../../Sprite")
 
-[node name="MotionDirectionAnimation" type="Node" parent="ActorStateMachine/Attack" node_paths=PackedStringArray("motion", "anim_player")]
+[node name="MotionDirectionAnimation" type="Node" parent="StateMachine/Attack" node_paths=PackedStringArray("motion", "anim_player")]
 script = ExtResource("6_3asxm")
 motion = NodePath("../../../ActorMotion")
 anim_player = NodePath("../../../AnimationPlayer")
