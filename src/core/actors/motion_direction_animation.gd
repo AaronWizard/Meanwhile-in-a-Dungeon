@@ -1,3 +1,4 @@
+@tool
 class_name MotionDirectionAnimation
 extends Node
 
@@ -37,11 +38,29 @@ var _current_animation := &""
 var _last_cardinal := Vector2.ZERO
 
 
+func _get_configuration_warnings() -> PackedStringArray:
+	var result: PackedStringArray = []
+	if not motion:
+		result.append("ActorMotion node not set")
+	if not anim_player:
+		result.append("AnimationPlayer node not set")
+	if anim_north.is_empty() and anim_east.is_empty() \
+			and anim_south.is_empty() and anim_west.is_empty():
+		result.append("At least one animation name needs to be set")
+	return result
+
+
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+
 	anim_player.animation_finished.connect(_animation_finished)
 
 
 func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+
 	var anim_name := &""
 	if active:
 		var cardinal := _get_current_cardinal()
