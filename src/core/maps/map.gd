@@ -12,10 +12,13 @@ func get_bounds() -> Rect2i:
 		var tile_layer := layer as TileMapLayer
 		if tile_layer:
 			var used_rect := tile_layer.get_used_rect()
+			used_rect.position *= tile_layer.tile_set.tile_size
+			used_rect.size *= tile_layer.tile_set.tile_size
+
 			result.position.x = mini(result.position.x, used_rect.position.x)
 			result.position.y = mini(result.position.y, used_rect.position.y)
-			result.size.x = maxi(result.position.x, used_rect.size.x)
-			result.size.y = maxi(result.position.y, used_rect.size.y)
+			result.end.x = maxi(result.end.x, used_rect.end.x)
+			result.end.y = maxi(result.end.y, used_rect.end.y)
 
 	return result
 

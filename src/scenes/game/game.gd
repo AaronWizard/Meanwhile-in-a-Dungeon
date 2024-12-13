@@ -8,7 +8,7 @@ extends Scene
 var player: Node2D
 
 @onready var _map_container := $MapContainer
-@onready var _camera := $Camera2D as Camera2D
+@onready var _camera := $PlayerCamera as PlayerCamera
 
 
 func _ready() -> void:
@@ -36,6 +36,7 @@ func _load_map(map_scene: PackedScene, spawn_name: String) -> void:
 
 	new_map.add_child(player)
 	player.position = new_map.get_marker_position(spawn_name)
+	_camera.set_bounds(new_map.get_bounds())
 
 
 func _clear_map() -> void:

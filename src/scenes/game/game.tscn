@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://ck0wg512sfqts"]
+[gd_scene load_steps=5 format=3 uid="uid://ck0wg512sfqts"]
 
 [ext_resource type="Script" path="res://src/scenes/game/game.gd" id="1_4tun1"]
 [ext_resource type="PackedScene" uid="uid://bkt17j2t2gujw" path="res://src/game/actors/player/player.tscn" id="2_u0uus"]
 [ext_resource type="PackedScene" uid="uid://cpeutw7scyiu1" path="res://src/game/maps/wilderness.tscn" id="3_rk316"]
+[ext_resource type="Script" path="res://src/scenes/game/player_camera.gd" id="4_b77mm"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_4tun1")
@@ -13,4 +14,5 @@ initial_spawn_name = &"PlayerSpawn"
 [node name="MapContainer" type="Node2D" parent="."]
 metadata/_edit_lock_ = true
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="PlayerCamera" type="Camera2D" parent="."]
+script = ExtResource("4_b77mm")
