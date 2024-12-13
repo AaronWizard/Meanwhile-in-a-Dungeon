@@ -3,7 +3,7 @@ extends Area2D
 
 ## A shape that takes damage from [Hitbox]es.
 
-signal damage_taken(damage: int)
+signal damage_taken(damage: int, direction: Vector2)
 
 @export var faction := 0
 @export var invincible := false
@@ -32,7 +32,7 @@ func _process(delta: float) -> void:
 		if _current_damage_interval >= continuing_damage_interval:
 			_current_damage_interval -= continuing_damage_interval
 			for h in _colliding_hitboxes.keys():
-				_take_damage(h)
+				_get_hit(h)
 
 
 func _hitbox_entered(hitbox: Hitbox) -> void:
@@ -40,7 +40,7 @@ func _hitbox_entered(hitbox: Hitbox) -> void:
 		return
 
 	_colliding_hitboxes[hitbox] = true
-	_take_damage(hitbox)
+	_get_hit(hitbox)
 
 
 func _hitbox_exited(hitbox: Hitbox) -> void:
@@ -50,6 +50,7 @@ func _hitbox_exited(hitbox: Hitbox) -> void:
 			_current_damage_interval = 0.0
 
 
-func _take_damage(hitbox: Hitbox) -> void:
-	print("%s takes %d damage from %s" % [owner.name, hitbox.damage, hitbox.owner.name])
-	damage_taken.emit(hitbox.damage)
+func _get_hit(hitbox: Hitbox) -> void:
+	var direction := (global_position - hitbox.global_position).normalized()
+	print("%s hit by %s for %d damage from the direction %v" % [owner.name, hitbox.owner.name, hitbox.damage, direction])
+	damage_taken.emit(hitbox.damage, direction)
