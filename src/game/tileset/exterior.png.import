@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dgqpyhyn3ul7l"
-path="res://.godot/imported/exterior.png-89b01de099bd8d578f9249c8def1dd75.ctex"
+path="res://.godot/imported/exterior.png-0268ee71d8cf8de92b93ed439bd3320d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/graphics/terrain/exterior.png"
-dest_files=["res://.godot/imported/exterior.png-89b01de099bd8d578f9249c8def1dd75.ctex"]
+source_file="res://src/game/tileset/exterior.png"
+dest_files=["res://.godot/imported/exterior.png-0268ee71d8cf8de92b93ed439bd3320d.ctex"]
 
 [params]
 

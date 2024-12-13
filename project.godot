@@ -64,6 +64,7 @@ attack={
 [layer_names]
 
 2d_physics/layer_1="terrain"
+2d_navigation/layer_1="Ground Actors"
 2d_physics/layer_2="actor_motion"
 
 [rendering]
