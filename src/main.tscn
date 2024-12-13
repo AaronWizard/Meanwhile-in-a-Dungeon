@@ -1,52 +1,15 @@
-[gd_scene load_steps=8 format=3 uid="uid://dmmpb6m8ip1ec"]
+[gd_scene load_steps=3 format=3 uid="uid://dmmpb6m8ip1ec"]
 
-[ext_resource type="Texture2D" uid="uid://hxq6n76tee4y" path="res://icon.svg" id="1_hf50b"]
+[ext_resource type="PackedScene" uid="uid://drlqw30il62l1" path="res://src/game/maps/wilderness.tscn" id="1_ma5fq"]
 [ext_resource type="PackedScene" uid="uid://bkt17j2t2gujw" path="res://src/game/actors/player/player.tscn" id="1_nvrpw"]
-[ext_resource type="PackedScene" uid="uid://dqht7pif72evs" path="res://src/game/actors/skeleton/skeleton.tscn" id="2_o66i0"]
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_86jrx"]
-b = Vector2(180, 0)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_h6p3d"]
-b = Vector2(0, 180)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_0p7vt"]
-a = Vector2(180, 0)
-b = Vector2(180, 180)
-
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_34dk2"]
-a = Vector2(0, 180)
-b = Vector2(180, 180)
 
 [node name="Main" type="Node"]
 
-[node name="Background" type="Sprite2D" parent="."]
-position = Vector2(90, 90)
-scale = Vector2(1.40625, 1.40625)
-texture = ExtResource("1_hf50b")
+[node name="CurrentMap" type="Node2D" parent="."]
 
-[node name="Level" type="Node2D" parent="."]
-y_sort_enabled = true
+[node name="Wilderness" parent="CurrentMap" instance=ExtResource("1_ma5fq")]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Level"]
-collision_mask = 0
+[node name="Player" parent="CurrentMap/Wilderness" instance=ExtResource("1_nvrpw")]
+position = Vector2(190, 247)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Level/StaticBody2D"]
-shape = SubResource("SegmentShape2D_86jrx")
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Level/StaticBody2D"]
-shape = SubResource("SegmentShape2D_h6p3d")
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="Level/StaticBody2D"]
-shape = SubResource("SegmentShape2D_0p7vt")
-
-[node name="CollisionShape2D4" type="CollisionShape2D" parent="Level/StaticBody2D"]
-shape = SubResource("SegmentShape2D_34dk2")
-
-[node name="Player" parent="Level" instance=ExtResource("1_nvrpw")]
-position = Vector2(40, 95)
-
-[node name="Camera2D" type="Camera2D" parent="Level/Player"]
-
-[node name="Skeleton" parent="Level" instance=ExtResource("2_o66i0")]
-position = Vector2(124, 90)
+[node name="Camera2D" type="Camera2D" parent="CurrentMap/Wilderness/Player"]
