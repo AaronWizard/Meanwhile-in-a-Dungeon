@@ -20,38 +20,38 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Hitbox:position")
+tracks/0/path = NodePath("Hitbox:active")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
+"update": 1,
+"values": [false]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Hitbox:rotation")
+tracks/1/path = NodePath("Hitbox/CollisionShape2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
+"values": [Vector2(-3, 1.88231e-05)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Hitbox:active")
+tracks/2/path = NodePath("Hitbox/CollisionShape2D:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [-1.57079]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_s482b"]
@@ -149,15 +149,17 @@ shape = SubResource("CapsuleShape2D_wgk2m")
 debug_color = Color(1, 1, 0, 0.419608)
 
 [node name="Hitbox" type="Area2D" parent="."]
+rotation = -1.57079
 collision_layer = 4
 collision_mask = 0
 monitoring = false
 monitorable = false
 script = ExtResource("11_7igt0")
 faction = 1
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(0, 0.125)
+position = Vector2(-3, 1.88231e-05)
+rotation = -1.57079
 shape = SubResource("RectangleShape2D_c58g1")
 debug_color = Color(0.7, 0, 0, 0.419608)
-metadata/_edit_lock_ = true
