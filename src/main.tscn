@@ -1,16 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dmmpb6m8ip1ec"]
+[gd_scene load_steps=2 format=3 uid="uid://dmmpb6m8ip1ec"]
 
-[ext_resource type="PackedScene" uid="uid://drlqw30il62l1" path="res://src/game/maps/wilderness.tscn" id="1_ma5fq"]
-[ext_resource type="PackedScene" uid="uid://bkt17j2t2gujw" path="res://src/game/actors/player/player.tscn" id="1_nvrpw"]
+[ext_resource type="Script" path="res://src/main.gd" id="1_fyf7p"]
 
 [node name="Main" type="Node"]
-
-[node name="CurrentMap" type="Node2D" parent="."]
-
-[node name="Wilderness" parent="CurrentMap" instance=ExtResource("1_ma5fq")]
-
-[node name="Player" parent="CurrentMap/Wilderness" instance=ExtResource("1_nvrpw")]
-position = Vector2(414, 2679)
-metadata/_edit_group_ = true
-
-[node name="Camera2D" type="Camera2D" parent="CurrentMap/Wilderness/Player"]
+script = ExtResource("1_fyf7p")
+initial_scene_path = "res://src/scenes/game/game.tscn"
