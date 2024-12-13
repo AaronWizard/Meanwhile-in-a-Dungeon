@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://drlqw30il62l1"]
+
+[ext_resource type="Script" path="res://src/core/maps/map.gd" id="1_k1ftf"]
+[ext_resource type="TileSet" uid="uid://csigcm4ykdyvq" path="res://src/game/tileset/tileset.tres" id="2_74yxn"]
+
+[node name="Map" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_k1ftf")
+metadata/_edit_lock_ = true
+
+[node name="Terrain" type="Node2D" parent="."]
+y_sort_enabled = true
+metadata/_edit_lock_ = true
+metadata/_edit_group_ = true
+
+[node name="Ground" type="TileMapLayer" parent="Terrain"]
+z_index = -1
+y_sort_enabled = true
+tile_set = ExtResource("2_74yxn")
+
+[node name="GroundObjects" type="TileMapLayer" parent="Terrain"]
+y_sort_enabled = true
+tile_set = ExtResource("2_74yxn")
+
+[node name="Walls" type="TileMapLayer" parent="Terrain"]
+y_sort_enabled = true
+tile_set = ExtResource("2_74yxn")
+
+[node name="WallObjects" type="TileMapLayer" parent="Terrain"]
+y_sort_enabled = true
+tile_set = ExtResource("2_74yxn")
+
+[node name="Actors" type="Node2D" parent="."]
+y_sort_enabled = true
+metadata/_edit_lock_ = true
+
+[node name="Markers" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
