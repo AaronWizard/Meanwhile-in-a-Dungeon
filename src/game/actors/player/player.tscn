@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=17 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://src/game/actors/player/warrior.png" id="1_a74gn"]
 [ext_resource type="AnimationLibrary" uid="uid://d1wjy8llanui3" path="res://src/game/actors/player/animlib_warrior.tres" id="2_f55i4"]
@@ -9,9 +9,62 @@
 [ext_resource type="Script" path="res://src/core/actors/motion_direction_animation.gd" id="6_3asxm"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/attack.gd" id="6_n4wsn"]
 [ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="7_l23td"]
+[ext_resource type="Script" path="res://src/core/actors/hurtbox.gd" id="10_psy01"]
+[ext_resource type="Script" path="res://src/core/actors/hitbox.gd" id="11_7igt0"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
+
+[sub_resource type="Animation" id="Animation_susgg"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Hitbox:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hitbox:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hitbox:active")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_s482b"]
+_data = {
+"RESET": SubResource("Animation_susgg")
+}
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wgk2m"]
+radius = 5.0
+height = 28.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c58g1"]
+size = Vector2(50, 25.75)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
@@ -25,11 +78,13 @@ vframes = 17
 frame = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -3)
 shape = SubResource("CircleShape2D_5v3fb")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
+"": SubResource("AnimationLibrary_s482b"),
 "animlib_warrior": ExtResource("2_f55i4")
 }
 
@@ -83,3 +138,26 @@ anim_north = &"animlib_warrior/attack_north"
 anim_east = &"animlib_warrior/attack_east"
 anim_south = &"animlib_warrior/attack_south"
 anim_west = &"animlib_warrior/attack_west"
+
+[node name="Hurtbox" type="Area2D" parent="."]
+script = ExtResource("10_psy01")
+faction = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -16)
+shape = SubResource("CapsuleShape2D_wgk2m")
+debug_color = Color(1, 1, 0, 0.419608)
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("11_7igt0")
+faction = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, 0.125)
+shape = SubResource("RectangleShape2D_c58g1")
+debug_color = Color(0.7, 0, 0, 0.419608)
+metadata/_edit_lock_ = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=14 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="1_ojnvy"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://src/game/actors/skeleton/skeleton.png" id="1_t3vwc"]
@@ -8,9 +8,18 @@
 [ext_resource type="Script" path="res://src/core/actors/motion_direction_animation.gd" id="6_chsbl"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="7_dhxxv"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/attack.gd" id="8_pj4ig"]
+[ext_resource type="Script" path="res://src/core/actors/hurtbox.gd" id="9_77twk"]
+[ext_resource type="Script" path="res://src/core/actors/hitbox.gd" id="10_wn1oe"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_etk8g"]
+radius = 7.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0cvq1"]
+radius = 4.0
+height = 24.0
 
 [node name="Skeleton" type="CharacterBody2D"]
 collision_layer = 2
@@ -21,9 +30,10 @@ position = Vector2(0, -17)
 texture = ExtResource("1_t3vwc")
 hframes = 8
 vframes = 17
-frame = 88
+frame = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_huaup")
 
@@ -82,3 +92,23 @@ anim_north = &"animlib_skeleton/attack_north"
 anim_east = &"animlib_skeleton/attack_east"
 anim_south = &"animlib_skeleton/attack_south"
 anim_west = &"animlib_skeleton/attack_west"
+
+[node name="Hurtbox" type="Area2D" parent="."]
+script = ExtResource("9_77twk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -15)
+shape = SubResource("CapsuleShape2D_etk8g")
+debug_color = Color(1, 1, 0, 0.419608)
+
+[node name="HitboxBody" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+monitoring = false
+script = ExtResource("10_wn1oe")
+active = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxBody"]
+position = Vector2(0, -15)
+shape = SubResource("CapsuleShape2D_0cvq1")
+debug_color = Color(1, 0, 0, 0.419608)
