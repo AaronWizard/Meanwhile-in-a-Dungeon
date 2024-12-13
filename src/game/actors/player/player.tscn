@@ -42,9 +42,10 @@ script = ExtResource("2_jafpg")
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_i32bm")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion")]
 script = ExtResource("4_axnin")
 player_input = NodePath("../../PlayerInput")
+actor_motion = NodePath("../../ActorMotion")
 
 [node name="MotionDirectionAnimation" type="Node" parent="StateMachine/Idle" node_paths=PackedStringArray("motion", "anim_player")]
 script = ExtResource("6_3asxm")
@@ -69,10 +70,10 @@ anim_east = &"animlib_warrior/move_east"
 anim_south = &"animlib_warrior/move_south"
 anim_west = &"animlib_warrior/move_west"
 
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "body")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion")]
 script = ExtResource("6_n4wsn")
 player_input = NodePath("../../PlayerInput")
-body = NodePath("../../Sprite2D")
+actor_motion = NodePath("../../ActorMotion")
 
 [node name="MotionDirectionAnimation" type="Node" parent="StateMachine/Attack" node_paths=PackedStringArray("motion", "anim_player")]
 script = ExtResource("6_3asxm")

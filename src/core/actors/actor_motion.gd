@@ -31,6 +31,10 @@ var direction: Vector2:
 var _direction := Vector2.DOWN # Default to facing south
 
 
+func move_velocity_toward(target_velocity: Vector2, delta: float) -> void:
+	velocity = velocity.move_toward(target_velocity, delta)
+
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var result: PackedStringArray = []
 	if not _get_body():
