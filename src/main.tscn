@@ -10,6 +10,7 @@
 [node name="Wilderness" parent="CurrentMap" instance=ExtResource("1_ma5fq")]
 
 [node name="Player" parent="CurrentMap/Wilderness" instance=ExtResource("1_nvrpw")]
-position = Vector2(190, 247)
+position = Vector2(414, 2679)
+metadata/_edit_group_ = true
 
 [node name="Camera2D" type="Camera2D" parent="CurrentMap/Wilderness/Player"]
