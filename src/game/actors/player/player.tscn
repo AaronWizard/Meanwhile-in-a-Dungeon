@@ -100,7 +100,7 @@ anim_north = "south"
 anim_east = "west"
 anim_south = "north"
 anim_west = "east"
-change_with_direction = true
+change_with_direction = false
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wgk2m"]
 radius = 5.0
