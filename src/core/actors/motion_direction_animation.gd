@@ -107,22 +107,28 @@ func _get_current_cardinal() -> Vector2:
 func _find_closest_cardinal() -> Vector2:
 	var possible_cardinals: Array[Vector2] = []
 
-	if not anim_north.is_empty():
-		possible_cardinals.append(Vector2.UP)
+	# Cardinals in order of priority
+	if not anim_south.is_empty():
+		# Default to facing south, so append this first
+		possible_cardinals.append(Vector2.DOWN)
 	if not anim_east.is_empty():
 		possible_cardinals.append(Vector2.RIGHT)
-	if not anim_south.is_empty():
-		possible_cardinals.append(Vector2.DOWN)
 	if not anim_west.is_empty():
 		possible_cardinals.append(Vector2.LEFT)
+	if not anim_north.is_empty():
+		possible_cardinals.append(Vector2.UP)
 
-	var result := Vector2.DOWN # Default to facing south
-	var min_angle := absf(motion.direction.angle_to(result))
+	if possible_cardinals.is_empty():
+		possible_cardinals.append(Vector2.DOWN)
 
-	for cardinal in possible_cardinals:
-		var angle := absf(motion.direction.angle_to(cardinal))
-		if angle < min_angle:
-			min_angle = angle
+	var result := possible_cardinals[0]
+	var max_dotprod := result.dot(motion.direction)
+
+	for i in range(1, possible_cardinals.size()):
+		var cardinal := possible_cardinals[i]
+		var dotprod := cardinal.dot(motion.direction)
+		if dotprod > max_dotprod:
+			max_dotprod = dotprod
 			result = cardinal
 
 	return result
