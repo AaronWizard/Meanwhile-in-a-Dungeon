@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=26 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://src/game/actors/player/warrior.png" id="1_a74gn"]
 [ext_resource type="AnimationLibrary" uid="uid://d1wjy8llanui3" path="res://src/game/actors/player/animlib_warrior.tres" id="2_f55i4"]
@@ -10,10 +10,12 @@
 [ext_resource type="Script" path="res://src/core/actors/direction_animation_set.gd" id="6_5bme3"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/attack.gd" id="6_n4wsn"]
 [ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="7_l23td"]
+[ext_resource type="Script" path="res://src/core/actors/actor_hp.gd" id="9_1tnh4"]
 [ext_resource type="Script" path="res://src/core/statemachine/state.gd" id="10_nos0m"]
 [ext_resource type="Script" path="res://src/core/actors/hurtbox.gd" id="10_psy01"]
 [ext_resource type="Script" path="res://src/core/actors/hitbox.gd" id="11_7igt0"]
 [ext_resource type="Script" path="res://src/core/actors/knockback.gd" id="12_sb0s8"]
+[ext_resource type="Script" path="res://src/game/actors/player/states/death.gd" id="15_b8nc3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -114,11 +116,11 @@ collision_layer = 2
 motion_mode = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -16)
+position = Vector2(0, -15)
 texture = ExtResource("1_a74gn")
 hframes = 8
 vframes = 17
-frame = 40
+frame = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -139,36 +141,6 @@ script = ExtResource("5_epgbh")
 animation_player = NodePath("../AnimationPlayer")
 motion = NodePath("../ActorMotion")
 animation_sets = Array[ExtResource("6_5bme3")]([SubResource("Resource_sbhni"), SubResource("Resource_1d58d"), SubResource("Resource_rjn5e"), SubResource("Resource_d4lr3")])
-
-[node name="PlayerInput" type="Node" parent="."]
-script = ExtResource("2_jafpg")
-
-[node name="StateMachine" type="Node" parent="."]
-script = ExtResource("2_i32bm")
-
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player")]
-script = ExtResource("4_axnin")
-player_input = NodePath("../../PlayerInput")
-actor_motion = NodePath("../../ActorMotion")
-direction_animation_player = NodePath("../../DirectionAnimationPlayer")
-direction_anim_set = &"idle"
-
-[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player")]
-script = ExtResource("4_81ai4")
-player_input = NodePath("../../PlayerInput")
-actor_motion = NodePath("../../ActorMotion")
-direction_animation_player = NodePath("../../DirectionAnimationPlayer")
-direction_anim_set = &"move"
-
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player")]
-script = ExtResource("6_n4wsn")
-player_input = NodePath("../../PlayerInput")
-actor_motion = NodePath("../../ActorMotion")
-direction_animation_player = NodePath("../../DirectionAnimationPlayer")
-direction_anim_set = &"attack"
-
-[node name="Knockback" type="Node" parent="StateMachine"]
-script = ExtResource("10_nos0m")
 
 [node name="Hurtbox" type="Area2D" parent="."]
 visible = false
@@ -205,3 +177,46 @@ direction_anim_set = &"knockback"
 state_machine = NodePath("../StateMachine")
 knockback_state = &"Knockback"
 resume_state = &"Idle"
+
+[node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
+script = ExtResource("9_1tnh4")
+max_hp = 2
+hurtbox = NodePath("../Hurtbox")
+
+[node name="PlayerInput" type="Node" parent="."]
+script = ExtResource("2_jafpg")
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("2_i32bm")
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player", "hp")]
+script = ExtResource("4_axnin")
+player_input = NodePath("../../PlayerInput")
+actor_motion = NodePath("../../ActorMotion")
+direction_animation_player = NodePath("../../DirectionAnimationPlayer")
+direction_anim_set = &"idle"
+hp = NodePath("../../ActorHP")
+death_anim = &"Death"
+
+[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player")]
+script = ExtResource("4_81ai4")
+player_input = NodePath("../../PlayerInput")
+actor_motion = NodePath("../../ActorMotion")
+direction_animation_player = NodePath("../../DirectionAnimationPlayer")
+direction_anim_set = &"move"
+
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player")]
+script = ExtResource("6_n4wsn")
+player_input = NodePath("../../PlayerInput")
+actor_motion = NodePath("../../ActorMotion")
+direction_animation_player = NodePath("../../DirectionAnimationPlayer")
+direction_anim_set = &"attack"
+
+[node name="Knockback" type="Node" parent="StateMachine"]
+script = ExtResource("10_nos0m")
+
+[node name="Death" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "anim_player")]
+script = ExtResource("15_b8nc3")
+actor_motion = NodePath("../../ActorMotion")
+anim_player = NodePath("../../AnimationPlayer")
+anim_name = &"animlib_warrior/death"
