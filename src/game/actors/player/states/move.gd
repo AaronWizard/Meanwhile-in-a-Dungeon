@@ -3,19 +3,15 @@ extends State
 @export var player_input: PlayerInput
 @export var actor_motion: ActorMotion
 
+@export var direction_animation_player: DirectionAnimationPlayer
+@export var direction_anim_set := &""
+
 @export var acceleration := 10.0
 @export var max_speed := 128.0
 
-@onready var _motion_direction_animation := $MotionDirectionAnimation \
-		as MotionDirectionAnimation
-
 
 func enter() -> void:
-	_motion_direction_animation.active = true
-
-
-func exit() -> void:
-	_motion_direction_animation.active = false
+	direction_animation_player.set_animation_set(direction_anim_set)
 
 
 func process(_delta: float) -> StringName:

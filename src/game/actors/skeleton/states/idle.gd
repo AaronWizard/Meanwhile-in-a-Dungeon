@@ -1,15 +1,15 @@
 extends State
 
-@onready var _motion_direction_animation := $MotionDirectionAnimation \
-		as MotionDirectionAnimation
+@export var direction_animation_player: DirectionAnimationPlayer
+@export var direction_anim_set := &""
 
 
 func enter() -> void:
-	_motion_direction_animation.active = true
+	direction_animation_player.set_animation_set(direction_anim_set)
 
 
 func exit() -> void:
-	_motion_direction_animation.active = false
+	pass
 
 
 func process(_delta: float) -> StringName:

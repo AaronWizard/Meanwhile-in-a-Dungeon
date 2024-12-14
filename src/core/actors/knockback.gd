@@ -6,7 +6,9 @@ extends Node
 
 @export var hurtbox: Hurtbox
 @export var actor_motion: ActorMotion
-@export var motion_direction_animation: MotionDirectionAnimation
+
+@export var direction_animation_player: DirectionAnimationPlayer
+@export var direction_anim_set := &""
 
 @export var state_machine: StateMachine
 @export var knockback_state: StringName
@@ -30,14 +32,11 @@ func _was_hit(_damage: int, direction: Vector2) -> void:
 	if state_machine:
 		state_machine.switch_state(knockback_state)
 
-	if motion_direction_animation:
-		motion_direction_animation.active = true
+	if direction_animation_player:
+		direction_animation_player.set_animation_set(direction_anim_set)
 
 
 func _stop_knockback() -> void:
-	if motion_direction_animation:
-		motion_direction_animation.active = false
-
 	actor_motion.direction = -actor_motion.direction
 
 	if state_machine and (state_machine.current_state_name == knockback_state):

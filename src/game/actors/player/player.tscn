@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=24 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://src/game/actors/player/warrior.png" id="1_a74gn"]
 [ext_resource type="AnimationLibrary" uid="uid://d1wjy8llanui3" path="res://src/game/actors/player/animlib_warrior.tres" id="2_f55i4"]
@@ -6,7 +6,8 @@
 [ext_resource type="Script" path="res://src/game/actors/player/player_input.gd" id="2_jafpg"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/move.gd" id="4_81ai4"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/idle.gd" id="4_axnin"]
-[ext_resource type="Script" path="res://src/core/actors/motion_direction_animation.gd" id="6_3asxm"]
+[ext_resource type="Script" path="res://src/core/actors/direction_animation_player.gd" id="5_epgbh"]
+[ext_resource type="Script" path="res://src/core/actors/direction_animation_set.gd" id="6_5bme3"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/attack.gd" id="6_n4wsn"]
 [ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="7_l23td"]
 [ext_resource type="Script" path="res://src/core/statemachine/state.gd" id="10_nos0m"]
@@ -61,6 +62,46 @@ _data = {
 "RESET": SubResource("Animation_susgg")
 }
 
+[sub_resource type="Resource" id="Resource_sbhni"]
+script = ExtResource("6_5bme3")
+anim_set_name = &"idle"
+anim_prefix = "animlib_warrior/idle_"
+anim_north = "north"
+anim_east = "east"
+anim_south = "south"
+anim_west = "west"
+change_with_direction = true
+
+[sub_resource type="Resource" id="Resource_1d58d"]
+script = ExtResource("6_5bme3")
+anim_set_name = &"move"
+anim_prefix = "animlib_warrior/move_"
+anim_north = "north"
+anim_east = "east"
+anim_south = "south"
+anim_west = "west"
+change_with_direction = true
+
+[sub_resource type="Resource" id="Resource_rjn5e"]
+script = ExtResource("6_5bme3")
+anim_set_name = &"attack"
+anim_prefix = "animlib_warrior/attack_"
+anim_north = "north"
+anim_east = "east"
+anim_south = "south"
+anim_west = "west"
+change_with_direction = false
+
+[sub_resource type="Resource" id="Resource_d4lr3"]
+script = ExtResource("6_5bme3")
+anim_set_name = &"knockback"
+anim_prefix = "animlib_warrior/hurt_"
+anim_north = "south"
+anim_east = "west"
+anim_south = "north"
+anim_west = "east"
+change_with_direction = true
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wgk2m"]
 radius = 5.0
 height = 28.0
@@ -93,53 +134,38 @@ libraries = {
 [node name="ActorMotion" type="Node" parent="."]
 script = ExtResource("7_l23td")
 
+[node name="DirectionAnimationPlayer" type="Node" parent="." node_paths=PackedStringArray("animation_player", "motion")]
+script = ExtResource("5_epgbh")
+animation_player = NodePath("../AnimationPlayer")
+motion = NodePath("../ActorMotion")
+animation_sets = Array[ExtResource("6_5bme3")]([SubResource("Resource_sbhni"), SubResource("Resource_1d58d"), SubResource("Resource_rjn5e"), SubResource("Resource_d4lr3")])
+
 [node name="PlayerInput" type="Node" parent="."]
 script = ExtResource("2_jafpg")
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_i32bm")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player")]
 script = ExtResource("4_axnin")
 player_input = NodePath("../../PlayerInput")
 actor_motion = NodePath("../../ActorMotion")
+direction_animation_player = NodePath("../../DirectionAnimationPlayer")
+direction_anim_set = &"idle"
 
-[node name="MotionDirectionAnimation" type="Node" parent="StateMachine/Idle" node_paths=PackedStringArray("motion", "anim_player")]
-script = ExtResource("6_3asxm")
-motion = NodePath("../../../ActorMotion")
-anim_player = NodePath("../../../AnimationPlayer")
-anim_north = &"animlib_warrior/idle_north"
-anim_east = &"animlib_warrior/idle_east"
-anim_south = &"animlib_warrior/idle_south"
-anim_west = &"animlib_warrior/idle_west"
-
-[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion")]
+[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player")]
 script = ExtResource("4_81ai4")
 player_input = NodePath("../../PlayerInput")
 actor_motion = NodePath("../../ActorMotion")
+direction_animation_player = NodePath("../../DirectionAnimationPlayer")
+direction_anim_set = &"move"
 
-[node name="MotionDirectionAnimation" type="Node" parent="StateMachine/Move" node_paths=PackedStringArray("motion", "anim_player")]
-script = ExtResource("6_3asxm")
-motion = NodePath("../../../ActorMotion")
-anim_player = NodePath("../../../AnimationPlayer")
-anim_north = &"animlib_warrior/move_north"
-anim_east = &"animlib_warrior/move_east"
-anim_south = &"animlib_warrior/move_south"
-anim_west = &"animlib_warrior/move_west"
-
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player")]
 script = ExtResource("6_n4wsn")
 player_input = NodePath("../../PlayerInput")
 actor_motion = NodePath("../../ActorMotion")
-
-[node name="MotionDirectionAnimation" type="Node" parent="StateMachine/Attack" node_paths=PackedStringArray("motion", "anim_player")]
-script = ExtResource("6_3asxm")
-motion = NodePath("../../../ActorMotion")
-anim_player = NodePath("../../../AnimationPlayer")
-anim_north = &"animlib_warrior/attack_north"
-anim_east = &"animlib_warrior/attack_east"
-anim_south = &"animlib_warrior/attack_south"
-anim_west = &"animlib_warrior/attack_west"
+direction_animation_player = NodePath("../../DirectionAnimationPlayer")
+direction_anim_set = &"attack"
 
 [node name="Knockback" type="Node" parent="StateMachine"]
 script = ExtResource("10_nos0m")
@@ -170,20 +196,12 @@ rotation = -1.57079
 shape = SubResource("RectangleShape2D_c58g1")
 debug_color = Color(0.7, 0, 0, 0.419608)
 
-[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "actor_motion", "motion_direction_animation", "state_machine")]
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "actor_motion", "direction_animation_player", "state_machine")]
 script = ExtResource("12_sb0s8")
 hurtbox = NodePath("../Hurtbox")
 actor_motion = NodePath("../ActorMotion")
-motion_direction_animation = NodePath("MotionDirectionAnimation")
+direction_animation_player = NodePath("../DirectionAnimationPlayer")
+direction_anim_set = &"knockback"
 state_machine = NodePath("../StateMachine")
 knockback_state = &"Knockback"
 resume_state = &"Idle"
-
-[node name="MotionDirectionAnimation" type="Node" parent="Knockback" node_paths=PackedStringArray("motion", "anim_player")]
-script = ExtResource("6_3asxm")
-motion = NodePath("../../ActorMotion")
-anim_player = NodePath("../../AnimationPlayer")
-anim_north = &"animlib_warrior/hurt_south"
-anim_east = &"animlib_warrior/hurt_west"
-anim_south = &"animlib_warrior/hurt_north"
-anim_west = &"animlib_warrior/hurt_east"
