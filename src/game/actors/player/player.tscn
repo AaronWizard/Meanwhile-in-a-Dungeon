@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=19 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://src/game/actors/player/warrior.png" id="1_a74gn"]
 [ext_resource type="AnimationLibrary" uid="uid://d1wjy8llanui3" path="res://src/game/actors/player/animlib_warrior.tres" id="2_f55i4"]
@@ -9,8 +9,10 @@
 [ext_resource type="Script" path="res://src/core/actors/motion_direction_animation.gd" id="6_3asxm"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/attack.gd" id="6_n4wsn"]
 [ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="7_l23td"]
+[ext_resource type="Script" path="res://src/core/statemachine/state.gd" id="10_nos0m"]
 [ext_resource type="Script" path="res://src/core/actors/hurtbox.gd" id="10_psy01"]
 [ext_resource type="Script" path="res://src/core/actors/hitbox.gd" id="11_7igt0"]
+[ext_resource type="Script" path="res://src/core/actors/knockback.gd" id="12_sb0s8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -71,11 +73,11 @@ collision_layer = 2
 motion_mode = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -15)
+position = Vector2(0, -16)
 texture = ExtResource("1_a74gn")
 hframes = 8
 vframes = 17
-frame = 88
+frame = 40
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -139,7 +141,11 @@ anim_east = &"animlib_warrior/attack_east"
 anim_south = &"animlib_warrior/attack_south"
 anim_west = &"animlib_warrior/attack_west"
 
+[node name="Knockback" type="Node" parent="StateMachine"]
+script = ExtResource("10_nos0m")
+
 [node name="Hurtbox" type="Area2D" parent="."]
+visible = false
 script = ExtResource("10_psy01")
 faction = 1
 
@@ -163,3 +169,21 @@ position = Vector2(-3, 1.88231e-05)
 rotation = -1.57079
 shape = SubResource("RectangleShape2D_c58g1")
 debug_color = Color(0.7, 0, 0, 0.419608)
+
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "actor_motion", "motion_direction_animation", "state_machine")]
+script = ExtResource("12_sb0s8")
+hurtbox = NodePath("../Hurtbox")
+actor_motion = NodePath("../ActorMotion")
+motion_direction_animation = NodePath("MotionDirectionAnimation")
+state_machine = NodePath("../StateMachine")
+knockback_state = &"Knockback"
+resume_state = &"Idle"
+
+[node name="MotionDirectionAnimation" type="Node" parent="Knockback" node_paths=PackedStringArray("motion", "anim_player")]
+script = ExtResource("6_3asxm")
+motion = NodePath("../../ActorMotion")
+anim_player = NodePath("../../AnimationPlayer")
+anim_north = &"animlib_warrior/hurt_south"
+anim_east = &"animlib_warrior/hurt_west"
+anim_south = &"animlib_warrior/hurt_north"
+anim_west = &"animlib_warrior/hurt_east"

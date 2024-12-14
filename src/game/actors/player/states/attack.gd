@@ -24,7 +24,6 @@ func enter() -> void:
 
 
 func exit() -> void:
-	assert(anim_running == false)
 	_motion_direction_animation.active = false
 
 

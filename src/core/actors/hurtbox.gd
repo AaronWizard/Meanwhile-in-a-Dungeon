@@ -3,7 +3,7 @@ extends Area2D
 
 ## A shape that takes damage from [Hitbox]es.
 
-signal damage_taken(damage: int, direction: Vector2)
+signal was_hit(damage: int, direction: Vector2)
 
 @export var faction := 0
 @export var invincible := false
@@ -53,4 +53,4 @@ func _hitbox_exited(hitbox: Hitbox) -> void:
 func _get_hit(hitbox: Hitbox) -> void:
 	var direction := (global_position - hitbox.global_position).normalized()
 	print("%s hit by %s for %d damage from the direction %v" % [owner.name, hitbox.owner.name, hitbox.damage, direction])
-	damage_taken.emit(hitbox.damage, direction)
+	was_hit.emit(hitbox.damage, direction)

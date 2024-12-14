@@ -26,6 +26,10 @@ extends Node
 var direction: Vector2:
 	get:
 		return _direction
+	set(value):
+		_direction = value.normalized()
+		if _direction.length_squared() == 0.0:
+			_direction = Vector2.DOWN
 
 
 var _direction := Vector2.DOWN # Default to facing south

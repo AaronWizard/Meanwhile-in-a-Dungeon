@@ -10,6 +10,11 @@ extends Node
 var _current_state: State
 
 
+var current_state_name: StringName:
+	get:
+		return _current_state.name
+
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var result: PackedStringArray = []
 
@@ -71,6 +76,7 @@ func switch_state(next_state_name: StringName) -> void:
 		return
 	if next_state == _current_state:
 		push_warning("'%s' is already the current state" % next_state_name)
+		return
 
 	_current_state.exit()
 	_current_state = next_state

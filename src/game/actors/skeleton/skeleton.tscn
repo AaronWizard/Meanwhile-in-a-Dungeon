@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=16 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="1_ojnvy"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://src/game/actors/skeleton/skeleton.png" id="1_t3vwc"]
@@ -9,7 +9,9 @@
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="7_dhxxv"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/attack.gd" id="8_pj4ig"]
 [ext_resource type="Script" path="res://src/core/actors/hurtbox.gd" id="9_77twk"]
+[ext_resource type="Script" path="res://src/core/statemachine/state.gd" id="9_166mc"]
 [ext_resource type="Script" path="res://src/core/actors/hitbox.gd" id="10_wn1oe"]
+[ext_resource type="Script" path="res://src/core/actors/knockback.gd" id="11_runtd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
@@ -26,11 +28,11 @@ collision_layer = 2
 motion_mode = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -17)
+position = Vector2(0, -16)
 texture = ExtResource("1_t3vwc")
 hframes = 8
 vframes = 17
-frame = 16
+frame = 40
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -93,7 +95,11 @@ anim_east = &"animlib_skeleton/attack_east"
 anim_south = &"animlib_skeleton/attack_south"
 anim_west = &"animlib_skeleton/attack_west"
 
+[node name="Knockback" type="Node" parent="StateMachine"]
+script = ExtResource("9_166mc")
+
 [node name="Hurtbox" type="Area2D" parent="."]
+visible = false
 script = ExtResource("9_77twk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
@@ -112,3 +118,21 @@ active = true
 position = Vector2(0, -15)
 shape = SubResource("CapsuleShape2D_0cvq1")
 debug_color = Color(1, 0, 0, 0.419608)
+
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "actor_motion", "motion_direction_animation", "state_machine")]
+script = ExtResource("11_runtd")
+hurtbox = NodePath("../Hurtbox")
+actor_motion = NodePath("../ActorMotion")
+motion_direction_animation = NodePath("MotionDirectionAnimation")
+state_machine = NodePath("../StateMachine")
+knockback_state = &"Knockback"
+resume_state = &"Idle"
+
+[node name="MotionDirectionAnimation" type="Node" parent="Knockback" node_paths=PackedStringArray("motion", "anim_player")]
+script = ExtResource("6_chsbl")
+motion = NodePath("../../ActorMotion")
+anim_player = NodePath("../../AnimationPlayer")
+anim_north = &"animlib_skeleton/hurt_south"
+anim_east = &"animlib_skeleton/hurt_west"
+anim_south = &"animlib_skeleton/hurt_north"
+anim_west = &"animlib_skeleton/hurt_east"
