@@ -1,0 +1,76 @@
+[gd_scene load_steps=8 format=3 uid="uid://bt8gs55o4pb26"]
+
+[ext_resource type="Texture2D" uid="uid://w1m1ilv8lgpi" path="res://src/scenes/game/ui/hpbar_player.png" id="1_f8nrt"]
+[ext_resource type="Script" path="res://src/scenes/game/ui/player_hp_bar.gd" id="1_ofxa7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8kwla"]
+atlas = ExtResource("1_f8nrt")
+region = Rect2(0, 0, 74, 6)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c1kcx"]
+atlas = ExtResource("1_f8nrt")
+region = Rect2(2, 13, 71, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_twxsq"]
+atlas = ExtResource("1_f8nrt")
+region = Rect2(2, 19, 71, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7fax"]
+atlas = ExtResource("1_f8nrt")
+region = Rect2(2, 7, 71, 4)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qy0iq"]
+atlas = ExtResource("1_f8nrt")
+region = Rect2(0, 24, 74, 6)
+
+[node name="PlayerHPBar" type="Control"]
+custom_minimum_size = Vector2(74, 6)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 74.0
+offset_bottom = 6.0
+script = ExtResource("1_ofxa7")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 74.0
+offset_bottom = 6.0
+texture = SubResource("AtlasTexture_8kwla")
+stretch_mode = 2
+
+[node name="DepleteBar" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 1.0
+offset_right = 73.0
+offset_bottom = 5.0
+max_value = 10.0
+value = 10.0
+texture_progress = SubResource("AtlasTexture_c1kcx")
+
+[node name="ExpandBar" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 1.0
+offset_right = 73.0
+offset_bottom = 5.0
+max_value = 10.0
+value = 10.0
+texture_progress = SubResource("AtlasTexture_twxsq")
+
+[node name="FillBar" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_left = 2.0
+offset_top = 1.0
+offset_right = 73.0
+offset_bottom = 5.0
+max_value = 10.0
+value = 10.0
+texture_progress = SubResource("AtlasTexture_t7fax")
+
+[node name="Outline" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 74.0
+offset_bottom = 6.0
+texture = SubResource("AtlasTexture_qy0iq")
+stretch_mode = 2

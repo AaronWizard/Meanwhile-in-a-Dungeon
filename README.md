@@ -10,3 +10,4 @@
 - <https://foozlecc.itch.io/lucifer-skeleton-grunt-enemy>
 - <https://foozlecc.itch.io/lucifer-exterior-tileset>
 - <https://foozlecc.itch.io/lucifer-dungeon-tileset>
+- <https://foozlecc.itch.io/lucifer-rpg-ui>
