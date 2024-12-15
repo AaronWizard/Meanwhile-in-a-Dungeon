@@ -1,12 +1,27 @@
+@tool
 class_name DirectionAnimationPlayer
 extends Node
 
 signal animation_finished
 
-@export var animation_player: AnimationPlayer
-@export var motion: ActorMotion
 
-@export var animation_sets: Array[DirectionAnimationSet] = []
+@export var animation_player: AnimationPlayer:
+	set(value):
+		animation_player = value
+		update_configuration_warnings()
+
+
+@export var motion: ActorMotion:
+	set(value):
+		motion = value
+		update_configuration_warnings()
+
+
+@export var animation_sets: Array[DirectionAnimationSet] = []:
+	set(value):
+		animation_sets = value
+		update_configuration_warnings()
+
 
 var _anim_sets_by_name := {}
 var _current_anim_set := &""
@@ -15,7 +30,23 @@ var _current_anim_name := &""
 var _last_cardinal := Vector2.ZERO
 
 
+func _get_configuration_warnings() -> PackedStringArray:
+	var result := PackedStringArray()
+
+	if not animation_player:
+		result.append("Need an AnimationPlayer")
+	if not motion:
+		result.append("Need an ActorMotion")
+	if not animation_sets.front():
+		result.append("Need at least one DirectionAnimationSet")
+
+	return result
+
+
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		return
+
 	for anim_set in animation_sets:
 		_anim_sets_by_name[anim_set.anim_set_name] = anim_set
 
@@ -24,6 +55,9 @@ func _ready() -> void:
 
 
 func _process(_delta: float) -> void:
+	if Engine.is_editor_hint():
+		return
+
 	if _get_current_anim_set().change_with_direction:
 		_update_animation()
 

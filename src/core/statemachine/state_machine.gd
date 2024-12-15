@@ -16,7 +16,7 @@ var current_state_name: StringName:
 
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var result: PackedStringArray = []
+	var result := PackedStringArray()
 
 	if get_child_count() == 0:
 		result.append("No child states")

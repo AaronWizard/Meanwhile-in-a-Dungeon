@@ -1,3 +1,4 @@
+@tool
 class_name Knockback
 extends Node
 
@@ -6,8 +7,18 @@ signal finished
 @export var knockback_speed := 200.0
 @export var decelleration := 5
 
-@export var hurtbox: Hurtbox
-@export var actor_motion: ActorMotion
+
+@export var hurtbox: Hurtbox:
+	set(value):
+		hurtbox = value
+		update_configuration_warnings()
+
+
+@export var actor_motion: ActorMotion:
+	set(value):
+		actor_motion = value
+		update_configuration_warnings()
+
 
 @export var direction_animation_player: DirectionAnimationPlayer
 @export var flying_anim_set := &""
@@ -22,12 +33,25 @@ var is_flying_back: bool:
 var _flying_back := false
 
 
+func _get_configuration_warnings() -> PackedStringArray:
+	var result := PackedStringArray()
+
+	if not hurtbox:
+		result.append("Need a Hurtbox")
+	if not actor_motion:
+		result.append("Need an ActorMotion")
+
+	return result
+
+
 func _ready() -> void:
-	hurtbox.was_hit.connect(_was_hit)
+	if not Engine.is_editor_hint():
+		hurtbox.was_hit.connect(_was_hit)
 
 
 func _process(_delta: float) -> void:
-	if is_flying_back and (actor_motion.velocity.length_squared() > 0):
+	if not Engine.is_editor_hint() and is_flying_back \
+			and (actor_motion.velocity.length_squared() > 0):
 		actor_motion.move_velocity_toward(Vector2.ZERO, decelleration)
 		if actor_motion.velocity.length_squared() == 0:
 			_stop_knockback()

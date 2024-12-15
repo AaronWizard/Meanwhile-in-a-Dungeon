@@ -40,7 +40,7 @@ func move_velocity_toward(target_velocity: Vector2, delta: float) -> void:
 
 
 func _get_configuration_warnings() -> PackedStringArray:
-	var result: PackedStringArray = []
+	var result := PackedStringArray()
 	if not _get_body():
 		result.append("Does nothing unless the parent is a CharacterBody2D")
 	return result

@@ -1,3 +1,4 @@
+@tool
 class_name ActorHP
 extends Node
 
@@ -5,7 +6,12 @@ signal damaged(damage: int)
 signal healed(increase: int)
 
 @export_range(1, 1, 1, "or_greater") var max_hp := 1
-@export var hurtbox: Hurtbox
+
+
+@export var hurtbox: Hurtbox:
+	set(value):
+		hurtbox = value
+		update_configuration_warnings()
 
 
 var current_hp: int:
@@ -21,9 +27,19 @@ var is_alive: bool:
 var _current_hp := 1
 
 
+func _get_configuration_warnings() -> PackedStringArray:
+	var result := PackedStringArray()
+	if not hurtbox:
+		result.append("Need a Hurtbox")
+	return result
+
+
 func _ready() -> void:
-	hurtbox.was_hit.connect(_was_hit)
+	if Engine.is_editor_hint():
+		return
+
 	_current_hp = max_hp
+	hurtbox.was_hit.connect(_was_hit)
 
 
 func _was_hit(damage: int, _direction: Vector2) -> void:
