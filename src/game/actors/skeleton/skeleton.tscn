@@ -1,19 +1,19 @@
 [gd_scene load_steps=22 format=3 uid="uid://dqht7pif72evs"]
 
-[ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="1_ojnvy"]
+[ext_resource type="Script" path="res://src/core/actors/components/actor_motion.gd" id="1_ojnvy"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://src/game/actors/skeleton/skeleton.png" id="1_t3vwc"]
 [ext_resource type="AnimationLibrary" uid="uid://2se816hxeawh" path="res://src/game/actors/skeleton/animlib_skeleton.tres" id="2_j3i52"]
 [ext_resource type="Script" path="res://src/core/statemachine/state_machine.gd" id="4_5f16l"]
-[ext_resource type="Script" path="res://src/core/actors/direction_animation_player.gd" id="5_1ab50"]
+[ext_resource type="Script" path="res://src/core/actors/components/direction_animation_player.gd" id="5_1ab50"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/idle.gd" id="5_7jxfx"]
-[ext_resource type="Script" path="res://src/core/actors/direction_animation_set.gd" id="5_yruhk"]
+[ext_resource type="Script" path="res://src/core/actors/components/direction_animation_set.gd" id="5_yruhk"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="7_dhxxv"]
-[ext_resource type="Script" path="res://src/core/actors/actor_hp.gd" id="8_mqaob"]
+[ext_resource type="Script" path="res://src/core/actors/components/actor_hp.gd" id="8_mqaob"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/attack.gd" id="8_pj4ig"]
-[ext_resource type="Script" path="res://src/core/actors/hurtbox.gd" id="9_77twk"]
-[ext_resource type="Script" path="res://src/core/actors/death_handler.gd" id="9_jpx7g"]
-[ext_resource type="Script" path="res://src/core/actors/hitbox.gd" id="10_wn1oe"]
-[ext_resource type="Script" path="res://src/core/actors/knockback.gd" id="11_runtd"]
+[ext_resource type="Script" path="res://src/core/actors/components/hurtbox.gd" id="9_77twk"]
+[ext_resource type="Script" path="res://src/core/actors/components/death_handler.gd" id="9_jpx7g"]
+[ext_resource type="Script" path="res://src/core/actors/components/hitbox.gd" id="10_wn1oe"]
+[ext_resource type="Script" path="res://src/core/actors/components/knockback.gd" id="11_runtd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
@@ -108,6 +108,7 @@ shape = SubResource("CapsuleShape2D_etk8g")
 debug_color = Color(1, 1, 0, 0.419608)
 
 [node name="HitboxBody" type="Area2D" parent="."]
+visible = false
 collision_layer = 4
 collision_mask = 0
 monitoring = false
