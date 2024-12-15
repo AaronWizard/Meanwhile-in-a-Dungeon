@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=22 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="1_ojnvy"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://src/game/actors/skeleton/skeleton.png" id="1_t3vwc"]
@@ -8,9 +8,10 @@
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/idle.gd" id="5_7jxfx"]
 [ext_resource type="Script" path="res://src/core/actors/direction_animation_set.gd" id="5_yruhk"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="7_dhxxv"]
+[ext_resource type="Script" path="res://src/core/actors/actor_hp.gd" id="8_mqaob"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/attack.gd" id="8_pj4ig"]
 [ext_resource type="Script" path="res://src/core/actors/hurtbox.gd" id="9_77twk"]
-[ext_resource type="Script" path="res://src/core/statemachine/state.gd" id="9_166mc"]
+[ext_resource type="Script" path="res://src/core/actors/death_handler.gd" id="9_jpx7g"]
 [ext_resource type="Script" path="res://src/core/actors/hitbox.gd" id="10_wn1oe"]
 [ext_resource type="Script" path="res://src/core/actors/knockback.gd" id="11_runtd"]
 
@@ -94,25 +95,11 @@ animation_player = NodePath("../AnimationPlayer")
 motion = NodePath("../ActorMotion")
 animation_sets = Array[ExtResource("5_yruhk")]([SubResource("Resource_iphu2"), SubResource("Resource_60eso"), SubResource("Resource_v734s"), SubResource("Resource_uoilf")])
 
-[node name="StateMachine" type="Node" parent="."]
-script = ExtResource("4_5f16l")
-
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("direction_animation_player")]
-script = ExtResource("5_7jxfx")
-direction_animation_player = NodePath("../../DirectionAnimationPlayer")
-direction_anim_set = &"idle"
-
-[node name="Chase" type="Node" parent="StateMachine"]
-script = ExtResource("7_dhxxv")
-
-[node name="Attack" type="Node" parent="StateMachine"]
-script = ExtResource("8_pj4ig")
-
-[node name="Knockback" type="Node" parent="StateMachine"]
-script = ExtResource("9_166mc")
-
 [node name="Hurtbox" type="Area2D" parent="."]
 visible = false
+collision_layer = 0
+collision_mask = 4
+monitorable = false
 script = ExtResource("9_77twk")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
@@ -132,12 +119,38 @@ position = Vector2(0, -15)
 shape = SubResource("CapsuleShape2D_0cvq1")
 debug_color = Color(1, 0, 0, 0.419608)
 
-[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "actor_motion", "direction_animation_player", "state_machine")]
+[node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
+script = ExtResource("8_mqaob")
+max_hp = 2
+hurtbox = NodePath("../Hurtbox")
+
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "actor_motion", "direction_animation_player")]
 script = ExtResource("11_runtd")
 hurtbox = NodePath("../Hurtbox")
 actor_motion = NodePath("../ActorMotion")
 direction_animation_player = NodePath("../DirectionAnimationPlayer")
-direction_anim_set = &"knockback"
-state_machine = NodePath("../StateMachine")
-knockback_state = &"Knockback"
-resume_state = &"Idle"
+flying_anim_set = &"knockback"
+stop_anim_set = &"idle"
+
+[node name="DeathHandler" type="Node" parent="." node_paths=PackedStringArray("hp", "anim_player", "knockback", "hurtbox", "hitboxes")]
+script = ExtResource("9_jpx7g")
+hp = NodePath("../ActorHP")
+anim_player = NodePath("../AnimationPlayer")
+anim_name = &"animlib_skeleton/death"
+knockback = NodePath("../Knockback")
+hurtbox = NodePath("../Hurtbox")
+hitboxes = [NodePath("../HitboxBody")]
+
+[node name="StateMachine" type="Node" parent="."]
+script = ExtResource("4_5f16l")
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("direction_animation_player")]
+script = ExtResource("5_7jxfx")
+direction_animation_player = NodePath("../../DirectionAnimationPlayer")
+direction_anim_set = &"idle"
+
+[node name="Chase" type="Node" parent="StateMachine"]
+script = ExtResource("7_dhxxv")
+
+[node name="Attack" type="Node" parent="StateMachine"]
+script = ExtResource("8_pj4ig")

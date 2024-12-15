@@ -11,11 +11,11 @@
 [ext_resource type="Script" path="res://src/game/actors/player/states/attack.gd" id="6_n4wsn"]
 [ext_resource type="Script" path="res://src/core/actors/actor_motion.gd" id="7_l23td"]
 [ext_resource type="Script" path="res://src/core/actors/actor_hp.gd" id="9_1tnh4"]
-[ext_resource type="Script" path="res://src/core/statemachine/state.gd" id="10_nos0m"]
+[ext_resource type="Script" path="res://src/core/actors/death_handler.gd" id="10_fwo7g"]
 [ext_resource type="Script" path="res://src/core/actors/hurtbox.gd" id="10_psy01"]
 [ext_resource type="Script" path="res://src/core/actors/hitbox.gd" id="11_7igt0"]
 [ext_resource type="Script" path="res://src/core/actors/knockback.gd" id="12_sb0s8"]
-[ext_resource type="Script" path="res://src/game/actors/player/states/death.gd" id="15_b8nc3"]
+[ext_resource type="Script" path="res://src/game/actors/player/states/stunned.gd" id="15_niauk"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -105,8 +105,8 @@ anim_west = "east"
 change_with_direction = false
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wgk2m"]
-radius = 5.0
-height = 28.0
+radius = 4.0
+height = 24.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c58g1"]
 size = Vector2(50, 25.75)
@@ -143,12 +143,13 @@ motion = NodePath("../ActorMotion")
 animation_sets = Array[ExtResource("6_5bme3")]([SubResource("Resource_sbhni"), SubResource("Resource_1d58d"), SubResource("Resource_rjn5e"), SubResource("Resource_d4lr3")])
 
 [node name="Hurtbox" type="Area2D" parent="."]
-visible = false
+collision_layer = 0
+collision_mask = 4
 script = ExtResource("10_psy01")
 faction = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, -16)
+position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_wgk2m")
 debug_color = Color(1, 1, 0, 0.419608)
 
@@ -168,20 +169,27 @@ rotation = -1.57079
 shape = SubResource("RectangleShape2D_c58g1")
 debug_color = Color(0.7, 0, 0, 0.419608)
 
-[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "actor_motion", "direction_animation_player", "state_machine")]
-script = ExtResource("12_sb0s8")
-hurtbox = NodePath("../Hurtbox")
-actor_motion = NodePath("../ActorMotion")
-direction_animation_player = NodePath("../DirectionAnimationPlayer")
-direction_anim_set = &"knockback"
-state_machine = NodePath("../StateMachine")
-knockback_state = &"Knockback"
-resume_state = &"Idle"
-
 [node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
 script = ExtResource("9_1tnh4")
 max_hp = 2
 hurtbox = NodePath("../Hurtbox")
+
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "actor_motion", "direction_animation_player")]
+script = ExtResource("12_sb0s8")
+hurtbox = NodePath("../Hurtbox")
+actor_motion = NodePath("../ActorMotion")
+direction_animation_player = NodePath("../DirectionAnimationPlayer")
+flying_anim_set = &"knockback"
+stop_anim_set = &"idle"
+
+[node name="DeathHandler" type="Node" parent="." node_paths=PackedStringArray("hp", "anim_player", "knockback", "hurtbox", "hitboxes")]
+script = ExtResource("10_fwo7g")
+hp = NodePath("../ActorHP")
+anim_player = NodePath("../AnimationPlayer")
+anim_name = &"animlib_warrior/death"
+knockback = NodePath("../Knockback")
+hurtbox = NodePath("../Hurtbox")
+hitboxes = [NodePath("../Hitbox")]
 
 [node name="PlayerInput" type="Node" parent="."]
 script = ExtResource("2_jafpg")
@@ -189,34 +197,31 @@ script = ExtResource("2_jafpg")
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_i32bm")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player", "hp")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player", "knockback")]
 script = ExtResource("4_axnin")
 player_input = NodePath("../../PlayerInput")
 actor_motion = NodePath("../../ActorMotion")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
-hp = NodePath("../../ActorHP")
-death_anim = &"Death"
+knockback = NodePath("../../Knockback")
 
-[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player")]
+[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player", "knockback")]
 script = ExtResource("4_81ai4")
 player_input = NodePath("../../PlayerInput")
 actor_motion = NodePath("../../ActorMotion")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"move"
+knockback = NodePath("../../Knockback")
 
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player", "knockback")]
 script = ExtResource("6_n4wsn")
 player_input = NodePath("../../PlayerInput")
 actor_motion = NodePath("../../ActorMotion")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"attack"
+knockback = NodePath("../../Knockback")
 
-[node name="Knockback" type="Node" parent="StateMachine"]
-script = ExtResource("10_nos0m")
-
-[node name="Death" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "anim_player")]
-script = ExtResource("15_b8nc3")
-actor_motion = NodePath("../../ActorMotion")
-anim_player = NodePath("../../AnimationPlayer")
-anim_name = &"animlib_warrior/death"
+[node name="Stunned" type="Node" parent="StateMachine" node_paths=PackedStringArray("knockback", "hp")]
+script = ExtResource("15_niauk")
+knockback = NodePath("../../Knockback")
+hp = NodePath("../../ActorHP")

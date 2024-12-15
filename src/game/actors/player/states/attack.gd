@@ -8,6 +8,9 @@ extends State
 
 @export var deceleration := 8.0
 
+@export var knockback: Knockback
+@export var stunned_state := &"Stunned"
+
 var anim_running := false
 
 
@@ -23,7 +26,11 @@ func enter() -> void:
 
 
 func process(_delta: float) -> StringName:
+	if knockback.is_flying_back:
+		return stunned_state
+
 	actor_motion.move_velocity_toward(Vector2.ZERO, deceleration)
 	if not anim_running:
 		return player_input.desired_state
+
 	return &""

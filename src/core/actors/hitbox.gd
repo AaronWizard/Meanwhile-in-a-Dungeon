@@ -14,7 +14,7 @@ const HITBOX_LAYER := 3
 	get:
 		return monitorable
 	set(value):
-		monitorable = value
+		set_deferred("monitorable", value)
 
 
 func _ready() -> void:

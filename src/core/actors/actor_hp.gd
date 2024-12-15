@@ -1,7 +1,8 @@
 class_name ActorHP
 extends Node
 
-signal hp_changed(delta: int)
+signal damaged(damage: int)
+signal healed(increase: int)
 
 @export_range(1, 1, 1, "or_greater") var max_hp := 1
 @export var hurtbox: Hurtbox
@@ -28,5 +29,8 @@ func _ready() -> void:
 func _was_hit(damage: int, _direction: Vector2) -> void:
 	var old_hp := _current_hp
 	_current_hp = clampi(_current_hp - damage, 0, max_hp)
-
-	hp_changed.emit(_current_hp - old_hp)
+	var delta := _current_hp - old_hp
+	if delta < 0:
+		damaged.emit(absi(delta))
+	elif delta > 0:
+		healed.emit(delta)

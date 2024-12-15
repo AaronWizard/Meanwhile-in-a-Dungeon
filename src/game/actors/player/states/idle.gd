@@ -8,20 +8,16 @@ extends State
 
 @export var deceleration := 12.0
 
-@export var hp: ActorHP
-@export var death_anim: StringName
+@export var knockback: Knockback
+@export var stunned_state := &"Stunned"
 
 
 func enter() -> void:
 	direction_animation_player.set_animation_set(direction_anim_set)
 
 
-func exit() -> void:
-	pass
-
-
 func process(_delta: float) -> StringName:
-	if not hp.is_alive:
-		return death_anim
+	if knockback.is_flying_back:
+		return stunned_state
 	actor_motion.move_velocity_toward(Vector2.ZERO, deceleration)
 	return player_input.desired_state
