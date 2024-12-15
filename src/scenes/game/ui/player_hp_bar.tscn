@@ -5,30 +5,30 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8kwla"]
 atlas = ExtResource("1_f8nrt")
-region = Rect2(0, 0, 74, 6)
+region = Rect2(0, 0, 148, 12)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c1kcx"]
 atlas = ExtResource("1_f8nrt")
-region = Rect2(2, 13, 71, 4)
+region = Rect2(1, 25, 146, 10)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_twxsq"]
 atlas = ExtResource("1_f8nrt")
-region = Rect2(2, 19, 71, 4)
+region = Rect2(1, 37, 146, 10)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_t7fax"]
 atlas = ExtResource("1_f8nrt")
-region = Rect2(2, 7, 71, 4)
+region = Rect2(1, 13, 146, 10)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qy0iq"]
 atlas = ExtResource("1_f8nrt")
-region = Rect2(0, 24, 74, 6)
+region = Rect2(0, 48, 148, 12)
 
 [node name="PlayerHPBar" type="Control"]
-custom_minimum_size = Vector2(74, 6)
+custom_minimum_size = Vector2(148, 12)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 74.0
-offset_bottom = 6.0
+offset_right = 148.0
+offset_bottom = 12.0
 script = ExtResource("1_ofxa7")
 
 [node name="Background" type="TextureRect" parent="."]
@@ -40,30 +40,30 @@ stretch_mode = 2
 
 [node name="DepleteBar" type="TextureProgressBar" parent="."]
 layout_mode = 0
-offset_left = 2.0
+offset_left = 1.0
 offset_top = 1.0
-offset_right = 73.0
-offset_bottom = 5.0
+offset_right = 147.0
+offset_bottom = 11.0
 max_value = 10.0
 value = 10.0
 texture_progress = SubResource("AtlasTexture_c1kcx")
 
 [node name="ExpandBar" type="TextureProgressBar" parent="."]
 layout_mode = 0
-offset_left = 2.0
+offset_left = 1.0
 offset_top = 1.0
-offset_right = 73.0
-offset_bottom = 5.0
+offset_right = 147.0
+offset_bottom = 11.0
 max_value = 10.0
 value = 10.0
 texture_progress = SubResource("AtlasTexture_twxsq")
 
 [node name="FillBar" type="TextureProgressBar" parent="."]
 layout_mode = 0
-offset_left = 2.0
+offset_left = 1.0
 offset_top = 1.0
-offset_right = 73.0
-offset_bottom = 5.0
+offset_right = 147.0
+offset_bottom = 11.0
 max_value = 10.0
 value = 10.0
 texture_progress = SubResource("AtlasTexture_t7fax")

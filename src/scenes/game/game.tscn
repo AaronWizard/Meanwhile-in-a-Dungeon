@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://ck0wg512sfqts"]
+[gd_scene load_steps=6 format=3 uid="uid://ck0wg512sfqts"]
 
 [ext_resource type="Script" path="res://src/scenes/game/game.gd" id="1_4tun1"]
 [ext_resource type="PackedScene" uid="uid://bkt17j2t2gujw" path="res://src/game/actors/player/player.tscn" id="2_u0uus"]
 [ext_resource type="PackedScene" uid="uid://cpeutw7scyiu1" path="res://src/game/maps/wilderness.tscn" id="3_rk316"]
 [ext_resource type="Script" path="res://src/scenes/game/player_camera.gd" id="4_b77mm"]
+[ext_resource type="PackedScene" uid="uid://bt8gs55o4pb26" path="res://src/scenes/game/ui/player_hp_bar.tscn" id="5_svqum"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_4tun1")
@@ -16,3 +17,15 @@ metadata/_edit_lock_ = true
 
 [node name="PlayerCamera" type="Camera2D" parent="."]
 script = ExtResource("4_b77mm")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="PlayerHPBar" parent="UI" instance=ExtResource("5_svqum")]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = -10.0
+offset_right = 78.0
+offset_bottom = -4.0
+grow_vertical = 0
