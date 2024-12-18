@@ -1,5 +1,6 @@
-[gd_scene load_steps=22 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=25 format=3 uid="uid://dqht7pif72evs"]
 
+[ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/actors/components/actor_motion.gd" id="1_ojnvy"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://src/game/actors/skeleton/skeleton.png" id="1_t3vwc"]
 [ext_resource type="AnimationLibrary" uid="uid://2se816hxeawh" path="res://src/game/actors/skeleton/animlib_skeleton.tres" id="2_j3i52"]
@@ -17,6 +18,26 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
+
+[sub_resource type="Animation" id="Animation_i8kjr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5st4j"]
+_data = {
+"RESET": SubResource("Animation_i8kjr")
+}
 
 [sub_resource type="Resource" id="Resource_iphu2"]
 script = ExtResource("5_yruhk")
@@ -68,13 +89,14 @@ height = 24.0
 [node name="Skeleton" type="CharacterBody2D"]
 collision_layer = 2
 motion_mode = 1
+script = ExtResource("1_oe0ch")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -16)
+position = Vector2(0, -17)
 texture = ExtResource("1_t3vwc")
 hframes = 8
 vframes = 17
-frame = 40
+frame = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -83,6 +105,7 @@ shape = SubResource("CircleShape2D_huaup")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
+"": SubResource("AnimationLibrary_5st4j"),
 "animlib_skeleton": ExtResource("2_j3i52")
 }
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=26 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=27 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://src/game/actors/player/warrior.png" id="1_a74gn"]
+[ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_ocde1"]
 [ext_resource type="AnimationLibrary" uid="uid://d1wjy8llanui3" path="res://src/game/actors/player/animlib_warrior.tres" id="2_f55i4"]
 [ext_resource type="Script" path="res://src/core/statemachine/state_machine.gd" id="2_i32bm"]
 [ext_resource type="Script" path="res://src/game/actors/player/player_input.gd" id="2_jafpg"]
@@ -114,6 +115,7 @@ size = Vector2(50, 25.75)
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 motion_mode = 1
+script = ExtResource("1_ocde1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -15)
@@ -145,6 +147,7 @@ animation_sets = Array[ExtResource("6_5bme3")]([SubResource("Resource_sbhni"), S
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 4
+monitorable = false
 script = ExtResource("10_psy01")
 faction = 1
 
@@ -171,7 +174,7 @@ debug_color = Color(0.7, 0, 0, 0.419608)
 
 [node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
 script = ExtResource("9_1tnh4")
-max_hp = 2
+max_hp = 5
 hurtbox = NodePath("../Hurtbox")
 
 [node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "actor_motion", "direction_animation_player")]
@@ -185,6 +188,7 @@ stop_anim_set = &"idle"
 [node name="DeathHandler" type="Node" parent="." node_paths=PackedStringArray("hp", "anim_player", "knockback", "hurtbox", "hitboxes")]
 script = ExtResource("10_fwo7g")
 hp = NodePath("../ActorHP")
+remove_owner_on_death = false
 anim_player = NodePath("../AnimationPlayer")
 anim_name = &"animlib_warrior/death"
 knockback = NodePath("../Knockback")
