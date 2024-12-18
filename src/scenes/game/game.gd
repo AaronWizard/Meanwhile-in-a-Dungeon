@@ -5,10 +5,11 @@ extends Scene
 @export var initial_map: PackedScene
 @export var initial_spawn_name: StringName
 
-var player: Node2D
+var player: Actor
 
 @onready var _map_container := $MapContainer
 @onready var _camera := $PlayerCamera as PlayerCamera
+@onready var _player_hp_bar := $UI/PlayerHPBar as HPBar
 
 
 func _ready() -> void:
@@ -17,12 +18,18 @@ func _ready() -> void:
 
 
 func _init_player() -> void:
-	player = player_scene.instantiate() as Node2D
+	player = player_scene.instantiate() as Actor
+	add_child(player) # So we can connect player actor to UI
+
 	remove_child(_camera)
 	player.add_child(_camera)
 
+	_player_hp_bar.observe_actor_hp(player.hp)
+
+
 
 func _load_first_map() -> void:
+	remove_child(player)
 	_load_map(initial_map, initial_spawn_name)
 
 

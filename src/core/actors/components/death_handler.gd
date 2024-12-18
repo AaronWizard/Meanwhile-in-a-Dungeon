@@ -28,10 +28,10 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 func _ready() -> void:
 	if not Engine.is_editor_hint():
-		hp.damaged.connect(_check_death)
+		hp.changed.connect(_check_death)
 
 
-func _check_death(_damage: int) -> void:
+func _check_death(_delta: int) -> void:
 	if not hp.is_alive:
 		if knockback:
 			await knockback.finished

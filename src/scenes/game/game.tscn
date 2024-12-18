@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bkt17j2t2gujw" path="res://src/game/actors/player/player.tscn" id="2_u0uus"]
 [ext_resource type="PackedScene" uid="uid://cpeutw7scyiu1" path="res://src/game/maps/wilderness.tscn" id="3_rk316"]
 [ext_resource type="Script" path="res://src/scenes/game/player_camera.gd" id="4_b77mm"]
-[ext_resource type="PackedScene" uid="uid://bt8gs55o4pb26" path="res://src/scenes/game/ui/player_hp_bar.tscn" id="5_svqum"]
+[ext_resource type="PackedScene" uid="uid://bt8gs55o4pb26" path="res://src/scenes/game/ui/hp_bar.tscn" id="5_svqum"]
 
 [node name="Game" type="Node"]
 script = ExtResource("1_4tun1")
