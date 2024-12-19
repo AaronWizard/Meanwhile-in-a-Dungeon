@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=26 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/actors/components/actor_motion.gd" id="1_ojnvy"]
@@ -8,13 +8,14 @@
 [ext_resource type="Script" path="res://src/core/actors/components/direction_animation_player.gd" id="5_1ab50"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/idle.gd" id="5_7jxfx"]
 [ext_resource type="Script" path="res://src/core/actors/components/direction_animation_set.gd" id="5_yruhk"]
-[ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="7_dhxxv"]
 [ext_resource type="Script" path="res://src/core/actors/components/actor_hp.gd" id="8_mqaob"]
-[ext_resource type="Script" path="res://src/game/actors/skeleton/states/attack.gd" id="8_pj4ig"]
 [ext_resource type="Script" path="res://src/core/actors/components/hurtbox.gd" id="9_77twk"]
 [ext_resource type="Script" path="res://src/core/actors/components/death_handler.gd" id="9_jpx7g"]
 [ext_resource type="Script" path="res://src/core/actors/components/hitbox.gd" id="10_wn1oe"]
 [ext_resource type="Script" path="res://src/core/actors/components/knockback.gd" id="11_runtd"]
+[ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="14_2fo3n"]
+[ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
+[ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_stunned_state.gd" id="16_a5aqj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
@@ -168,13 +169,21 @@ hitboxes = [NodePath("../HitboxBody")]
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_5f16l")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("direction_animation_player")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("knockback")]
 script = ExtResource("5_7jxfx")
+knockback = NodePath("../../Knockback")
+
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("knockback")]
+script = ExtResource("14_2fo3n")
+knockback = NodePath("../../Knockback")
+
+[node name="ActorDirectionalAttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("direction_animation_player", "actor_motion", "knockback")]
+script = ExtResource("15_i5qj0")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
-direction_anim_set = &"idle"
+actor_motion = NodePath("../../ActorMotion")
+knockback = NodePath("../../Knockback")
 
-[node name="Chase" type="Node" parent="StateMachine"]
-script = ExtResource("7_dhxxv")
-
-[node name="Attack" type="Node" parent="StateMachine"]
-script = ExtResource("8_pj4ig")
+[node name="Stunned" type="Node" parent="StateMachine" node_paths=PackedStringArray("knockback", "hp")]
+script = ExtResource("16_a5aqj")
+knockback = NodePath("../../Knockback")
+hp = NodePath("../../ActorHP")

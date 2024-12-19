@@ -1,4 +1,4 @@
-extends State
+extends ActorState
 
 @export var player_input: PlayerInput
 @export var actor_motion: ActorMotion
@@ -8,16 +8,11 @@ extends State
 
 @export var deceleration := 12.0
 
-@export var knockback: Knockback
-@export var stunned_state := &"Stunned"
-
 
 func enter() -> void:
 	direction_animation_player.set_animation_set(direction_anim_set)
 
 
-func process(_delta: float) -> StringName:
-	if knockback.is_flying_back:
-		return stunned_state
+func _process_main(_delta: float) -> StringName:
 	actor_motion.move_velocity_toward(Vector2.ZERO, deceleration)
 	return player_input.desired_state

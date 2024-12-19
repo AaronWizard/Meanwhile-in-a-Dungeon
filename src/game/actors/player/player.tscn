@@ -9,14 +9,14 @@
 [ext_resource type="Script" path="res://src/game/actors/player/states/idle.gd" id="4_axnin"]
 [ext_resource type="Script" path="res://src/core/actors/components/direction_animation_player.gd" id="5_epgbh"]
 [ext_resource type="Script" path="res://src/core/actors/components/direction_animation_set.gd" id="6_5bme3"]
-[ext_resource type="Script" path="res://src/game/actors/player/states/attack.gd" id="6_n4wsn"]
 [ext_resource type="Script" path="res://src/core/actors/components/actor_motion.gd" id="7_l23td"]
 [ext_resource type="Script" path="res://src/core/actors/components/actor_hp.gd" id="9_1tnh4"]
 [ext_resource type="Script" path="res://src/core/actors/components/death_handler.gd" id="10_fwo7g"]
 [ext_resource type="Script" path="res://src/core/actors/components/hurtbox.gd" id="10_psy01"]
 [ext_resource type="Script" path="res://src/core/actors/components/hitbox.gd" id="11_7igt0"]
 [ext_resource type="Script" path="res://src/core/actors/components/knockback.gd" id="12_sb0s8"]
-[ext_resource type="Script" path="res://src/game/actors/player/states/stunned.gd" id="15_niauk"]
+[ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="16_7cnic"]
+[ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_stunned_state.gd" id="17_56hc5"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -217,15 +217,13 @@ direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"move"
 knockback = NodePath("../../Knockback")
 
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player", "knockback")]
-script = ExtResource("6_n4wsn")
-player_input = NodePath("../../PlayerInput")
-actor_motion = NodePath("../../ActorMotion")
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("direction_animation_player", "actor_motion", "knockback")]
+script = ExtResource("16_7cnic")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
-direction_anim_set = &"attack"
+actor_motion = NodePath("../../ActorMotion")
 knockback = NodePath("../../Knockback")
 
 [node name="Stunned" type="Node" parent="StateMachine" node_paths=PackedStringArray("knockback", "hp")]
-script = ExtResource("15_niauk")
+script = ExtResource("17_56hc5")
 knockback = NodePath("../../Knockback")
 hp = NodePath("../../ActorHP")

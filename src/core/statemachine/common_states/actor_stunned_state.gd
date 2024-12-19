@@ -1,3 +1,4 @@
+class_name ActorStunnedState
 extends State
 
 @export var knockback: Knockback
