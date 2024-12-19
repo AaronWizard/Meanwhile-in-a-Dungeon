@@ -3,9 +3,6 @@ extends ActorState
 
 @export var next_state := &"Idle"
 
-@export var direction_animation_player: DirectionAnimationPlayer
-@export var direction_anim_set := &"attack"
-
 @export var actor_motion: ActorMotion
 @export var deceleration := 8.0
 
@@ -19,7 +16,7 @@ func _ready() -> void:
 
 
 func enter() -> void:
-	direction_animation_player.set_animation_set(direction_anim_set)
+	super()
 	anim_running = true
 
 

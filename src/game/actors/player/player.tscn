@@ -217,10 +217,11 @@ direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"move"
 knockback = NodePath("../../Knockback")
 
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("direction_animation_player", "actor_motion", "knockback")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player", "knockback")]
 script = ExtResource("16_7cnic")
-direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 actor_motion = NodePath("../../ActorMotion")
+direction_animation_player = NodePath("../../DirectionAnimationPlayer")
+direction_anim_set = &"attack"
 knockback = NodePath("../../Knockback")
 
 [node name="Stunned" type="Node" parent="StateMachine" node_paths=PackedStringArray("knockback", "hp")]

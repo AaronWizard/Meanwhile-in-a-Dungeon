@@ -26,6 +26,8 @@ func _init_player() -> void:
 
 	_player_hp_bar.observe_actor_hp(player.hp)
 
+	Globals.player = player
+
 
 
 func _load_first_map() -> void:
