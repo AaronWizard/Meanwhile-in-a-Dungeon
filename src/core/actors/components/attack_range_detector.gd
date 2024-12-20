@@ -33,7 +33,8 @@ func _ready() -> void:
 	active = active
 
 	if not Engine.is_editor_hint():
-		pass
+		area_entered.connect(_hurtbox_entered)
+		area_exited.connect(_hurtbox_exited)
 
 
 func _hurtbox_entered(hurtbox: Hurtbox) -> void:
