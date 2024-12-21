@@ -200,32 +200,26 @@ knockback = NodePath("../Knockback")
 hurtbox = NodePath("../Hurtbox")
 hitboxes = [NodePath("../Hitbox")]
 
-[node name="AttackPivot" type="Marker2D" parent="."]
-position = Vector2(0, -17)
-metadata/_edit_lock_ = true
-
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_5f16l")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "attack_pivot", "direction_animation_player", "knockback")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player", "knockback")]
 script = ExtResource("5_7jxfx")
 actor_motion = NodePath("../../ActorMotion")
 sight_radius = 180
 chase_state = &"Chase"
-attack_pivot = NodePath("../../AttackPivot")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
 knockback = NodePath("../../Knockback")
 
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "nav_agent", "attack_pivot", "direction_animation_player", "knockback")]
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "nav_agent", "direction_animation_player", "knockback")]
 script = ExtResource("14_2fo3n")
 actor_motion = NodePath("../../ActorMotion")
 nav_agent = NodePath("../../NavigationAgent2D")
 sight_radius = 360
-attack_pivot = NodePath("../../AttackPivot")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"move"
 knockback = NodePath("../../Knockback")
@@ -247,5 +241,5 @@ script = ExtResource("16_a5aqj")
 knockback = NodePath("../../Knockback")
 hp = NodePath("../../ActorHP")
 
-[connection signal="timeout" from="StateMachine/Chase/TargetUpdateTimer" to="StateMachine/Chase" method="_on_target_update_timer_timeout"]
+[connection signal="timeout" from="StateMachine/Chase/TargetUpdateTimer" to="StateMachine/Chase" method="_set_chase_target"]
 [connection signal="timeout" from="StateMachine/Chase/ChaseTimer" to="StateMachine/Chase" method="_on_chase_timer_timeout"]

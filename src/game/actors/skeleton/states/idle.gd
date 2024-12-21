@@ -6,7 +6,6 @@ extends ActorState
 @export var sight_radius := 150
 @export var chase_state := &""
 
-@export var attack_pivot: Node2D
 @export var attack_radius := 24
 @export var attack_state := &"Attack"
 
@@ -31,6 +30,6 @@ func _process_main(_delta: float) -> StringName:
 
 
 func _vector_to_target() -> Vector2:
-	var player_pos := Globals.player.position + attack_pivot.position
-	var self_pos := _body.position + attack_pivot.position
+	var player_pos := Globals.player.position
+	var self_pos := _body.position
 	return player_pos - self_pos

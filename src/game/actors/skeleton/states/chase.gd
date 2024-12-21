@@ -9,7 +9,6 @@ extends ActorState
 @export var sight_radius := 150
 @export var idle_state := &"Idle"
 
-@export var attack_pivot: Node2D
 @export var attack_radius := 24
 @export var attack_state := &"Attack"
 
@@ -22,12 +21,15 @@ var _keep_chasing := false
 
 func _ready() -> void:
 	_body = owner as Node2D
+	nav_agent.velocity_computed.connect(_on_velocity_computed)
 
 
 func enter() -> void:
 	super()
+
 	_keep_chasing = true
-	nav_agent.target_position = Globals.player.position
+	_set_chase_target()
+
 	_target_update_timer.start()
 	_chase_timer.start()
 
@@ -46,20 +48,36 @@ func _process_main(_delta: float) -> StringName:
 	if target_vector.length_squared() <= (attack_radius * attack_radius):
 		return attack_state
 
-	var current_pos := _body.global_position
+	return &""
+
+
+func physics_process(_delta: float) -> StringName:
+	if NavigationServer2D.map_get_iteration_id(nav_agent.get_navigation_map()) \
+			== 0:
+		return &""
+	if nav_agent.is_navigation_finished():
+		return &""
+
 	var next_pos := nav_agent.get_next_path_position()
-	var desired_velocity := current_pos.direction_to(next_pos) * max_speed
-	actor_motion.move_velocity_toward(desired_velocity, acceleration)
+	var next_velocity := _body.global_position.direction_to(next_pos) \
+			* max_speed
+	nav_agent.velocity = next_velocity
+
 	return &""
 
 
 func _vector_to_target() -> Vector2:
-	var player_pos := Globals.player.global_position + attack_pivot.position
-	var self_pos := _body.global_position + attack_pivot.position
+	var player_pos := Globals.player.global_position
+	var self_pos := _body.global_position
 	return player_pos - self_pos
 
 
-func _on_target_update_timer_timeout() -> void:
+func _on_velocity_computed(safe_velocity: Vector2) -> void:
+	if _keep_chasing:
+		actor_motion.velocity = safe_velocity
+
+
+func _set_chase_target() -> void:
 	nav_agent.target_position = Globals.player.position
 
 
