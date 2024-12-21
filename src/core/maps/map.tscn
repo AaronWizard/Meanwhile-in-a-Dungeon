@@ -17,18 +17,22 @@ metadata/_edit_group_ = true
 z_index = -1
 y_sort_enabled = true
 tile_set = ExtResource("2_74yxn")
+navigation_enabled = false
 
 [node name="GroundObjects" type="TileMapLayer" parent="Terrain"]
 y_sort_enabled = true
 tile_set = ExtResource("2_74yxn")
+navigation_enabled = false
 
 [node name="Walls" type="TileMapLayer" parent="Terrain"]
 y_sort_enabled = true
 tile_set = ExtResource("2_74yxn")
+navigation_enabled = false
 
 [node name="WallObjects" type="TileMapLayer" parent="Terrain"]
 y_sort_enabled = true
 tile_set = ExtResource("2_74yxn")
+navigation_enabled = false
 
 [node name="Actors" type="Node2D" parent="."]
 y_sort_enabled = true
