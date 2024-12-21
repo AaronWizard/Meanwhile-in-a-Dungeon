@@ -4,6 +4,8 @@ extends Area2D
 
 ## A shape that does damage to [Hurtbox]es.
 
+const HITBOX_LAYER := 3
+
 @export var faction := 0
 @export var damage := 1
 
@@ -18,7 +20,7 @@ extends Area2D
 func _ready() -> void:
 	collision_layer = 0
 	collision_mask = 0
-	set_collision_layer_value(PhysicsConstants.HITBOX_LAYER, true)
+	set_collision_layer_value(HITBOX_LAYER, true)
 
 	monitoring = false
 	active = active

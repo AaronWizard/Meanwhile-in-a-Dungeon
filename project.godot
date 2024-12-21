@@ -70,7 +70,6 @@ attack={
 2d_physics/layer_1="terrain"
 2d_physics/layer_2="actor_motion"
 2d_physics/layer_3="hitbox"
-2d_physics/layer_4="hurtbox"
 
 [rendering]
 

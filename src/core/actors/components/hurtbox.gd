@@ -28,8 +28,7 @@ var _current_damage_interval := 0.0
 func _ready() -> void:
 	collision_layer = 0
 	collision_mask = 0
-	set_collision_layer_value(PhysicsConstants.HURTBOX_LAYER, true)
-	set_collision_mask_value(PhysicsConstants.HITBOX_LAYER, true)
+	set_collision_mask_value(Hitbox.HITBOX_LAYER, true)
 
 	monitorable = false
 	invincible = invincible
