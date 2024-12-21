@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=26 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/actors/components/actor_motion.gd" id="1_ojnvy"]
@@ -119,10 +119,6 @@ change_with_direction = false
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_etk8g"]
 radius = 7.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0cvq1"]
-radius = 4.0
-height = 24.0
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fj0jy"]
 size = Vector2(20, 12)
 
@@ -132,10 +128,11 @@ motion_mode = 1
 script = ExtResource("1_oe0ch")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -16)
+position = Vector2(0, -17)
 texture = ExtResource("1_t3vwc")
 hframes = 8
 vframes = 17
+frame = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -169,19 +166,6 @@ position = Vector2(0, -15)
 shape = SubResource("CapsuleShape2D_etk8g")
 debug_color = Color(1, 1, 0, 0.419608)
 
-[node name="HitboxBody" type="Area2D" parent="."]
-visible = false
-collision_layer = 4
-collision_mask = 0
-monitoring = false
-script = ExtResource("10_wn1oe")
-active = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxBody"]
-position = Vector2(0, -15)
-shape = SubResource("CapsuleShape2D_0cvq1")
-debug_color = Color(1, 0, 0, 0.419608)
-
 [node name="Hitbox" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 0
@@ -214,27 +198,33 @@ anim_player = NodePath("../AnimationPlayer")
 anim_name = &"animlib_skeleton/death"
 knockback = NodePath("../Knockback")
 hurtbox = NodePath("../Hurtbox")
-hitboxes = [NodePath("../HitboxBody")]
+hitboxes = [NodePath("../Hitbox")]
+
+[node name="AttackPivot" type="Marker2D" parent="."]
+position = Vector2(0, -17)
+metadata/_edit_lock_ = true
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_5f16l")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player", "knockback")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "attack_pivot", "direction_animation_player", "knockback")]
 script = ExtResource("5_7jxfx")
-chase_state = &"Chase"
 actor_motion = NodePath("../../ActorMotion")
+chase_state = &"Chase"
+attack_pivot = NodePath("../../AttackPivot")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
 knockback = NodePath("../../Knockback")
 
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player", "knockback")]
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "attack_pivot", "direction_animation_player", "knockback")]
 script = ExtResource("14_2fo3n")
 actor_motion = NodePath("../../ActorMotion")
+attack_pivot = NodePath("../../AttackPivot")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"move"
 knockback = NodePath("../../Knockback")
 
-[node name="ActorDirectionalAttackState" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player", "knockback")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player", "knockback")]
 script = ExtResource("15_i5qj0")
 actor_motion = NodePath("../../ActorMotion")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
