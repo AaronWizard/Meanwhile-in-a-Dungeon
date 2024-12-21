@@ -21,7 +21,7 @@ signal was_hit(damage: int, direction: Vector2)
 ## In seconds.
 @export var continuing_damage_interval := 1.0
 
-var _colliding_hitboxes: Array[Hitbox] = []
+var _colliding_hitboxes := {}
 var _current_damage_interval := 0.0
 
 
@@ -44,7 +44,7 @@ func _process(delta: float) -> void:
 		_current_damage_interval += delta
 		if _current_damage_interval >= continuing_damage_interval:
 			_current_damage_interval -= continuing_damage_interval
-			for h in _colliding_hitboxes:
+			for h in _colliding_hitboxes.keys():
 				_get_hit(h)
 
 
@@ -52,7 +52,7 @@ func _hitbox_entered(hitbox: Hitbox) -> void:
 	if not hitbox or (hitbox.faction == faction):
 		return
 
-	_colliding_hitboxes.append(hitbox)
+	_colliding_hitboxes[hitbox] = true
 	_get_hit(hitbox)
 
 
