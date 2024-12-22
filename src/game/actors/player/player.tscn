@@ -125,7 +125,6 @@ vframes = 17
 frame = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, -3)
 shape = SubResource("CircleShape2D_5v3fb")
 
@@ -154,7 +153,7 @@ faction = 1
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, -14)
 shape = SubResource("CapsuleShape2D_wgk2m")
-debug_color = Color(1, 1, 0, 0.419608)
+debug_color = Color(1, 1, 0, 0)
 
 [node name="Hitbox" type="Area2D" parent="."]
 rotation = -1.57079
@@ -170,7 +169,7 @@ metadata/_edit_lock_ = true
 position = Vector2(-3, 1.88231e-05)
 rotation = -1.57079
 shape = SubResource("RectangleShape2D_c58g1")
-debug_color = Color(0.7, 0, 0, 0.419608)
+debug_color = Color(0.701961, 0, 0, 0)
 
 [node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
 script = ExtResource("9_1tnh4")

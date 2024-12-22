@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=28 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/actors/components/actor_motion.gd" id="1_ojnvy"]
@@ -13,7 +13,7 @@
 [ext_resource type="Script" path="res://src/core/actors/components/death_handler.gd" id="9_jpx7g"]
 [ext_resource type="Script" path="res://src/core/actors/components/hitbox.gd" id="10_wn1oe"]
 [ext_resource type="Script" path="res://src/core/actors/components/knockback.gd" id="11_runtd"]
-[ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="14_2fo3n"]
+[ext_resource type="Script" path="res://src/game/actors/skeleton/states/pathfind.gd" id="14_2fo3n"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_stunned_state.gd" id="16_a5aqj"]
 
@@ -70,6 +70,54 @@ tracks/3/keys = {
 "update": 0,
 "values": [0.0]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("AttackRadius/CollisionShapeNorth:disabled")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("AttackRadius/CollisionShapeEast:disabled")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("AttackRadius/CollisionShapeSouth:disabled")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("AttackRadius/CollisionShapeWest:disabled")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5st4j"]
 _data = {
@@ -122,10 +170,16 @@ radius = 7.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fj0jy"]
 size = Vector2(20, 12)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_n18uu"]
+radius = 225.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jhnuw"]
+
 [node name="Skeleton" type="CharacterBody2D"]
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_oe0ch")
+metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -17)
@@ -135,7 +189,6 @@ vframes = 17
 frame = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_huaup")
 
@@ -200,34 +253,69 @@ knockback = NodePath("../Knockback")
 hurtbox = NodePath("../Hurtbox")
 hitboxes = [NodePath("../Hitbox")]
 
+[node name="EnemyDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+monitorable = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
+shape = SubResource("CircleShape2D_n18uu")
+debug_color = Color(0, 0.6, 0.701961, 0)
+
+[node name="AttackRadius" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+monitorable = false
+
+[node name="CollisionShapeNorth" type="CollisionShape2D" parent="AttackRadius"]
+position = Vector2(0, -30)
+shape = SubResource("CircleShape2D_jhnuw")
+disabled = true
+debug_color = Color(0.701961, 0.34902, 0.34902, 0)
+
+[node name="CollisionShapeEast" type="CollisionShape2D" parent="AttackRadius"]
+position = Vector2(11, -4)
+shape = SubResource("CircleShape2D_jhnuw")
+disabled = true
+debug_color = Color(0.701961, 0.34902, 0.34902, 0)
+
+[node name="CollisionShapeSouth" type="CollisionShape2D" parent="AttackRadius"]
+position = Vector2(0, 10)
+shape = SubResource("CircleShape2D_jhnuw")
+disabled = true
+debug_color = Color(0.701961, 0.34902, 0.34902, 0)
+
+[node name="CollisionShapeWest" type="CollisionShape2D" parent="AttackRadius"]
+position = Vector2(-11, -4)
+shape = SubResource("CircleShape2D_jhnuw")
+disabled = true
+debug_color = Color(0.701961, 0.34902, 0.34902, 0)
+
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_5f16l")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player", "knockback")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "enemy_detector", "direction_animation_player", "knockback")]
 script = ExtResource("5_7jxfx")
 actor_motion = NodePath("../../ActorMotion")
-sight_radius = 180
-chase_state = &"Chase"
+enemy_detector = NodePath("../../EnemyDetector")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
 knockback = NodePath("../../Knockback")
 
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "nav_agent", "direction_animation_player", "knockback")]
+[node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "nav_agent", "attack_range", "direction_animation_player", "knockback")]
 script = ExtResource("14_2fo3n")
 actor_motion = NodePath("../../ActorMotion")
 nav_agent = NodePath("../../NavigationAgent2D")
-sight_radius = 360
+attack_range = NodePath("../../AttackRadius")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"move"
 knockback = NodePath("../../Knockback")
 
-[node name="TargetUpdateTimer" type="Timer" parent="StateMachine/Chase"]
-
-[node name="ChaseTimer" type="Timer" parent="StateMachine/Chase"]
-wait_time = 5.0
+[node name="TargetUpdateTimer" type="Timer" parent="StateMachine/Pathfind"]
 
 [node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player", "knockback")]
 script = ExtResource("15_i5qj0")
@@ -240,6 +328,3 @@ knockback = NodePath("../../Knockback")
 script = ExtResource("16_a5aqj")
 knockback = NodePath("../../Knockback")
 hp = NodePath("../../ActorHP")
-
-[connection signal="timeout" from="StateMachine/Chase/TargetUpdateTimer" to="StateMachine/Chase" method="_set_chase_target"]
-[connection signal="timeout" from="StateMachine/Chase/ChaseTimer" to="StateMachine/Chase" method="_on_chase_timer_timeout"]
