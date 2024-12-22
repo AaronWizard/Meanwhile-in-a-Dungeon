@@ -73,7 +73,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("AttackRadius/CollisionShapeNorth:disabled")
+tracks/4/path = NodePath("AttackRange/CollisionShapeNorth:disabled")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -85,7 +85,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("AttackRadius/CollisionShapeEast:disabled")
+tracks/5/path = NodePath("AttackRange/CollisionShapeEast:disabled")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -97,7 +97,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("AttackRadius/CollisionShapeSouth:disabled")
+tracks/6/path = NodePath("AttackRange/CollisionShapeSouth:disabled")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -109,7 +109,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("AttackRadius/CollisionShapeWest:disabled")
+tracks/7/path = NodePath("AttackRange/CollisionShapeWest:disabled")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -263,30 +263,30 @@ monitorable = false
 shape = SubResource("CircleShape2D_n18uu")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
-[node name="AttackRadius" type="Area2D" parent="."]
+[node name="AttackRange" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 2
 monitorable = false
 
-[node name="CollisionShapeNorth" type="CollisionShape2D" parent="AttackRadius"]
+[node name="CollisionShapeNorth" type="CollisionShape2D" parent="AttackRange"]
 position = Vector2(0, -30)
 shape = SubResource("CircleShape2D_jhnuw")
 disabled = true
 debug_color = Color(0.701961, 0.34902, 0.34902, 0)
 
-[node name="CollisionShapeEast" type="CollisionShape2D" parent="AttackRadius"]
+[node name="CollisionShapeEast" type="CollisionShape2D" parent="AttackRange"]
 position = Vector2(11, -4)
 shape = SubResource("CircleShape2D_jhnuw")
 disabled = true
 debug_color = Color(0.701961, 0.34902, 0.34902, 0)
 
-[node name="CollisionShapeSouth" type="CollisionShape2D" parent="AttackRadius"]
+[node name="CollisionShapeSouth" type="CollisionShape2D" parent="AttackRange"]
 position = Vector2(0, 10)
 shape = SubResource("CircleShape2D_jhnuw")
 disabled = true
 debug_color = Color(0.701961, 0.34902, 0.34902, 0)
 
-[node name="CollisionShapeWest" type="CollisionShape2D" parent="AttackRadius"]
+[node name="CollisionShapeWest" type="CollisionShape2D" parent="AttackRange"]
 position = Vector2(-11, -4)
 shape = SubResource("CircleShape2D_jhnuw")
 disabled = true
@@ -310,7 +310,7 @@ knockback = NodePath("../../Knockback")
 script = ExtResource("14_2fo3n")
 actor_motion = NodePath("../../ActorMotion")
 nav_agent = NodePath("../../NavigationAgent2D")
-attack_range = NodePath("../../AttackRadius")
+attack_range = NodePath("../../AttackRange")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"move"
 knockback = NodePath("../../Knockback")
