@@ -199,7 +199,6 @@ script = ExtResource("2_jafpg")
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_i32bm")
-debug_show_state = true
 
 [node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player", "knockback")]
 script = ExtResource("4_axnin")

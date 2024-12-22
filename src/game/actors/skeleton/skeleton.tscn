@@ -13,8 +13,8 @@
 [ext_resource type="Script" path="res://src/core/actors/components/death_handler.gd" id="9_jpx7g"]
 [ext_resource type="Script" path="res://src/core/actors/components/hitbox.gd" id="10_wn1oe"]
 [ext_resource type="Script" path="res://src/core/actors/components/knockback.gd" id="11_runtd"]
-[ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="14_m1vrp"]
-[ext_resource type="Script" path="res://src/game/actors/skeleton/states/surround.gd" id="15_73xf7"]
+[ext_resource type="Script" path="res://src/game/actors/skeleton/states/pathfind.gd" id="14_2fo3n"]
+[ext_resource type="Script" path="res://src/game/actors/skeleton/states/surround.gd" id="15_01mhj"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_stunned_state.gd" id="16_a5aqj"]
 
@@ -298,7 +298,6 @@ avoidance_enabled = true
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_5f16l")
-debug_show_state = true
 
 [node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "enemy_detector", "direction_animation_player", "knockback")]
 script = ExtResource("5_7jxfx")
@@ -308,25 +307,26 @@ direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
 knockback = NodePath("../../Knockback")
 
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "nav_agent", "direction_animation_player", "knockback")]
-script = ExtResource("14_m1vrp")
+[node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "nav_agent", "direction_animation_player", "knockback")]
+script = ExtResource("14_2fo3n")
 actor_motion = NodePath("../../ActorMotion")
 nav_agent = NodePath("../../NavigationAgent2D")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"move"
 knockback = NodePath("../../Knockback")
 
-[node name="UpdateTargetTimer" type="Timer" parent="StateMachine/Chase"]
+[node name="TargetUpdateTimer" type="Timer" parent="StateMachine/Pathfind"]
 
-[node name="Surround" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "nav_agent", "direction_animation_player", "knockback")]
-script = ExtResource("15_73xf7")
+[node name="Surround" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player", "knockback")]
+script = ExtResource("15_01mhj")
 actor_motion = NodePath("../../ActorMotion")
-nav_agent = NodePath("../../NavigationAgent2D")
+circling_speed = 100.0
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"move"
 knockback = NodePath("../../Knockback")
 
 [node name="AttackTimer" type="Timer" parent="StateMachine/Surround"]
+one_shot = true
 
 [node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player", "knockback")]
 script = ExtResource("15_i5qj0")
