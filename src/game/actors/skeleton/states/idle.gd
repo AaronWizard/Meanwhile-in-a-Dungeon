@@ -6,7 +6,7 @@ extends ActorState
 
 @export_group("Pursuit")
 @export var enemy_detector: Area2D
-@export var pathfind_state := &"Pathfind"
+@export var chase_state := &"Chase"
 
 var _body: Node2D
 var _enemy_found := false
@@ -30,7 +30,7 @@ func exit() -> void:
 func _process_main(_delta: float) -> StringName:
 	actor_motion.move_velocity_toward(Vector2.ZERO, deceleration)
 	if _enemy_found:
-		return pathfind_state
+		return chase_state
 	return &""
 
 
