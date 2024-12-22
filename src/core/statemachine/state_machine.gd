@@ -7,6 +7,8 @@ extends Node
 ## A state machine node with child [State] nodes. The initial state is the first
 ## child node.
 
+@export var debug_show_state := false
+
 var _current_state: State
 
 
@@ -31,6 +33,10 @@ func _get_configuration_warnings() -> PackedStringArray:
 func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
+
+	if debug_show_state and (owner is Node2D):
+		(owner as Node2D).draw.connect(_debug_draw.bind(owner as Node2D))
+
 	if get_child_count() == 0:
 		push_error("No initial state")
 		return
@@ -82,8 +88,21 @@ func switch_state(next_state_name: StringName) -> void:
 	_current_state = next_state
 	_current_state.enter()
 
+	if debug_show_state and (owner is Node2D):
+		(owner as Node2D).queue_redraw()
+
 
 func _try_switch_state(next_state_name: StringName) -> void:
 	if not next_state_name.is_empty() \
 			and (next_state_name != _current_state.name):
 		switch_state(next_state_name)
+
+
+func _debug_draw(target: Node2D) -> void:
+	var font := ThemeDB.fallback_font
+	var font_size := 8
+	var size := font.get_string_size(
+			_current_state.name, HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
+	target.draw_string(
+			font, Vector2(-size.x / 2.0, size.y), _current_state.name,
+			HORIZONTAL_ALIGNMENT_CENTER, -1, font_size)
