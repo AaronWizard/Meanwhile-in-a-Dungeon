@@ -168,7 +168,7 @@ change_with_direction = false
 radius = 7.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fj0jy"]
-size = Vector2(20, 12)
+size = Vector2(28, 12)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_n18uu"]
 radius = 225.0
@@ -309,6 +309,7 @@ knockback = NodePath("../../Knockback")
 [node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "nav_agent", "attack_range", "direction_animation_player", "knockback")]
 script = ExtResource("14_2fo3n")
 actor_motion = NodePath("../../ActorMotion")
+max_speed = 128.0
 nav_agent = NodePath("../../NavigationAgent2D")
 attack_range = NodePath("../../AttackRange")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
