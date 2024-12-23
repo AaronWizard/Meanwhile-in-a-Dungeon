@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=32 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://src/game/actors/player/warrior.png" id="1_a74gn"]
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_ocde1"]
@@ -17,6 +17,11 @@
 [ext_resource type="Script" path="res://src/core/actors/components/knockback.gd" id="12_sb0s8"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="16_7cnic"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_stunned_state.gd" id="17_56hc5"]
+[ext_resource type="Script" path="res://src/core/audio/random_stream_player_2d.gd" id="18_1xm0a"]
+[ext_resource type="AudioStream" uid="uid://d4bs1au32hnp4" path="res://assets/audio/sword_swing_00.wav" id="19_i5db4"]
+[ext_resource type="AudioStream" uid="uid://0ev45sji3kil" path="res://assets/audio/sword_swing_01.wav" id="20_f0wx7"]
+[ext_resource type="AudioStream" uid="uid://bthttg8fljl44" path="res://assets/audio/sword_swing_02.wav" id="21_yuegf"]
+[ext_resource type="AudioStream" uid="uid://dh5qjlneu0erd" path="res://assets/audio/sword_swing_03.wav" id="22_8xmj1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -118,11 +123,11 @@ motion_mode = 1
 script = ExtResource("1_ocde1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -15)
+position = Vector2(0, -10)
 texture = ExtResource("1_a74gn")
 hframes = 8
 vframes = 17
-frame = 88
+frame = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -3)
@@ -227,3 +232,9 @@ knockback = NodePath("../../Knockback")
 script = ExtResource("17_56hc5")
 knockback = NodePath("../../Knockback")
 hp = NodePath("../../ActorHP")
+
+[node name="SwordSwingSound" type="AudioStreamPlayer2D" parent="."]
+max_distance = 360.0
+bus = &"SoundFX"
+script = ExtResource("18_1xm0a")
+all_streams = Array[AudioStream]([ExtResource("19_i5db4"), ExtResource("20_f0wx7"), ExtResource("21_yuegf"), ExtResource("22_8xmj1")])
