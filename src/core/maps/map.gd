@@ -1,6 +1,8 @@
 class_name Map
 extends Node2D
 
+const CUSTOM_DATA_LAYER_FOOTSTEP_SOUNDS := "Footstep Sound"
+
 @onready var _terrain := $Terrain
 @onready var _markers := $Markers
 
@@ -28,3 +30,19 @@ func get_marker_position(marker_name: StringName) -> Vector2:
 	if not marker:
 		push_error("There is no marker with the name '%s'" % marker_name)
 	return marker.position
+
+
+func get_footstep_sound(cell: Vector2i) -> String:
+	var result := ""
+
+	for i in range(_terrain.get_child_count() - 1, -1, -1):
+		var tile_layer := _terrain.get_child(i) as TileMapLayer
+		var tile_data := tile_layer.get_cell_tile_data(cell)
+		if tile_data:
+			var footstep_sound := tile_data.get_custom_data(
+					CUSTOM_DATA_LAYER_FOOTSTEP_SOUNDS) as String
+			if footstep_sound and not footstep_sound.is_empty():
+				result = footstep_sound
+				break
+
+	return result
