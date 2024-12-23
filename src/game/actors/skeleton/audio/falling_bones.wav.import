@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://bb44d7hh7nixr"
-path="res://.godot/imported/falling_bones.wav-777c09268d461265a46d6e079f08ff5c.sample"
+path="res://.godot/imported/falling_bones.wav-17ffac0be40c6774e479d3f710f7ac96.sample"
 
 [deps]
 
-source_file="res://assets/audio/falling_bones.wav"
-dest_files=["res://.godot/imported/falling_bones.wav-777c09268d461265a46d6e079f08ff5c.sample"]
+source_file="res://src/game/actors/skeleton/audio/falling_bones.wav"
+dest_files=["res://.godot/imported/falling_bones.wav-17ffac0be40c6774e479d3f710f7ac96.sample"]
 
 [params]
 

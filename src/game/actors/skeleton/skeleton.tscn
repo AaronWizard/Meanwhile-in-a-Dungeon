@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=31 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/actors/components/actor_motion.gd" id="1_ojnvy"]
@@ -17,7 +17,8 @@
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_stunned_state.gd" id="16_a5aqj"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="17_6xgcv"]
-[ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://assets/audio/hit_skeleton.wav" id="18_hg4fm"]
+[ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://src/game/actors/skeleton/audio/hit_skeleton.wav" id="18_hg4fm"]
+[ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://src/game/actors/skeleton/audio/falling_bones.wav" id="19_bqgiw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
@@ -188,7 +189,7 @@ position = Vector2(0, -17)
 texture = ExtResource("1_t3vwc")
 hframes = 8
 vframes = 17
-frame = 88
+frame = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)
@@ -341,6 +342,12 @@ area_mask = 0
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("18_hg4fm")
+max_distance = 450.0
+bus = &"SoundFX"
+area_mask = 0
+
+[node name="DeathSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("19_bqgiw")
 max_distance = 450.0
 bus = &"SoundFX"
 area_mask = 0
