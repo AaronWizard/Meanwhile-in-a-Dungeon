@@ -6,6 +6,17 @@ extends ActorState
 @export var acceleration := 10.0
 @export var max_speed := 128.0
 
+@export var footstep_sounds: AudioStreamPlayer2D
+
+
+func enter() -> void:
+	super()
+	footstep_sounds.play()
+
+
+func exit() -> void:
+	footstep_sounds.stop()
+
 
 func _process_main(_delta: float) -> StringName:
 	var desired_velocity := player_input.move_vector * max_speed

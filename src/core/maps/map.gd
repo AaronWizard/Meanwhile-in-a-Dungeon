@@ -32,11 +32,14 @@ func get_marker_position(marker_name: StringName) -> Vector2:
 	return marker.position
 
 
-func get_footstep_sound(cell: Vector2i) -> String:
+func get_footstep_sound_name(global_pos: Vector2) -> String:
 	var result := ""
 
 	for i in range(_terrain.get_child_count() - 1, -1, -1):
 		var tile_layer := _terrain.get_child(i) as TileMapLayer
+		var local_pos := tile_layer.to_local(global_pos)
+		var cell := tile_layer.local_to_map(local_pos)
+
 		var tile_data := tile_layer.get_cell_tile_data(cell)
 		if tile_data:
 			var footstep_sound := tile_data.get_custom_data(

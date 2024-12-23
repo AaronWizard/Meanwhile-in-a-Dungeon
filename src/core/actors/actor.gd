@@ -2,11 +2,18 @@
 class_name Actor
 extends CharacterBody2D
 
+
+var map: Map:
+	get:
+		return _current_map
+
+
 var hp: ActorHP:
 	get:
 		return _hp
 
 
+var _current_map: Map = null
 var _hp: ActorHP
 
 
@@ -29,3 +36,17 @@ func _ready() -> void:
 		return
 
 	_hp = get_children().filter(func (c): return c is ActorHP)[0] as ActorHP
+
+
+func _enter_tree() -> void:
+	var parent: Node = get_parent()
+	while parent:
+		if parent is Map:
+			_current_map = parent as Map
+			break
+		else:
+			parent = parent.get_parent()
+
+
+func _exit_tree() -> void:
+	_current_map = null
