@@ -21,6 +21,8 @@ signal was_hit(damage: int, direction: Vector2)
 ## In seconds.
 @export var continuing_damage_interval := 1.0
 
+@export var hit_sound_2d: AudioStreamPlayer2D
+
 var _colliding_hitboxes := {}
 var _current_damage_interval := 0.0
 
@@ -65,3 +67,5 @@ func _hitbox_exited(hitbox: Hitbox) -> void:
 func _get_hit(hitbox: Hitbox) -> void:
 	var direction := (global_position - hitbox.global_position).normalized()
 	was_hit.emit(hitbox.damage, direction)
+	if hit_sound_2d:
+		hit_sound_2d.play()

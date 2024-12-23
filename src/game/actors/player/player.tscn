@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=29 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://src/game/actors/player/warrior.png" id="1_a74gn"]
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_ocde1"]
@@ -17,6 +17,8 @@
 [ext_resource type="Script" path="res://src/core/actors/components/knockback.gd" id="12_sb0s8"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="16_7cnic"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_stunned_state.gd" id="17_56hc5"]
+[ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="18_gjgig"]
+[ext_resource type="AudioStream" uid="uid://diyrmih4wecow" path="res://assets/audio/hit_player.wav" id="19_8u5fn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -143,12 +145,13 @@ animation_player = NodePath("../AnimationPlayer")
 motion = NodePath("../ActorMotion")
 animation_sets = Array[ExtResource("6_5bme3")]([SubResource("Resource_sbhni"), SubResource("Resource_1d58d"), SubResource("Resource_rjn5e"), SubResource("Resource_d4lr3")])
 
-[node name="Hurtbox" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("hit_sound_2d")]
 collision_layer = 0
 collision_mask = 4
 monitorable = false
 script = ExtResource("10_psy01")
 faction = 1
+hit_sound_2d = NodePath("../HitSound")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, -14)
@@ -227,3 +230,15 @@ knockback = NodePath("../../Knockback")
 script = ExtResource("17_56hc5")
 knockback = NodePath("../../Knockback")
 hp = NodePath("../../ActorHP")
+
+[node name="SwordSwingSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("18_gjgig")
+max_distance = 450.0
+bus = &"SoundFX"
+area_mask = 0
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("19_8u5fn")
+max_distance = 450.0
+bus = &"SoundFX"
+area_mask = 0

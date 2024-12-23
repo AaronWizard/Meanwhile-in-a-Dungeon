@@ -1,0 +1,13 @@
+[gd_resource type="AudioStreamRandomizer" load_steps=5 format=3 uid="uid://b060ngmwjtycq"]
+
+[ext_resource type="AudioStream" uid="uid://d4bs1au32hnp4" path="res://assets/audio/sword_swing_00.wav" id="1_eabh4"]
+[ext_resource type="AudioStream" uid="uid://0ev45sji3kil" path="res://assets/audio/sword_swing_01.wav" id="2_a3pn8"]
+[ext_resource type="AudioStream" uid="uid://bthttg8fljl44" path="res://assets/audio/sword_swing_02.wav" id="3_h7sk3"]
+[ext_resource type="AudioStream" uid="uid://dh5qjlneu0erd" path="res://assets/audio/sword_swing_03.wav" id="4_ukp25"]
+
+[resource]
+streams_count = 4
+stream_0/stream = ExtResource("1_eabh4")
+stream_1/stream = ExtResource("2_a3pn8")
+stream_2/stream = ExtResource("3_h7sk3")
+stream_3/stream = ExtResource("4_ukp25")

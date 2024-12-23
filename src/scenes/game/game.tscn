@@ -18,6 +18,8 @@ metadata/_edit_lock_ = true
 [node name="PlayerCamera" type="Camera2D" parent="."]
 script = ExtResource("4_b77mm")
 
+[node name="AudioListener2D" type="AudioListener2D" parent="PlayerCamera"]
+
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="PlayerHPBar" parent="UI" instance=ExtResource("5_svqum")]
