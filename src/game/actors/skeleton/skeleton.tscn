@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=28 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/actors/components/actor_motion.gd" id="1_ojnvy"]
@@ -16,11 +16,6 @@
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/pathfind.gd" id="14_2fo3n"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_stunned_state.gd" id="16_a5aqj"]
-[ext_resource type="Script" path="res://src/core/audio/random_stream_player_2d.gd" id="17_tnuql"]
-[ext_resource type="AudioStream" uid="uid://d4bs1au32hnp4" path="res://assets/audio/sword_swing_00.wav" id="18_b280m"]
-[ext_resource type="AudioStream" uid="uid://0ev45sji3kil" path="res://assets/audio/sword_swing_01.wav" id="19_twhjh"]
-[ext_resource type="AudioStream" uid="uid://bthttg8fljl44" path="res://assets/audio/sword_swing_02.wav" id="20_kas6v"]
-[ext_resource type="AudioStream" uid="uid://dh5qjlneu0erd" path="res://assets/audio/sword_swing_03.wav" id="21_rst55"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
@@ -187,11 +182,11 @@ script = ExtResource("1_oe0ch")
 metadata/_edit_group_ = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -16)
+position = Vector2(0, -17)
 texture = ExtResource("1_t3vwc")
 hframes = 8
 vframes = 17
-frame = 1
+frame = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)
@@ -334,9 +329,3 @@ knockback = NodePath("../../Knockback")
 script = ExtResource("16_a5aqj")
 knockback = NodePath("../../Knockback")
 hp = NodePath("../../ActorHP")
-
-[node name="SwordSwingSound" type="AudioStreamPlayer2D" parent="."]
-max_distance = 360.0
-bus = &"SoundFX"
-script = ExtResource("17_tnuql")
-all_streams = Array[AudioStream]([ExtResource("18_b280m"), ExtResource("19_twhjh"), ExtResource("20_kas6v"), ExtResource("21_rst55")])
