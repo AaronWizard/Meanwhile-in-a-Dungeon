@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://drlqw30il62l1"]
 
 [ext_resource type="Script" path="res://src/core/maps/map.gd" id="1_k1ftf"]
-[ext_resource type="TileSet" uid="uid://csigcm4ykdyvq" path="res://src/game/tileset/tileset.tres" id="2_74yxn"]
+[ext_resource type="TileSet" uid="uid://csigcm4ykdyvq" path="res://src/game/tileset_old/tileset.tres" id="2_74yxn"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_igswq"]
 resource_local_to_scene = true
