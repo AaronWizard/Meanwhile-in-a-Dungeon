@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://bs67aspgho0fa"]
+
+[ext_resource type="PackedScene" uid="uid://dss2pluiyserd" path="res://src/core/objects/destructible.tscn" id="1_od2jc"]
+[ext_resource type="Texture2D" uid="uid://bjqc7ro1hkjne" path="res://assets/graphics/objects/objects.png" id="2_lrcfs"]
+[ext_resource type="AudioStream" uid="uid://d0r4c0hfx0xfh" path="res://assets/audio/pot_hit.wav" id="3_qiib8"]
+[ext_resource type="AudioStream" uid="uid://cedtrikcyhkgi" path="res://assets/audio/pot_break.wav" id="4_ovok1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vli0i"]
+atlas = ExtResource("2_lrcfs")
+region = Rect2(0, 64, 64, 32)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4upuq"]
+radius = 4.0
+height = 18.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ed42q"]
+size = Vector2(18, 19)
+
+[node name="Pot00" instance=ExtResource("1_od2jc")]
+
+[node name="Sprite2D" parent="." index="0"]
+position = Vector2(0, -11)
+texture = SubResource("AtlasTexture_vli0i")
+hframes = 2
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0, -4)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_4upuq")
+
+[node name="ActorHP" parent="." index="2"]
+max_hp = 2
+current_hp = 2
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2(0, -9.5)
+shape = SubResource("RectangleShape2D_ed42q")
+
+[node name="DeathHandler" parent="." index="5"]
+remove_owner_on_death = true
+
+[node name="HitSound" parent="." index="6"]
+stream = ExtResource("3_qiib8")
+
+[node name="DestroySound" parent="." index="7"]
+stream = ExtResource("4_ovok1")
+
+[node name="Explosion" parent="." index="8"]
+position = Vector2(0, -8)

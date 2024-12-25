@@ -48,15 +48,12 @@ _data = {
 collision_mask = 0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-vframes = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 debug_color = Color(0, 0.595, 0.7, 0)
 
 [node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
 script = ExtResource("4_fod1u")
-max_hp = 2
-current_hp = 2
 hurtbox = NodePath("../Hurtbox")
 
 [node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("hit_sound_2d")]

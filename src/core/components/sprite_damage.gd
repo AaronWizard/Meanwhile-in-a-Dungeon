@@ -14,6 +14,9 @@ extends Node
 		update_configuration_warnings()
 
 
+@export var last_frame_is_death := false
+
+
 func _get_configuration_warnings() -> PackedStringArray:
 	var result := PackedStringArray()
 
@@ -34,5 +37,13 @@ func _ready() -> void:
 
 func _set_frame() -> void:
 	var frame_percent := 1.0 - hp.percent
-	var max_frame := float((sprite.hframes * sprite.vframes) - 1)
-	sprite.frame = floori(max_frame * frame_percent)
+	var max_frame := sprite.hframes * sprite.vframes
+
+	if last_frame_is_death:
+		max_frame -= 1
+
+	var frame := floori(float(max_frame) * frame_percent)
+	if frame >= (sprite.hframes * sprite.vframes):
+		sprite.visible = false
+	else:
+		sprite.frame = frame

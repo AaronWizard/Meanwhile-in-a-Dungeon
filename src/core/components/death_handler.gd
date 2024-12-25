@@ -47,8 +47,8 @@ func _check_death(_delta: int) -> void:
 			anim_player.play(anim_name)
 
 		if remove_owner_on_death:
-			if sound:
+			if sound and sound.playing:
 				await sound.finished
-			if anim_player:
+			if anim_player and anim_player.is_playing():
 				await anim_player.animation_finished
 			owner.queue_free()

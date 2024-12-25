@@ -1,0 +1,52 @@
+[gd_scene load_steps=8 format=3 uid="uid://cayk7olm4e53v"]
+
+[ext_resource type="PackedScene" uid="uid://dss2pluiyserd" path="res://src/core/objects/destructible.tscn" id="1_4cr6k"]
+[ext_resource type="Texture2D" uid="uid://bjqc7ro1hkjne" path="res://assets/graphics/objects/objects.png" id="2_dj5eq"]
+[ext_resource type="AudioStream" uid="uid://bm70lys56fhr4" path="res://assets/audio/stone_hit.wav" id="3_wi5cs"]
+[ext_resource type="AudioStream" uid="uid://cbe5def25jxc1" path="res://assets/audio/stone_smash.wav" id="4_kvboj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dbebi"]
+atlas = ExtResource("2_dj5eq")
+region = Rect2(0, 0, 96, 32)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ykpkq"]
+size = Vector2(17, 5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ed42q"]
+size = Vector2(17, 19)
+
+[node name="Gravestone00" instance=ExtResource("1_4cr6k")]
+
+[node name="Sprite2D" parent="." index="0"]
+position = Vector2(0, -14)
+texture = SubResource("AtlasTexture_dbebi")
+hframes = 3
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(0.5, -2.5)
+shape = SubResource("RectangleShape2D_ykpkq")
+
+[node name="ActorHP" parent="." index="2"]
+max_hp = 2
+current_hp = 2
+
+[node name="CollisionShape2D" parent="Hurtbox" index="0"]
+position = Vector2(0.5, -9.5)
+shape = SubResource("RectangleShape2D_ed42q")
+
+[node name="SpriteDamage" parent="." index="4"]
+last_frame_is_death = true
+
+[node name="DeathHandler" parent="." index="5" node_paths=PackedStringArray("collisions_to_disable")]
+collisions_to_disable = [NodePath("../Hurtbox/CollisionShape2D"), NodePath("../CollisionShape2D")]
+
+[node name="HitSound" parent="." index="6"]
+stream = ExtResource("3_wi5cs")
+volume_db = -10.0
+
+[node name="DestroySound" parent="." index="7"]
+stream = ExtResource("4_kvboj")
+volume_db = -10.0
+
+[node name="Explosion" parent="." index="8"]
+position = Vector2(0, -10)
