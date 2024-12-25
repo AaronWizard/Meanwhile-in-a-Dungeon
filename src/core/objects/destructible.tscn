@@ -78,7 +78,7 @@ hp = NodePath("../ActorHP")
 [node name="DeathHandler" type="Node" parent="." node_paths=PackedStringArray("hp", "collisions_to_disable", "anim_player", "sound")]
 script = ExtResource("3_3ri4u")
 hp = NodePath("../ActorHP")
-collisions_to_disable = [NodePath("../Hurtbox/CollisionShape2D"), NodePath("../CollisionShape2D")]
+collisions_to_disable = [NodePath("../Hurtbox/CollisionShape2D")]
 remove_owner_on_death = false
 anim_player = NodePath("../AnimationPlayer")
 anim_name = &"explode"
