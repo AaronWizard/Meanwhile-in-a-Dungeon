@@ -11,4 +11,5 @@
 - <https://foozlecc.itch.io/lucifer-exterior-tileset>
 - <https://foozlecc.itch.io/lucifer-lava-dungeon-tileset>
 - <https://foozlecc.itch.io/lucifer-rpg-ui>
+- <https://foozlecc.itch.io/lucifer-effects>
 - <https://freesound.org/>

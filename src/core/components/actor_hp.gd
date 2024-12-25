@@ -4,7 +4,20 @@ extends Node
 
 signal changed(delta: int)
 
-@export_range(1, 1, 1, "or_greater") var max_hp := 1
+@export_range(1, 1, 1, "or_greater") var max_hp := 1:
+	set(value):
+		max_hp = value
+		current_hp = mini(current_hp, max_hp)
+
+
+@export_range(1, 1, 1, "or_greater") var current_hp := 1:
+	set(value):
+		var old_hp := current_hp
+		current_hp = clampi(value, 0, max_hp)
+
+		var delta := current_hp - old_hp
+		if delta != 0:
+			changed.emit(delta)
 
 
 @export var hurtbox: Hurtbox:
@@ -13,17 +26,14 @@ signal changed(delta: int)
 		update_configuration_warnings()
 
 
-var current_hp: int:
-	get:
-		return _current_hp
-
-
 var is_alive: bool:
 	get:
-		return _current_hp > 0
+		return current_hp > 0
 
 
-var _current_hp := 1
+var percent: float:
+	get:
+		return float(current_hp) / float(max_hp)
 
 
 func _get_configuration_warnings() -> PackedStringArray:
@@ -37,13 +47,8 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	_current_hp = max_hp
 	hurtbox.was_hit.connect(_was_hit)
 
 
 func _was_hit(damage: int, _direction: Vector2) -> void:
-	var old_hp := _current_hp
-	_current_hp = clampi(_current_hp - damage, 0, max_hp)
-	var delta := _current_hp - old_hp
-	if delta != 0:
-		changed.emit(delta)
+	current_hp -= damage

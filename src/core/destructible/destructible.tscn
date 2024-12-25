@@ -1,0 +1,127 @@
+[gd_scene load_steps=15 format=3 uid="uid://dss2pluiyserd"]
+
+[ext_resource type="Texture2D" uid="uid://bjqc7ro1hkjne" path="res://assets/graphics/objects/objects.png" id="1_psucx"]
+[ext_resource type="Script" path="res://src/core/components/hurtbox.gd" id="2_r01nx"]
+[ext_resource type="Script" path="res://src/core/components/death_handler.gd" id="3_3ri4u"]
+[ext_resource type="Script" path="res://src/core/components/actor_hp.gd" id="4_fod1u"]
+[ext_resource type="Script" path="res://src/core/components/sprite_damage.gd" id="4_luwlm"]
+[ext_resource type="AudioStream" uid="uid://bm70lys56fhr4" path="res://assets/audio/stone_hit.wav" id="6_nqry7"]
+[ext_resource type="AudioStream" uid="uid://cbe5def25jxc1" path="res://assets/audio/stone_smash.wav" id="7_3qpfh"]
+[ext_resource type="Texture2D" uid="uid://dgqpam1ea7cyj" path="res://assets/graphics/effects/destroy.png" id="8_wx0mg"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_556ym"]
+atlas = ExtResource("1_psucx")
+region = Rect2(0, 0, 32, 96)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6wd3y"]
+size = Vector2(17, 7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i72fp"]
+size = Vector2(17, 19)
+
+[sub_resource type="Animation" id="Animation_62313"]
+resource_name = "explode"
+length = 0.60001
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Explosion:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_320up"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Explosion:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [5]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l83qr"]
+_data = {
+"RESET": SubResource("Animation_320up"),
+"explode": SubResource("Animation_62313")
+}
+
+[node name="Destructible" type="StaticBody2D"]
+collision_mask = 0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -14)
+texture = SubResource("AtlasTexture_556ym")
+vframes = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, -3.5)
+shape = SubResource("RectangleShape2D_6wd3y")
+debug_color = Color(0, 0.595, 0.7, 0)
+
+[node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
+script = ExtResource("4_fod1u")
+max_hp = 2
+current_hp = 2
+hurtbox = NodePath("../Hurtbox")
+
+[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("hit_sound_2d")]
+collision_layer = 0
+collision_mask = 4
+monitorable = false
+script = ExtResource("2_r01nx")
+check_for_faction = false
+hit_sound_2d = NodePath("../HitSound")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0.5, -9.5)
+shape = SubResource("RectangleShape2D_i72fp")
+debug_color = Color(0.618333, 0.7, 0, 0)
+
+[node name="SpriteDamage" type="Node" parent="." node_paths=PackedStringArray("sprite", "hp")]
+script = ExtResource("4_luwlm")
+sprite = NodePath("../Sprite2D")
+hp = NodePath("../ActorHP")
+
+[node name="DeathHandler" type="Node" parent="." node_paths=PackedStringArray("hp", "collisions_to_disable", "anim_player", "sound")]
+script = ExtResource("3_3ri4u")
+hp = NodePath("../ActorHP")
+collisions_to_disable = [NodePath("../Hurtbox/CollisionShape2D"), NodePath("../CollisionShape2D")]
+remove_owner_on_death = false
+anim_player = NodePath("../AnimationPlayer")
+anim_name = &"explode"
+sound = NodePath("../DestroySound")
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_nqry7")
+max_distance = 450.0
+bus = &"SoundFX"
+area_mask = 0
+
+[node name="DestroySound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("7_3qpfh")
+max_distance = 450.0
+bus = &"SoundFX"
+area_mask = 0
+
+[node name="Explosion" type="Sprite2D" parent="."]
+position = Vector2(0, -12)
+texture = ExtResource("8_wx0mg")
+hframes = 6
+frame = 5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_l83qr")
+}

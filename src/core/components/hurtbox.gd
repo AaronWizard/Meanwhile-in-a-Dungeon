@@ -6,9 +6,11 @@ extends Area2D
 
 signal was_hit(damage: int, direction: Vector2)
 
+@export_group("Detection")
+@export var check_for_faction := true
 @export var faction := 0
 
-
+@export_group("Damage")
 @export var invincible := false:
 	get:
 		return not monitoring
@@ -21,6 +23,7 @@ signal was_hit(damage: int, direction: Vector2)
 ## In seconds.
 @export var continuing_damage_interval := 1.0
 
+@export_group("Effects")
 @export var hit_sound_2d: AudioStreamPlayer2D
 
 var _colliding_hitboxes := {}
@@ -50,7 +53,9 @@ func _process(delta: float) -> void:
 
 
 func _hitbox_entered(hitbox: Hitbox) -> void:
-	if not hitbox or (hitbox.faction == faction):
+	if not hitbox:
+		return
+	if check_for_faction and (hitbox.faction == faction):
 		return
 
 	_colliding_hitboxes[hitbox] = true
