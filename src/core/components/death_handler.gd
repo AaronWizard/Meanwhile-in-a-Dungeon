@@ -11,6 +11,7 @@ extends Node
 @export_group("Owner")
 @export var collisions_to_disable: Array[CollisionShape2D]
 @export var remove_owner_on_death := true
+@export var state_machine: StateMachine
 
 @export_group("Animations and Sounds")
 @export var anim_player: AnimationPlayer
@@ -35,6 +36,9 @@ func _ready() -> void:
 
 func _check_death(_delta: int) -> void:
 	if not hp.is_alive:
+		if state_machine and state_machine.running:
+			state_machine.running = false
+
 		if knockback:
 			await knockback.finished
 

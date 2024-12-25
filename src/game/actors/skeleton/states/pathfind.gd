@@ -56,7 +56,7 @@ func exit() -> void:
 	footstep_sounds.stop()
 
 
-func _process_main(_delta: float) -> StringName:
+func process(_delta: float) -> StringName:
 	if not _active:
 		return idle_state
 

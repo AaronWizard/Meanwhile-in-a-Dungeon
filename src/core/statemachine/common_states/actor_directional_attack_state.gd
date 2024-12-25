@@ -20,7 +20,7 @@ func enter() -> void:
 	anim_running = true
 
 
-func _process_main(_delta: float) -> StringName:
+func process(_delta: float) -> StringName:
 	actor_motion.move_velocity_toward(Vector2.ZERO, deceleration)
 	if not anim_running:
 		return next_state

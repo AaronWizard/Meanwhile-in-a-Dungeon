@@ -6,6 +6,6 @@ extends ActorState
 @export var deceleration := 12.0
 
 
-func _process_main(_delta: float) -> StringName:
+func process(_delta: float) -> StringName:
 	actor_motion.move_velocity_toward(Vector2.ZERO, deceleration)
 	return player_input.desired_state

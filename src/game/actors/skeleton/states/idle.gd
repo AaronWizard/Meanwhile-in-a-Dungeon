@@ -27,7 +27,7 @@ func exit() -> void:
 	_enemy_found = false
 
 
-func _process_main(_delta: float) -> StringName:
+func process(_delta: float) -> StringName:
 	actor_motion.move_velocity_toward(Vector2.ZERO, deceleration)
 	if _enemy_found:
 		return pathfind_state
