@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bykr1e12a8spy"
-path="res://.godot/imported/warrior.png-b674e6780502f439fa31777cb9ed729d.ctex"
+uid="uid://bymnrb16m8spw"
+path="res://.godot/imported/skeleton.png-5825d3239df1f62eea88f8fa58751cbf.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://src/game/actors/player/warrior.png"
-dest_files=["res://.godot/imported/warrior.png-b674e6780502f439fa31777cb9ed729d.ctex"]
+source_file="res://assets/graphics/actors/skeleton.png"
+dest_files=["res://.godot/imported/skeleton.png-5825d3239df1f62eea88f8fa58751cbf.ctex"]
 
 [params]
 

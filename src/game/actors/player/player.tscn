@@ -1,6 +1,6 @@
 [gd_scene load_steps=29 format=3 uid="uid://bkt17j2t2gujw"]
 
-[ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://src/game/actors/player/warrior.png" id="1_a74gn"]
+[ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://assets/graphics/actors/warrior.png" id="1_a74gn"]
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_ocde1"]
 [ext_resource type="AnimationLibrary" uid="uid://d1wjy8llanui3" path="res://src/game/actors/player/animlib_warrior.tres" id="2_f55i4"]
 [ext_resource type="Script" path="res://src/core/statemachine/state_machine.gd" id="2_i32bm"]
@@ -17,7 +17,7 @@
 [ext_resource type="Script" path="res://src/core/components/knockback.gd" id="12_sb0s8"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="16_7cnic"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="18_gjgig"]
-[ext_resource type="AudioStream" uid="uid://diyrmih4wecow" path="res://src/game/actors/player/audio/hit_player.wav" id="19_8u5fn"]
+[ext_resource type="AudioStream" uid="uid://diyrmih4wecow" path="res://assets/audio/hit_player.wav" id="19_8u5fn"]
 [ext_resource type="Script" path="res://src/core/components/footstep_sound_manager.gd" id="20_exnib"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]

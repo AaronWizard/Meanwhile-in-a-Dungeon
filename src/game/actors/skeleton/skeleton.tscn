@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/components/actor_motion.gd" id="1_ojnvy"]
-[ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://src/game/actors/skeleton/skeleton.png" id="1_t3vwc"]
+[ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://assets/graphics/actors/skeleton.png" id="1_t3vwc"]
 [ext_resource type="AnimationLibrary" uid="uid://2se816hxeawh" path="res://src/game/actors/skeleton/animlib_skeleton.tres" id="2_j3i52"]
 [ext_resource type="Script" path="res://src/core/statemachine/state_machine.gd" id="4_5f16l"]
 [ext_resource type="Script" path="res://src/core/components/direction_animation_player.gd" id="5_1ab50"]
@@ -16,8 +16,8 @@
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/pathfind.gd" id="14_2fo3n"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="17_6xgcv"]
-[ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://src/game/actors/skeleton/audio/hit_skeleton.wav" id="18_hg4fm"]
-[ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://src/game/actors/skeleton/audio/falling_bones.wav" id="19_bqgiw"]
+[ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://assets/audio/hit_skeleton.wav" id="18_hg4fm"]
+[ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://assets/audio/falling_bones.wav" id="19_bqgiw"]
 [ext_resource type="Script" path="res://src/core/components/footstep_sound_manager.gd" id="20_ogf8b"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]

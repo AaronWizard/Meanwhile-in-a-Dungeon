@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://diyrmih4wecow"
-path="res://.godot/imported/hit_player.wav-e64f16fc24024f0f2b9a9d9cd5905545.sample"
+path="res://.godot/imported/hit_player.wav-b723706a5da0fc8929a4aecb7a48b710.sample"
 
 [deps]
 
-source_file="res://src/game/actors/player/audio/hit_player.wav"
-dest_files=["res://.godot/imported/hit_player.wav-e64f16fc24024f0f2b9a9d9cd5905545.sample"]
+source_file="res://assets/audio/hit_player.wav"
+dest_files=["res://.godot/imported/hit_player.wav-b723706a5da0fc8929a4aecb7a48b710.sample"]
 
 [params]
 
