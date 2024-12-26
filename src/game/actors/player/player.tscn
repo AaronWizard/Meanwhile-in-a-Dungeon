@@ -1,10 +1,11 @@
-[gd_scene load_steps=29 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=30 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://assets/graphics/actors/warrior.png" id="1_a74gn"]
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_ocde1"]
 [ext_resource type="AnimationLibrary" uid="uid://d1wjy8llanui3" path="res://src/game/actors/player/animlib_warrior.tres" id="2_f55i4"]
 [ext_resource type="Script" path="res://src/core/statemachine/state_machine.gd" id="2_i32bm"]
 [ext_resource type="Script" path="res://src/game/actors/player/player_input.gd" id="2_jafpg"]
+[ext_resource type="Texture2D" uid="uid://dbeyckwyrbw3p" path="res://assets/graphics/effects/actor_shadow.png" id="2_mccpm"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/move.gd" id="4_81ai4"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/idle.gd" id="4_axnin"]
 [ext_resource type="Script" path="res://src/core/components/direction_animation_player.gd" id="5_epgbh"]
@@ -60,6 +61,30 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [-1.57079]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Sprite2D:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [88]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Sprite2D:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -15)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_s482b"]
@@ -119,14 +144,19 @@ collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_ocde1")
 
+[node name="ActorShadow" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = ExtResource("2_mccpm")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -16)
+position = Vector2(0, -15)
 texture = ExtResource("1_a74gn")
 hframes = 8
 vframes = 17
-frame = 128
+frame = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -3)
 shape = SubResource("CircleShape2D_5v3fb")
 

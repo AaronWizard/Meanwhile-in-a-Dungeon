@@ -1,8 +1,9 @@
-[gd_scene load_steps=31 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=32 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/components/actor_motion.gd" id="1_ojnvy"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://assets/graphics/actors/skeleton.png" id="1_t3vwc"]
+[ext_resource type="Texture2D" uid="uid://dbeyckwyrbw3p" path="res://assets/graphics/effects/actor_shadow.png" id="2_cg4ro"]
 [ext_resource type="AnimationLibrary" uid="uid://2se816hxeawh" path="res://src/game/actors/skeleton/animlib_skeleton.tres" id="2_j3i52"]
 [ext_resource type="Script" path="res://src/core/statemachine/state_machine.gd" id="4_5f16l"]
 [ext_resource type="Script" path="res://src/core/components/direction_animation_player.gd" id="5_1ab50"]
@@ -184,12 +185,16 @@ motion_mode = 1
 script = ExtResource("1_oe0ch")
 metadata/_edit_group_ = true
 
+[node name="ActorShadow" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = ExtResource("2_cg4ro")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -16)
+position = Vector2(0, -17)
 texture = ExtResource("1_t3vwc")
 hframes = 8
 vframes = 17
-frame = 128
+frame = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)
