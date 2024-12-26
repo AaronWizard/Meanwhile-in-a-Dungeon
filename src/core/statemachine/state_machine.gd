@@ -57,7 +57,7 @@ func _ready() -> void:
 		push_error("No initial state")
 		return
 	if get_child(0) is not State:
-		push_error("'%s' is not an State" % get_child(0).name)
+		push_error("'%s' is not a State" % get_child(0).name)
 		return
 
 	_current_state = get_child(0) as State
