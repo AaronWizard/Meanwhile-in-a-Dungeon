@@ -39,6 +39,8 @@ var _direction := Vector2.DOWN # Default to facing south
 ## pixels per second.
 func accelerate_to_target_velocity(
 		target: Vector2, acceleration: float, delta: float) -> void:
+	if acceleration < 0:
+		push_warning("Acceleration is negative: %.3f" % acceleration)
 	velocity = velocity.move_toward(target, acceleration * delta)
 
 

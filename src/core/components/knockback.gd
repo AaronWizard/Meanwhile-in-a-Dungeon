@@ -5,16 +5,18 @@ extends Node
 signal finished
 
 @export_group("Motion")
-## In pixels per second.
-@export var knockback_speed := 200.0
-## In pixels per second squared.
-@export var decelleration := 400.0
 
 
 @export var actor_motion: ActorMotion:
 	set(value):
 		actor_motion = value
 		update_configuration_warnings()
+
+
+## In pixels.
+@export var distance := 48.0
+## In seconds.
+@export var time := 0.2667
 
 @export_group("Actor")
 
@@ -38,6 +40,8 @@ var is_flying_back: bool:
 	get:
 		return _flying_back
 
+var _initial_speed := 0.0
+var _decelleration := 0.0
 
 var _flying_back := false
 var _state_machine_was_running := false
@@ -55,15 +59,33 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 
 func _ready() -> void:
-	if not Engine.is_editor_hint():
-		hurtbox.was_hit.connect(_was_hit)
+	if Engine.is_editor_hint():
+		return
+
+	hurtbox.was_hit.connect(_was_hit)
+
+	# Formula for initial velocity is:
+	#
+	# velocity_initial = ((distance * 2.0) / time) - velocity_final
+	#
+	# And final velocity is zero.
+	_initial_speed = (distance * 2.0) / time
+
+	# Formula for acceleration is:
+	#
+	# acceleration = ((velocity_final - (distance / time)) * 2.0) / time
+	#
+	# And final velocity is zero.
+	# Also, ActorMotion.accelerate_to_target_velocity takes positive values for
+	# decelleration.
+	_decelleration = (distance * 2.0) / (time * time)
 
 
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint() and is_flying_back \
 			and (actor_motion.velocity.length_squared() > 0):
 		actor_motion.accelerate_to_target_velocity(
-				Vector2.ZERO, decelleration, delta)
+				Vector2.ZERO, _decelleration, delta)
 		if actor_motion.velocity.length_squared() == 0:
 			_stop_knockback()
 
@@ -80,7 +102,7 @@ func _was_hit(_damage: int, direction: Vector2) -> void:
 		direction_animation_player.set_animation_set(flying_anim_set)
 
 	hurtbox.invincible = true
-	actor_motion.velocity = direction * knockback_speed
+	actor_motion.velocity = direction * _initial_speed
 
 
 func _stop_knockback() -> void:
