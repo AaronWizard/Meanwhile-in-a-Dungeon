@@ -18,7 +18,7 @@
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="17_6xgcv"]
 [ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://assets/audio/hit_skeleton.wav" id="18_hg4fm"]
 [ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://assets/audio/falling_bones.wav" id="19_bqgiw"]
-[ext_resource type="Script" path="res://src/core/components/footstep_sound_manager.gd" id="20_ogf8b"]
+[ext_resource type="Script" path="res://src/core/components/footstep_sound_player_2d.gd" id="19_l6obh"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
@@ -313,7 +313,7 @@ direction_anim_set = &"idle"
 
 [node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("footstep_sounds", "actor_motion", "nav_agent", "attack_range", "direction_animation_player")]
 script = ExtResource("14_2fo3n")
-footstep_sounds = NodePath("../../FootstepSounds")
+footstep_sounds = NodePath("../../FootstepSoundPlayer2D")
 actor_motion = NodePath("../../ActorMotion")
 nav_agent = NodePath("../../NavigationAgent2D")
 attack_range = NodePath("../../AttackRange")
@@ -346,12 +346,9 @@ max_distance = 450.0
 bus = &"SoundFX"
 area_mask = 0
 
-[node name="FootstepSounds" type="AudioStreamPlayer2D" parent="."]
+[node name="FootstepSoundPlayer2D" type="AudioStreamPlayer2D" parent="."]
 volume_db = -15.0
 max_distance = 450.0
 bus = &"SoundFX"
 area_mask = 0
-
-[node name="FootstepSoundManager" type="Node" parent="." node_paths=PackedStringArray("stream_player")]
-script = ExtResource("20_ogf8b")
-stream_player = NodePath("../FootstepSounds")
+script = ExtResource("19_l6obh")

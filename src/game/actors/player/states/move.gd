@@ -8,18 +8,18 @@ extends ActorState
 ## In pixels per second
 @export var max_speed := 128.0
 
-@export var footstep_sounds: AudioStreamPlayer2D
+@export var footstep_sounds: FootstepSoundPlayer2D
 
 var time := 0.0
 
 func enter() -> void:
 	super()
-	footstep_sounds.play()
+	footstep_sounds.active = true
 	time = 0.0
 
 
 func exit() -> void:
-	footstep_sounds.stop()
+	footstep_sounds.active = false
 
 
 func process(delta: float) -> StringName:

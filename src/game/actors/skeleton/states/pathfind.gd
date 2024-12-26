@@ -1,6 +1,6 @@
 extends ActorState
 
-@export var footstep_sounds: AudioStreamPlayer2D
+@export var footstep_sounds: FootstepSoundPlayer2D
 
 @export_group("Motion")
 @export var actor_motion: ActorMotion
@@ -45,7 +45,7 @@ func enter() -> void:
 
 	attack_range.monitoring = true
 
-	footstep_sounds.play()
+	footstep_sounds.active = true
 
 
 func exit() -> void:
@@ -55,7 +55,7 @@ func exit() -> void:
 	_target_update_timer.stop()
 	attack_range.monitoring = false
 
-	footstep_sounds.stop()
+	footstep_sounds.active = false
 
 
 func process(_delta: float) -> StringName:

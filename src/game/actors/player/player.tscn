@@ -18,7 +18,7 @@
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="16_7cnic"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="18_gjgig"]
 [ext_resource type="AudioStream" uid="uid://diyrmih4wecow" path="res://assets/audio/hit_player.wav" id="19_8u5fn"]
-[ext_resource type="Script" path="res://src/core/components/footstep_sound_manager.gd" id="20_exnib"]
+[ext_resource type="Script" path="res://src/core/components/footstep_sound_player_2d.gd" id="19_ulel1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -215,7 +215,7 @@ direction_anim_set = &"idle"
 script = ExtResource("4_81ai4")
 player_input = NodePath("../../PlayerInput")
 actor_motion = NodePath("../../ActorMotion")
-footstep_sounds = NodePath("../../FootstepSounds")
+footstep_sounds = NodePath("../../FootstepSoundPlayer2D")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"move"
 
@@ -237,12 +237,9 @@ max_distance = 450.0
 bus = &"SoundFX"
 area_mask = 0
 
-[node name="FootstepSounds" type="AudioStreamPlayer2D" parent="."]
+[node name="FootstepSoundPlayer2D" type="AudioStreamPlayer2D" parent="."]
 volume_db = -15.0
 max_distance = 450.0
 bus = &"SoundFX"
 area_mask = 0
-
-[node name="FootstepSoundManager" type="Node" parent="." node_paths=PackedStringArray("stream_player")]
-script = ExtResource("20_exnib")
-stream_player = NodePath("../FootstepSounds")
+script = ExtResource("19_ulel1")
