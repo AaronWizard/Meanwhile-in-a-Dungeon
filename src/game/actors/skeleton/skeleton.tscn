@@ -315,7 +315,6 @@ direction_anim_set = &"idle"
 script = ExtResource("14_2fo3n")
 footstep_sounds = NodePath("../../FootstepSounds")
 actor_motion = NodePath("../../ActorMotion")
-max_speed = 128.0
 nav_agent = NodePath("../../NavigationAgent2D")
 attack_range = NodePath("../../AttackRange")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")

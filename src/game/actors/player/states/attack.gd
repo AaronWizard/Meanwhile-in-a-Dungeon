@@ -25,11 +25,12 @@ func enter() -> void:
 	anim_running = true
 
 
-func process(_delta: float) -> StringName:
+func process(delta: float) -> StringName:
 	if knockback.is_flying_back:
 		return stunned_state
 
-	actor_motion.move_velocity_toward(Vector2.ZERO, deceleration)
+	actor_motion.accelerate_to_target_velocity(
+			Vector2.ZERO, deceleration, delta)
 	if not anim_running:
 		return player_input.desired_state
 

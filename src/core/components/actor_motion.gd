@@ -35,8 +35,11 @@ var direction: Vector2:
 var _direction := Vector2.DOWN # Default to facing south
 
 
-func move_velocity_toward(target_velocity: Vector2, delta: float) -> void:
-	velocity = velocity.move_toward(target_velocity, delta)
+## [param acceleration] is in pixels per second squared. [param delta] is in
+## pixels per second.
+func accelerate_to_target_velocity(
+		target: Vector2, acceleration: float, delta: float) -> void:
+	velocity = velocity.move_toward(target, acceleration * delta)
 
 
 func _get_configuration_warnings() -> PackedStringArray:

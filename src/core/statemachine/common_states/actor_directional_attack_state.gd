@@ -4,7 +4,8 @@ extends ActorState
 @export var next_state := &"Idle"
 
 @export var actor_motion: ActorMotion
-@export var deceleration := 8.0
+## In pixels per second squared.
+@export var deceleration := 1000.0
 
 var anim_running := false
 
@@ -20,8 +21,9 @@ func enter() -> void:
 	anim_running = true
 
 
-func process(_delta: float) -> StringName:
-	actor_motion.move_velocity_toward(Vector2.ZERO, deceleration)
+func process(delta: float) -> StringName:
+	actor_motion.accelerate_to_target_velocity(
+			Vector2.ZERO, deceleration, delta)
 	if not anim_running:
 		return next_state
 

@@ -2,7 +2,8 @@ extends ActorState
 
 @export_group("Motion")
 @export var actor_motion: ActorMotion
-@export var deceleration := 12.0
+## In pixels per second squared.
+@export var deceleration := 1000.0
 
 @export_group("Pursuit")
 @export var enemy_detector: Area2D
@@ -27,8 +28,9 @@ func exit() -> void:
 	_enemy_found = false
 
 
-func process(_delta: float) -> StringName:
-	actor_motion.move_velocity_toward(Vector2.ZERO, deceleration)
+func process(delta: float) -> StringName:
+	actor_motion.accelerate_to_target_velocity(
+			Vector2.ZERO, deceleration, delta)
 	if _enemy_found:
 		return pathfind_state
 	return &""

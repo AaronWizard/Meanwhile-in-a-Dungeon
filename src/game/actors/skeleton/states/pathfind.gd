@@ -4,7 +4,9 @@ extends ActorState
 
 @export_group("Motion")
 @export var actor_motion: ActorMotion
-@export var acceleration := 10.0
+## In pixels per second squared.
+@export var acceleration := 1000.0
+## In pixels per second.
 @export var max_speed := 100.0
 
 @export_group("Pursuit")

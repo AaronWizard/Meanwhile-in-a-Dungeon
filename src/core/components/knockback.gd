@@ -5,8 +5,10 @@ extends Node
 signal finished
 
 @export_group("Motion")
+## In pixels per second.
 @export var knockback_speed := 200.0
-@export var decelleration := 5
+## In pixels per second squared.
+@export var decelleration := 400.0
 
 
 @export var actor_motion: ActorMotion:
@@ -57,10 +59,11 @@ func _ready() -> void:
 		hurtbox.was_hit.connect(_was_hit)
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if not Engine.is_editor_hint() and is_flying_back \
 			and (actor_motion.velocity.length_squared() > 0):
-		actor_motion.move_velocity_toward(Vector2.ZERO, decelleration)
+		actor_motion.accelerate_to_target_velocity(
+				Vector2.ZERO, decelleration, delta)
 		if actor_motion.velocity.length_squared() == 0:
 			_stop_knockback()
 
