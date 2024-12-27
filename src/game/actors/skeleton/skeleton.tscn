@@ -331,8 +331,6 @@ direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 [node name="SteeringMotion" type="Node" parent="StateMachine/Chase" node_paths=PackedStringArray("motion")]
 script = ExtResource("16_6ivwi")
 motion = NodePath("../../../ActorMotion")
-max_speed = null
-acceleration = null
 
 [node name="FollowEnemyBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
 script = ExtResource("17_7wi7l")
