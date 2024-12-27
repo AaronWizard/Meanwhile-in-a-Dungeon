@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=40 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/components/actor_motion.gd" id="1_ojnvy"]
@@ -22,9 +22,11 @@
 [ext_resource type="Script" path="res://src/core/steering/behaviours/follow_enemy_behaviour.gd" id="17_7wi7l"]
 [ext_resource type="Script" path="res://src/core/steering/behaviours/avoid_ally_overlap_behaviour.gd" id="18_4jlib"]
 [ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://assets/audio/hit_skeleton.wav" id="18_hg4fm"]
+[ext_resource type="Script" path="res://src/core/steering/behaviours/avoid_terrain_behaviour.gd" id="19_72vx6"]
 [ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://assets/audio/falling_bones.wav" id="19_bqgiw"]
 [ext_resource type="Script" path="res://src/core/components/footstep_sound_player_2d.gd" id="19_l6obh"]
 [ext_resource type="Script" path="res://src/core/components/actor_detector.gd" id="21_3ymqc"]
+[ext_resource type="Script" path="res://src/core/components/terrain_detector.gd" id="26_x6ql3"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
@@ -324,9 +326,10 @@ actor_detector = NodePath("../../ActorDetector")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
 
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion", "direction_animation_player")]
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion", "terrain_detector", "direction_animation_player")]
 script = ExtResource("15_cry4e")
 motion = NodePath("../../ActorMotion")
+terrain_detector = NodePath("../../TerrainDetector")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 
 [node name="SteeringMotion" type="Node" parent="StateMachine/Chase" node_paths=PackedStringArray("motion")]
@@ -341,6 +344,10 @@ body = NodePath("../../../..")
 script = ExtResource("18_4jlib")
 body = NodePath("../../../..")
 actor_detector = NodePath("../../../../ActorDetector")
+
+[node name="AvoidTerrainBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("terrain_detector")]
+script = ExtResource("19_72vx6")
+terrain_detector = NodePath("../../../../TerrainDetector")
 
 [node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("footstep_sounds", "actor_motion", "nav_agent", "attack_range", "direction_animation_player")]
 script = ExtResource("14_2fo3n")
@@ -385,12 +392,15 @@ area_mask = 0
 script = ExtResource("19_l6obh")
 
 [node name="ActorDetector" type="Area2D" parent="."]
-visible = false
 collision_layer = 0
 collision_mask = 2
 monitorable = false
 script = ExtResource("21_3ymqc")
-debug_draw = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ActorDetector"]
 shape = SubResource("CircleShape2D_2q55o")
+debug_color = Color(0, 0.6, 0.701961, 0)
+
+[node name="TerrainDetector" type="Node2D" parent="."]
+script = ExtResource("26_x6ql3")
+enabled = false

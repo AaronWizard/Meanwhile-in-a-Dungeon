@@ -1,6 +1,8 @@
 extends State
 
 @export var motion: ActorMotion
+@export var terrain_detector: TerrainDetector
+
 @export var direction_animation_player: DirectionAnimationPlayer
 @export var anim_set_motion := &"move"
 @export var anim_set_idle := &"idle"
@@ -10,10 +12,12 @@ extends State
 
 func enter() -> void:
 	_steering_motion.is_active = true
+	terrain_detector.enabled = true
 
 
 func exit() -> void:
 	_steering_motion.is_active = false
+	terrain_detector.enabled = false
 
 
 func process(_delta: float) -> StringName:
