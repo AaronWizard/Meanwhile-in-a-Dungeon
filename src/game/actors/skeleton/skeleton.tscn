@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=38 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/components/actor_motion.gd" id="1_ojnvy"]
@@ -20,6 +20,7 @@
 [ext_resource type="Script" path="res://src/core/steering/steering_motion.gd" id="16_6ivwi"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="17_6xgcv"]
 [ext_resource type="Script" path="res://src/core/steering/behaviours/follow_enemy_behaviour.gd" id="17_7wi7l"]
+[ext_resource type="Script" path="res://src/core/steering/behaviours/avoid_ally_overlap_behaviour.gd" id="18_4jlib"]
 [ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://assets/audio/hit_skeleton.wav" id="18_hg4fm"]
 [ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://assets/audio/falling_bones.wav" id="19_bqgiw"]
 [ext_resource type="Script" path="res://src/core/components/footstep_sound_player_2d.gd" id="19_l6obh"]
@@ -336,6 +337,11 @@ motion = NodePath("../../../ActorMotion")
 script = ExtResource("17_7wi7l")
 body = NodePath("../../../..")
 
+[node name="AvoidAllyOverlapBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body", "actor_detector")]
+script = ExtResource("18_4jlib")
+body = NodePath("../../../..")
+actor_detector = NodePath("../../../../ActorDetector")
+
 [node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("footstep_sounds", "actor_motion", "nav_agent", "attack_range", "direction_animation_player")]
 script = ExtResource("14_2fo3n")
 footstep_sounds = NodePath("../../FootstepSoundPlayer2D")
@@ -382,6 +388,7 @@ script = ExtResource("19_l6obh")
 visible = false
 collision_layer = 0
 collision_mask = 2
+monitorable = false
 script = ExtResource("21_3ymqc")
 debug_draw = true
 
