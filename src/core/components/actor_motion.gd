@@ -9,8 +9,8 @@ extends Node
 ## stationary.
 
 
-## The velocity the parent [CharacterBody2D] moves at. Also sets
-## [member direction] when not zero.
+## The velocity the parent [CharacterBody2D] moves at, in pixels per second.
+## Also sets [member direction] when not zero.
 @export var velocity := Vector2.ZERO:
 	set(value):
 		velocity = value
