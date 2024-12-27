@@ -14,15 +14,6 @@ var _body: Node2D
 
 func _ready() -> void:
 	_body = owner as Node2D
-	actor_detector.monitoring = false
-
-
-func enter() -> void:
-	actor_detector.monitoring = true
-
-
-func exit() -> void:
-	actor_detector.monitoring = false
 
 
 func process(delta: float) -> StringName:
