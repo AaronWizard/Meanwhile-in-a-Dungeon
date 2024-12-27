@@ -7,11 +7,18 @@ extends Node
 ## How many headings are in the context map for each behaviour.
 @export_range(1, 1, 1, "or_greater") var behaviour_resolution := 8
 
+## In pixels per second.
+@export var max_speed := 100.0
+## In pixels per second squared.
+@export var acceleration := 1000.0
+
 @export var is_active := false
 
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var result := PackedStringArray()
+	if get_child_count() == 0:
+		result.append("Needs SteeringBehaviours to do anything")
 	for c in get_children():
 		if not c is SteeringBehaviour:
 			result.append("'%s' is not a SteeringBehaviour" % c.name)
@@ -32,7 +39,9 @@ func _process(delta: float) -> void:
 
 	if is_active:
 		var context_map := _get_combined_context_map(delta)
-		motion.velocity = context_map.get_vector()
+		var motion_vector := context_map.get_vector()
+		motion.accelerate_to_target_velocity(
+				motion_vector * max_speed, acceleration, delta)
 
 
 func _get_combined_context_map(delta: float) -> SteeringContextMap:

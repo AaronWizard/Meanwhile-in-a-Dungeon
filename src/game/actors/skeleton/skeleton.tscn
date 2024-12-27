@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=37 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/components/actor_motion.gd" id="1_ojnvy"]
@@ -15,11 +15,15 @@
 [ext_resource type="Script" path="res://src/core/components/hitbox.gd" id="10_wn1oe"]
 [ext_resource type="Script" path="res://src/core/components/knockback.gd" id="11_runtd"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/pathfind.gd" id="14_2fo3n"]
+[ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="15_cry4e"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
+[ext_resource type="Script" path="res://src/core/steering/steering_motion.gd" id="16_6ivwi"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="17_6xgcv"]
+[ext_resource type="Script" path="res://src/core/steering/behaviours/follow_enemy_behaviour.gd" id="17_7wi7l"]
 [ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://assets/audio/hit_skeleton.wav" id="18_hg4fm"]
 [ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://assets/audio/falling_bones.wav" id="19_bqgiw"]
 [ext_resource type="Script" path="res://src/core/components/footstep_sound_player_2d.gd" id="19_l6obh"]
+[ext_resource type="Script" path="res://src/core/components/actor_detector.gd" id="21_3ymqc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
@@ -179,6 +183,9 @@ radius = 225.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jhnuw"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_2q55o"]
+radius = 180.0
+
 [node name="Skeleton" type="CharacterBody2D"]
 collision_layer = 2
 motion_mode = 1
@@ -309,12 +316,27 @@ avoidance_enabled = true
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_5f16l")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "enemy_detector", "direction_animation_player")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "actor_detector", "direction_animation_player")]
 script = ExtResource("5_7jxfx")
 actor_motion = NodePath("../../ActorMotion")
-enemy_detector = NodePath("../../EnemyDetector")
+actor_detector = NodePath("../../ActorDetector")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
+
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion", "direction_animation_player")]
+script = ExtResource("15_cry4e")
+motion = NodePath("../../ActorMotion")
+direction_animation_player = NodePath("../../DirectionAnimationPlayer")
+
+[node name="SteeringMotion" type="Node" parent="StateMachine/Chase" node_paths=PackedStringArray("motion")]
+script = ExtResource("16_6ivwi")
+motion = NodePath("../../../ActorMotion")
+max_speed = null
+acceleration = null
+
+[node name="FollowEnemyBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
+script = ExtResource("17_7wi7l")
+body = NodePath("../../../..")
 
 [node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("footstep_sounds", "actor_motion", "nav_agent", "attack_range", "direction_animation_player")]
 script = ExtResource("14_2fo3n")
@@ -357,3 +379,13 @@ max_distance = 450.0
 bus = &"SoundFX"
 area_mask = 0
 script = ExtResource("19_l6obh")
+
+[node name="ActorDetector" type="Area2D" parent="."]
+visible = false
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("21_3ymqc")
+debug_draw = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ActorDetector"]
+shape = SubResource("CircleShape2D_2q55o")

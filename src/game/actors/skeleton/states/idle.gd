@@ -6,36 +6,28 @@ extends ActorState
 @export var deceleration := 1000.0
 
 @export_group("Pursuit")
-@export var enemy_detector: Area2D
-@export var pathfind_state := &"Pathfind"
+@export var actor_detector: ActorDetector
+@export var chase_state := &"Chase"
 
 var _body: Node2D
-var _enemy_found := false
 
 
 func _ready() -> void:
 	_body = owner as Node2D
-	enemy_detector.monitoring = false
-	enemy_detector.body_entered.connect(_on_actor_entered)
+	actor_detector.monitoring = false
 
 
 func enter() -> void:
-	enemy_detector.monitoring = true
+	actor_detector.monitoring = true
 
 
 func exit() -> void:
-	enemy_detector.monitoring = false
-	_enemy_found = false
+	actor_detector.monitoring = false
 
 
 func process(delta: float) -> StringName:
 	actor_motion.accelerate_to_target_velocity(
 			Vector2.ZERO, deceleration, delta)
-	if _enemy_found:
-		return pathfind_state
+	if Globals.player in actor_detector.visible_actors:
+		return chase_state
 	return &""
-
-
-func _on_actor_entered(actor: Actor) -> void:
-	if actor and (actor == Globals.player):
-		_enemy_found = true

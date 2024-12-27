@@ -25,11 +25,17 @@ func get_interest(heading: int) -> float:
 
 
 func assign_interest(heading: int, value: float) -> void:
-	if value < 0:
-		push_error("Trying to assign negative value.")
+	var assigned_value = clampf(value, 0.0, 1.0)
+	# Negative values will not be assigned.
+	if _interests[heading] < assigned_value:
+		_interests[heading] = assigned_value
 
-	if _interests[heading] < value:
-		_interests[heading] = value
+
+func assign_interest_vector(vector: Vector2) -> void:
+	var vector_length := vector.length()
+	for i in range(resolution):
+		var value := _heading_directions[i].dot(vector) / vector_length
+		assign_interest(i, value)
 
 
 func get_danger(heading: int) -> float:
@@ -37,11 +43,17 @@ func get_danger(heading: int) -> float:
 
 
 func assign_danger(heading: int, value: float) -> void:
-	if value < 0:
-		push_error("Trying to assign negative value.")
+	var assigned_value = clampf(value, 0.0, 1.0)
+	# Negative values will not be assigned.
+	if _dangers[heading] < assigned_value:
+		_dangers[heading] = assigned_value
 
-	if _dangers[heading] < value:
-		_dangers[heading] = value
+
+func assign_danger_vector(vector: Vector2) -> void:
+	var vector_length := vector.length()
+	for i in range(resolution):
+		var value := _heading_directions[i].dot(vector) / vector_length
+		assign_danger(i, value)
 
 
 func combine_with(other: SteeringContextMap) -> void:
@@ -55,6 +67,7 @@ func combine_with(other: SteeringContextMap) -> void:
 		assign_danger(h, other.get_danger(h))
 
 
+## Gets a vector whose length is between 0 and 1.
 func get_vector() -> Vector2:
 	var result := Vector2.ZERO
 	for i in resolution:

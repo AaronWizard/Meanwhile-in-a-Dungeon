@@ -8,7 +8,11 @@ var resolution := 8
 
 
 ## Can be overriden.
-func get_context_map(_delta: float) -> SteeringContextMap:
-	push_error("SteeringBehaviour.get_context_map not implemented")
+func get_context_map(delta: float) -> SteeringContextMap:
 	var result := SteeringContextMap.new(resolution)
+	_fill_context_map(result, delta)
 	return result
+
+
+func _fill_context_map(_context_map: SteeringContextMap, _delta: float) -> void:
+	push_error("SteeringBehaviour._fill_context_map not implemented")
