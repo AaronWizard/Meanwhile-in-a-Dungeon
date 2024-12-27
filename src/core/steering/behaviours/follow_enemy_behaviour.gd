@@ -3,10 +3,13 @@ extends SteeringBehaviour
 
 ## Follows an enemy at a certain range.
 
-## In pixels.
+## Radius to follow target at. In pixels.
 @export var follow_radius := 64.0
 
-@export var body: CharacterBody2D
+## Distance to start slowing down when reaching desired range. In pixels.
+@export var slow_distance := 100.0
+
+@export var body: Node2D
 
 
 func _fill_context_map(context_map: SteeringContextMap, _delta: float) -> void:
@@ -17,10 +20,11 @@ func _fill_context_map(context_map: SteeringContextMap, _delta: float) -> void:
 	if distance < follow_radius:
 		# Want to get way. The closer we are the faster we want to move.
 		var diff := (follow_radius - distance) / follow_radius
-		context_map.assign_danger_vector(direction * diff)
+		context_map.assign_interest_vector(-direction * diff)
 	else:
 		# Want to approach. The farther we are the faster we want to move.
-		context_map.assign_interest_vector(direction)
+		var diff := minf((distance - follow_radius) / slow_distance, 1.0)
+		context_map.assign_interest_vector(direction * diff)
 
 
 func _get_vector_to_target() -> Vector2:
