@@ -12,8 +12,11 @@ func _fill_context_map(context_map: SteeringContextMap, _delta: float) -> void:
 			var vector := _actor_vector(a)
 			var direction := vector.normalized()
 			var distance := vector.length()
-			var diff := clampf((avoid_radius - distance) / avoid_radius, 0.0, 1.0)
-			#context_map.assign_interest_vector(-direction * diff)
+
+			var diff := clampf((avoid_radius - distance) / avoid_radius,
+					0.0, 1.0)
+			if distance < avoid_radius:
+				context_map.assign_interest_vector(-direction * diff)
 			context_map.assign_danger_vector(direction * diff)
 
 

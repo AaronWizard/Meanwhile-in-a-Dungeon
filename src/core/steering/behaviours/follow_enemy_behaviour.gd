@@ -4,7 +4,7 @@ extends SteeringBehaviour
 ## Follows an enemy at a certain range.
 
 ## Radius to follow target at. In pixels.
-@export var follow_radius := 64.0
+@export var follow_radius := 0.0
 
 ## Distance to start slowing down when reaching desired range. In pixels.
 @export var slow_distance := 100.0
