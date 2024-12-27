@@ -10,6 +10,7 @@ signal was_hit(damage: int, direction: Vector2)
 @export var check_for_faction := true
 @export var faction := 0
 
+
 @export_group("Damage")
 @export var invincible := false:
 	get:
