@@ -4,6 +4,7 @@ extends Node
 
 signal changed(delta: int)
 
+
 @export_range(1, 1, 1, "or_greater") var max_hp := 1:
 	set(value):
 		max_hp = value
