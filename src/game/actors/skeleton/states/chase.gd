@@ -17,7 +17,7 @@ func exit() -> void:
 
 
 func process(_delta: float) -> StringName:
-	if is_equal_approx(motion.velocity.length_squared(), 0.0):
+	if motion.velocity.length_squared() <= 2.0:
 		direction_animation_player.set_animation_set(anim_set_idle)
 	else:
 		direction_animation_player.set_animation_set(anim_set_motion)
