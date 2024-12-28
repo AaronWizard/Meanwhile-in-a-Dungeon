@@ -83,10 +83,10 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if not Engine.is_editor_hint() and is_flying_back \
-			and (actor_motion.velocity.length_squared() > 0):
+			and not actor_motion.velocity.is_zero_approx():
 		actor_motion.accelerate_to_target_velocity(
 				Vector2.ZERO, _decelleration, delta)
-		if actor_motion.velocity.length_squared() == 0:
+		if actor_motion.velocity.is_zero_approx():
 			_stop_knockback()
 
 

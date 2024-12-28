@@ -79,7 +79,7 @@ func _update_animation() -> void:
 func _get_current_cardinal() -> Vector2:
 	var result := _get_current_anim_set().get_closest_cardinal(motion.direction)
 
-	var is_moving := motion.velocity.length_squared() > 0
+	var is_moving := not motion.velocity.is_zero_approx()
 	var is_diagonal := is_equal_approx(
 				absf(motion.direction.x), absf(motion.direction.y))
 	var is_aligned_with_cardinal := \

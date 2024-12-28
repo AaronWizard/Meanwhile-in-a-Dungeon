@@ -14,7 +14,7 @@ extends Node
 @export var velocity := Vector2.ZERO:
 	set(value):
 		velocity = value
-		if velocity.length_squared() > 0:
+		if not velocity.is_zero_approx():
 			_direction = velocity.normalized()
 
 
@@ -28,7 +28,7 @@ var direction: Vector2:
 		return _direction
 	set(value):
 		_direction = value.normalized()
-		if _direction.length_squared() == 0.0:
+		if _direction.is_zero_approx():
 			_direction = Vector2.DOWN
 
 
