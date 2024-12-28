@@ -4,7 +4,7 @@ extends SteeringBehaviour
 ## Avoid terrain.
 
 @export var motion_raycast: MotionRaycast
-@export var mult := 5.0
+@export var mult := 10.0
 
 
 func _fill_context_map(context_map: SteeringContextMap, delta: float) -> void:
