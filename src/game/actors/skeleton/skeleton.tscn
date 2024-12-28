@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=41 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Script" path="res://src/core/components/actor_motion.gd" id="1_ojnvy"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://src/core/steering/behaviours/avoid_terrain_behaviour.gd" id="19_72vx6"]
 [ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://assets/audio/falling_bones.wav" id="19_bqgiw"]
 [ext_resource type="Script" path="res://src/core/actors/effects/footstep_sound_player_2d.gd" id="19_l6obh"]
+[ext_resource type="Script" path="res://src/core/steering/behaviours/strafe_around_enemy_behaviour.gd" id="20_kull7"]
 [ext_resource type="Script" path="res://src/core/ai/actor_detector.gd" id="21_3ymqc"]
 [ext_resource type="Script" path="res://src/core/ai/motion_raycast.gd" id="28_5wyrl"]
 
@@ -339,7 +340,7 @@ debug_draw = true
 
 [node name="FollowEnemyBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
 script = ExtResource("17_7wi7l")
-follow_radius = 8.0
+follow_radius = 16.0
 body = NodePath("../../../..")
 
 [node name="AvoidAllyOverlapBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body", "actor_detector")]
@@ -351,6 +352,11 @@ actor_detector = NodePath("../../../../ActorDetector")
 [node name="AvoidTerrainBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("motion_raycast")]
 script = ExtResource("19_72vx6")
 motion_raycast = NodePath("../../../../MotionRaycast")
+
+[node name="StrafeAroundEnemyBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body", "motion")]
+script = ExtResource("20_kull7")
+body = NodePath("../../../..")
+motion = NodePath("../../../../ActorMotion")
 
 [node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("footstep_sounds", "actor_motion", "nav_agent", "attack_range", "direction_animation_player")]
 script = ExtResource("14_2fo3n")
