@@ -3,12 +3,14 @@ extends SteeringBehaviour
 
 ## Avoid terrain.
 
-@export var terrain_detector: TerrainDetector
+@export var motion_raycast: MotionRaycast
+@export var mult := 5.0
 
 
 func _fill_context_map(context_map: SteeringContextMap, delta: float) -> void:
-	var collisions := terrain_detector.get_collisions(delta)
-	for i in range(collisions.size()):
-		if collisions[i] > 0.0:
-			var direction := terrain_detector.get_direction(i)
-			context_map.assign_danger_vector(direction * collisions[i])
+	for i in range(context_map.resolution):
+		var collision_weight := motion_raycast.get_collision_weight(
+			context_map.get_heading_angle(i),
+			delta
+		)
+		context_map.assign_danger(i, collision_weight * mult)

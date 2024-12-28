@@ -26,7 +26,7 @@
 [ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://assets/audio/falling_bones.wav" id="19_bqgiw"]
 [ext_resource type="Script" path="res://src/core/actors/effects/footstep_sound_player_2d.gd" id="19_l6obh"]
 [ext_resource type="Script" path="res://src/core/ai/actor_detector.gd" id="21_3ymqc"]
-[ext_resource type="Script" path="res://src/core/ai/terrain_detector.gd" id="26_x6ql3"]
+[ext_resource type="Script" path="res://src/core/ai/motion_raycast.gd" id="28_5wyrl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
@@ -326,10 +326,10 @@ actor_detector = NodePath("../../ActorDetector")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
 
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion", "terrain_detector", "direction_animation_player")]
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion", "motion_raycast", "direction_animation_player")]
 script = ExtResource("15_cry4e")
 motion = NodePath("../../ActorMotion")
-terrain_detector = NodePath("../../TerrainDetector")
+motion_raycast = NodePath("../../MotionRaycast")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 
 [node name="SteeringMotion" type="Node" parent="StateMachine/Chase" node_paths=PackedStringArray("motion")]
@@ -345,9 +345,9 @@ script = ExtResource("18_4jlib")
 body = NodePath("../../../..")
 actor_detector = NodePath("../../../../ActorDetector")
 
-[node name="AvoidTerrainBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("terrain_detector")]
+[node name="AvoidTerrainBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("motion_raycast")]
 script = ExtResource("19_72vx6")
-terrain_detector = NodePath("../../../../TerrainDetector")
+motion_raycast = NodePath("../../../../MotionRaycast")
 
 [node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("footstep_sounds", "actor_motion", "nav_agent", "attack_range", "direction_animation_player")]
 script = ExtResource("14_2fo3n")
@@ -401,6 +401,6 @@ script = ExtResource("21_3ymqc")
 shape = SubResource("CircleShape2D_2q55o")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
-[node name="TerrainDetector" type="Node2D" parent="."]
-script = ExtResource("26_x6ql3")
+[node name="MotionRaycast" type="RayCast2D" parent="."]
 enabled = false
+script = ExtResource("28_5wyrl")
