@@ -20,6 +20,12 @@ func _init(size: int) -> void:
 	_init_heading_directions()
 
 
+func _to_string() -> String:
+	var intersts_string := ", ".join(_interests.map(func(weight): return "%.3f" % weight))
+	var dangers_string := ", ".join(_dangers.map(func(weight): return "%.3f" % weight))
+	return "{interests: [%s]; dangers: [%s]}" % [intersts_string, dangers_string]
+
+
 func get_heading_angle(heading: int) -> float:
 	return (TAU / float(resolution)) * heading
 
@@ -66,10 +72,20 @@ func combine_with(other: SteeringContextMap) -> void:
 ## Gets a vector whose length is between 0 and 1.
 func get_vector() -> Vector2:
 	var result := Vector2.ZERO
+
+	var combined_heading := Vector2.ZERO
 	for i in resolution:
-		result += _heading_directions[i] \
+		var new_heading = _heading_directions[i] \
 				* clampf(_interests[i] - _dangers[i], 0.0, 1.0)
-	return result.normalized()
+		if not new_heading.is_zero_approx():
+			combined_heading += new_heading
+
+	var length := combined_heading.length()
+	if not is_zero_approx(length):
+		var direction := combined_heading / length
+		result = direction * clampf(length, 0, 1)
+
+	return result
 
 
 func _init_heading_directions() -> void:
@@ -80,7 +96,7 @@ func _init_heading_directions() -> void:
 
 func _assign_weight(map: Array[float], heading: int, weight: float) -> void:
 	# Negative values will not be assigned.
-	if map[heading] < weight:
+	if not is_zero_approx(weight) and (map[heading] < weight):
 		map[heading] = weight
 
 

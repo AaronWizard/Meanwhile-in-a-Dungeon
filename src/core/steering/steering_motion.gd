@@ -2,6 +2,8 @@
 class_name SteeringMotion
 extends Node
 
+const MIN_SPEED := 0.1
+
 @export var motion: ActorMotion
 
 ## How many headings are in the context map for each behaviour.
@@ -47,6 +49,10 @@ func _process(delta: float) -> void:
 	if is_active:
 		var context_map := _get_combined_context_map(delta)
 		var motion_vector := context_map.get_vector()
+		# Prevent jitter
+		if motion_vector.length_squared() < (MIN_SPEED * MIN_SPEED):
+			motion_vector = Vector2.ZERO
+
 		motion.accelerate_to_target_velocity(
 				motion_vector * max_speed, acceleration, delta)
 
@@ -77,7 +83,7 @@ func _debug_draw() -> void:
 			var direction := _last_context_map.get_heading_direction(i)
 
 			(owner as Node2D).draw_line(
-					Vector2.ZERO, direction * 16, Color.BLUE)
+					Vector2.ZERO, direction * 24, Color.BLUE)
 
 			var colour: Color
 			var vector: Vector2
@@ -88,4 +94,4 @@ func _debug_draw() -> void:
 				colour = Color.RED
 				vector = direction * (danger_weight - interest_weight)
 
-			(owner as Node2D).draw_line(Vector2.ZERO, vector * 16, colour)
+			(owner as Node2D).draw_line(Vector2.ZERO, vector * 24, colour)
