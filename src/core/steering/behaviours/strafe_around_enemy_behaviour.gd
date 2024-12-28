@@ -8,10 +8,10 @@ extends SteeringBehaviour
 func _fill_context_map(context_map: SteeringContextMap, _delta: float) -> void:
 	var target_vector := _get_vector_to_target().normalized()
 
-	var left := target_vector.rotated(PI / 2.0)
+	var left := Vector2(-target_vector.y, target_vector.x)
 	var left_dot := left.dot(motion.velocity.normalized())
 
-	var right := target_vector.rotated(PI / -2.0)
+	var right := Vector2(target_vector.y, -target_vector.x)
 	var right_dot := right.dot(motion.velocity.normalized())
 
 	var left_bias := 1.0
