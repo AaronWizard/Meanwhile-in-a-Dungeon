@@ -2,6 +2,8 @@ class_name SteeringBehaviour
 extends Node
 
 
+@export var active := true
+
 ## How many headings are in the context map. Set by the parent
 ## SteeringBehaviourResolver.
 var resolution := 8
@@ -9,7 +11,8 @@ var resolution := 8
 
 func get_context_map(delta: float) -> SteeringContextMap:
 	var result := SteeringContextMap.new(resolution)
-	_fill_context_map(result, delta)
+	if active:
+		_fill_context_map(result, delta)
 	return result
 
 
