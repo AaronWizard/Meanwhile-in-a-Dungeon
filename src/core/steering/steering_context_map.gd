@@ -20,36 +20,32 @@ func _init(size: int) -> void:
 	_init_heading_directions()
 
 
+func get_heading_angle(heading: int) -> float:
+	return (TAU / float(resolution)) * heading
+
+
 func get_interest(heading: int) -> float:
 	return _interests[heading]
 
 
-func assign_interest(heading: int, value: float) -> void:
-	# Negative values will not be assigned.
-	if _interests[heading] < value:
-		_interests[heading] = value
+func assign_interest(heading: int, weight: float) -> void:
+	_assign_weight(_interests, heading, weight)
 
 
 func assign_interest_vector(vector: Vector2) -> void:
-	for i in range(resolution):
-		var value := _heading_directions[i].dot(vector)
-		assign_interest(i, value)
+	_assign_vector_weight(_interests, vector)
 
 
 func get_danger(heading: int) -> float:
 	return _dangers[heading]
 
 
-func assign_danger(heading: int, value: float) -> void:
-	# Negative values will not be assigned.
-	if _dangers[heading] < value:
-		_dangers[heading] = value
+func assign_danger(heading: int, weight: float) -> void:
+	_assign_weight(_dangers, heading, weight)
 
 
 func assign_danger_vector(vector: Vector2) -> void:
-	for i in range(resolution):
-		var value := _heading_directions[i].dot(vector)
-		assign_danger(i, value)
+	_assign_vector_weight(_dangers, vector)
 
 
 func combine_with(other: SteeringContextMap) -> void:
@@ -73,8 +69,18 @@ func get_vector() -> Vector2:
 
 
 func _init_heading_directions() -> void:
-	var angle_diff := TAU / float(resolution)
 	for i in range(resolution):
-		var heading_angle := angle_diff * float(i)
-		var heading := Vector2.RIGHT.rotated(heading_angle)
+		var heading := Vector2.RIGHT.rotated(get_heading_angle(i))
 		_heading_directions[i] = heading
+
+
+func _assign_weight(map: Array[float], heading: int, weight: float) -> void:
+	# Negative values will not be assigned.
+	if map[heading] < weight:
+		map[heading] = weight
+
+
+func _assign_vector_weight(map: Array[float], vector: Vector2) -> void:
+	for i in range(resolution):
+		var weight := _heading_directions[i].dot(vector)
+		_assign_weight(map, i, weight)
