@@ -339,16 +339,19 @@ debug_draw = true
 
 [node name="FollowEnemyBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
 script = ExtResource("17_7wi7l")
+follow_radius = 8.0
 body = NodePath("../../../..")
 
 [node name="AvoidAllyOverlapBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body", "actor_detector")]
 script = ExtResource("18_4jlib")
 body = NodePath("../../../..")
+avoid_radius = 24.0
 actor_detector = NodePath("../../../../ActorDetector")
 
 [node name="AvoidTerrainBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("motion_raycast")]
 script = ExtResource("19_72vx6")
 motion_raycast = NodePath("../../../../MotionRaycast")
+active = false
 
 [node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("footstep_sounds", "actor_motion", "nav_agent", "attack_range", "direction_animation_player")]
 script = ExtResource("14_2fo3n")
