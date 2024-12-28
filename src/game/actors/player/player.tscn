@@ -8,8 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://dbeyckwyrbw3p" path="res://assets/graphics/effects/actor_shadow.png" id="2_mccpm"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/move.gd" id="4_81ai4"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/idle.gd" id="4_axnin"]
-[ext_resource type="Script" path="res://src/core/components/direction_animation_player.gd" id="5_epgbh"]
-[ext_resource type="Script" path="res://src/core/components/direction_animation_set.gd" id="6_5bme3"]
+[ext_resource type="Script" path="res://src/core/actors/effects/direction_animation_player.gd" id="5_epgbh"]
+[ext_resource type="Script" path="res://src/core/actors/effects/direction_animation_set.gd" id="6_5bme3"]
 [ext_resource type="Script" path="res://src/core/components/actor_motion.gd" id="7_l23td"]
 [ext_resource type="Script" path="res://src/core/components/actor_hp.gd" id="9_1tnh4"]
 [ext_resource type="Script" path="res://src/core/components/death_handler.gd" id="10_fwo7g"]
@@ -19,7 +19,7 @@
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="16_7cnic"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="18_gjgig"]
 [ext_resource type="AudioStream" uid="uid://diyrmih4wecow" path="res://assets/audio/hit_player.wav" id="19_8u5fn"]
-[ext_resource type="Script" path="res://src/core/components/footstep_sound_player_2d.gd" id="19_ulel1"]
+[ext_resource type="Script" path="res://src/core/actors/effects/footstep_sound_player_2d.gd" id="19_ulel1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0

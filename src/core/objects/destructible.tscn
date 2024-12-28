@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://src/core/components/hurtbox.gd" id="2_r01nx"]
 [ext_resource type="Script" path="res://src/core/components/death_handler.gd" id="3_3ri4u"]
 [ext_resource type="Script" path="res://src/core/components/actor_hp.gd" id="4_fod1u"]
-[ext_resource type="Script" path="res://src/core/components/sprite_damage.gd" id="4_luwlm"]
+[ext_resource type="Script" path="res://src/core/actors/effects/sprite_damage.gd" id="4_luwlm"]
 [ext_resource type="Texture2D" uid="uid://dgqpam1ea7cyj" path="res://assets/graphics/effects/destroy.png" id="8_wx0mg"]
 
 [sub_resource type="Animation" id="Animation_320up"]
