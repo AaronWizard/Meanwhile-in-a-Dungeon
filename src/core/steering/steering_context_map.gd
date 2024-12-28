@@ -24,6 +24,10 @@ func get_heading_angle(heading: int) -> float:
 	return (TAU / float(resolution)) * heading
 
 
+func get_heading_direction(heading: int) -> Vector2:
+	return _heading_directions[heading]
+
+
 func get_interest(heading: int) -> float:
 	return _interests[heading]
 
