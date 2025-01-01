@@ -1,12 +1,11 @@
 extends ActorState
 
 @export var player_input: PlayerInput
-@export var actor_motion: ActorMotion
 
-## In pixels per second squared.
-@export var acceleration := 1280
 ## In pixels per second
 @export var max_speed := 128.0
+## In pixels per second squared.
+@export var acceleration := 1280
 
 @export var footstep_sounds: FootstepSoundPlayer2D
 
@@ -22,9 +21,10 @@ func exit() -> void:
 	footstep_sounds.active = false
 
 
-func process(delta: float) -> StringName:
-	time += delta
-	var desired_velocity := player_input.move_vector * max_speed
-	actor_motion.accelerate_to_target_velocity(
-			desired_velocity, acceleration, delta)
+func physics_process(delta: float) -> StringName:
+	_move_body(
+		body.velocity.move_toward(
+			player_input.move_vector * max_speed, acceleration * delta
+		)
+	)
 	return player_input.desired_state

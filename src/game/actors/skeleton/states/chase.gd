@@ -1,32 +1,37 @@
-extends State
+extends ActorState
 
-@export var motion: ActorMotion
 @export var motion_raycast: MotionRaycast
 
-@export var direction_animation_player: DirectionAnimationPlayer
 @export var anim_set_motion := &"move"
 @export var anim_set_idle := &"idle"
+
+## In pixels per second.
+@export var max_speed := 100.0
+## In pixels per second squared.
+@export var acceleration := 1000.0
 
 @onready var _steering_motion := $SteeringMotion as SteeringMotion
 
 
 func enter() -> void:
-	_steering_motion.is_active = true
+	super()
 	motion_raycast.enabled = true
 
 
 func exit() -> void:
-	_steering_motion.is_active = false
 	motion_raycast.enabled = false
 
 
-func process(_delta: float) -> StringName:
-	if motion.velocity.is_zero_approx():
+func physics_process(delta: float) -> StringName:
+	var motion_vector := _steering_motion.get_velocity(delta)
+	_move_body(
+		body.velocity.move_toward(
+			motion_vector * max_speed, acceleration * delta
+		)
+	)
+
+	if body.velocity.is_zero_approx():
 		direction_animation_player.set_animation_set(anim_set_idle)
 	else:
 		direction_animation_player.set_animation_set(anim_set_motion)
-	return &""
-
-
-func physics_process(_delta: float) -> StringName:
 	return &""

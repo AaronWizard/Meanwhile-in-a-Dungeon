@@ -4,17 +4,8 @@ extends Node
 
 const MIN_SPEED := 0.1
 
-@export var motion: ActorMotion
-
 ## How many headings are in the context map for each behaviour.
 @export_range(1, 1, 1, "or_greater") var behaviour_resolution := 8
-
-## In pixels per second.
-@export var max_speed := 100.0
-## In pixels per second squared.
-@export var acceleration := 1000.0
-
-@export var is_active := false
 
 @export var debug_draw := false
 
@@ -42,23 +33,19 @@ func _ready() -> void:
 		(owner as Node2D).draw.connect(_debug_draw)
 
 
-func _process(delta: float) -> void:
-	if Engine.is_editor_hint():
-		return
+func get_velocity(delta: float) -> Vector2:
+	var context_map := _get_combined_context_map(delta)
 
-	if is_active:
-		var context_map := _get_combined_context_map(delta)
-		var motion_vector := context_map.get_vector()
-		# Prevent jitter
-		if motion_vector.length_squared() < (MIN_SPEED * MIN_SPEED):
-			motion_vector = Vector2.ZERO
+	var result := context_map.get_vector()
+	# Prevent jitter
+	if result.length_squared() < (MIN_SPEED * MIN_SPEED):
+		result = Vector2.ZERO
 
-		motion.accelerate_to_target_velocity(
-				motion_vector * max_speed, acceleration, delta)
+	if debug_draw and (owner is Node2D):
+		_last_context_map = context_map
+		(owner as Node2D).queue_redraw()
 
-		if debug_draw and (owner is Node2D):
-			_last_context_map = context_map
-			(owner as Node2D).queue_redraw()
+	return result
 
 
 func _get_combined_context_map(delta: float) -> SteeringContextMap:

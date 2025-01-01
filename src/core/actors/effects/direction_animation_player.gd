@@ -5,15 +5,14 @@ extends Node
 signal animation_finished
 
 
+@export var direction := Vector2.ZERO:
+	set(value):
+		direction = value.normalized()
+
+
 @export var animation_player: AnimationPlayer:
 	set(value):
 		animation_player = value
-		update_configuration_warnings()
-
-
-@export var motion: ActorMotion:
-	set(value):
-		motion = value
 		update_configuration_warnings()
 
 
@@ -35,9 +34,7 @@ func _get_configuration_warnings() -> PackedStringArray:
 
 	if not animation_player:
 		result.append("Need an AnimationPlayer")
-	if not motion:
-		result.append("Need an ActorMotion")
-	if not animation_sets.front():
+	if animation_sets.is_empty():
 		result.append("Need at least one DirectionAnimationSet")
 
 	return result
@@ -77,17 +74,16 @@ func _update_animation() -> void:
 
 
 func _get_current_cardinal() -> Vector2:
-	var result := _get_current_anim_set().get_closest_cardinal(motion.direction)
+	var result := _get_current_anim_set().get_closest_cardinal(direction)
 
-	var is_moving := not motion.velocity.is_zero_approx()
 	var is_diagonal := is_equal_approx(
-				absf(motion.direction.x), absf(motion.direction.y))
+				absf(direction.x), absf(direction.y))
 	var is_aligned_with_cardinal := \
-			(signf(_last_cardinal.x) == signf(motion.direction.x)) \
+			(signf(_last_cardinal.x) == signf(direction.x)) \
 			or \
-			(signf(_last_cardinal.y) == signf(motion.direction.y))
+			(signf(_last_cardinal.y) == signf(direction.y))
 
-	if is_moving and is_diagonal and is_aligned_with_cardinal:
+	if is_diagonal and is_aligned_with_cardinal:
 		result = _last_cardinal
 
 	return result

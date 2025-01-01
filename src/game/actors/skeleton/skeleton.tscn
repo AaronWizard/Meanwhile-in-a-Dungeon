@@ -1,7 +1,6 @@
-[gd_scene load_steps=41 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=39 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
-[ext_resource type="Script" path="res://src/core/components/actor_motion.gd" id="1_ojnvy"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://assets/graphics/actors/skeleton.png" id="1_t3vwc"]
 [ext_resource type="Texture2D" uid="uid://dbeyckwyrbw3p" path="res://assets/graphics/effects/actor_shadow.png" id="2_cg4ro"]
 [ext_resource type="AnimationLibrary" uid="uid://2se816hxeawh" path="res://src/game/actors/skeleton/animlib_skeleton.tres" id="2_j3i52"]
@@ -14,7 +13,6 @@
 [ext_resource type="Script" path="res://src/core/components/death_handler.gd" id="9_jpx7g"]
 [ext_resource type="Script" path="res://src/core/components/hitbox.gd" id="10_wn1oe"]
 [ext_resource type="Script" path="res://src/core/components/knockback.gd" id="11_runtd"]
-[ext_resource type="Script" path="res://src/game/actors/skeleton/states/pathfind.gd" id="14_2fo3n"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="15_cry4e"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
 [ext_resource type="Script" path="res://src/core/steering/steering_motion.gd" id="16_6ivwi"]
@@ -217,13 +215,9 @@ libraries = {
 "animlib_skeleton": ExtResource("2_j3i52")
 }
 
-[node name="ActorMotion" type="Node" parent="."]
-script = ExtResource("1_ojnvy")
-
-[node name="DirectionAnimationPlayer" type="Node" parent="." node_paths=PackedStringArray("animation_player", "motion")]
+[node name="DirectionAnimationPlayer" type="Node" parent="." node_paths=PackedStringArray("animation_player")]
 script = ExtResource("5_1ab50")
 animation_player = NodePath("../AnimationPlayer")
-motion = NodePath("../ActorMotion")
 animation_sets = Array[ExtResource("6_fq8rw")]([SubResource("Resource_q7tla"), SubResource("Resource_emtur"), SubResource("Resource_m08n0"), SubResource("Resource_vnx8u")])
 
 [node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("hit_sound_2d")]
@@ -257,9 +251,8 @@ max_hp = 2
 current_hp = 2
 hurtbox = NodePath("../Hurtbox")
 
-[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("actor_motion", "hurtbox", "state_machine", "direction_animation_player")]
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "state_machine", "direction_animation_player")]
 script = ExtResource("11_runtd")
-actor_motion = NodePath("../ActorMotion")
 hurtbox = NodePath("../Hurtbox")
 state_machine = NodePath("../StateMachine")
 direction_animation_player = NodePath("../DirectionAnimationPlayer")
@@ -320,22 +313,21 @@ avoidance_enabled = true
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_5f16l")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "actor_detector", "direction_animation_player")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_detector", "body", "direction_animation_player")]
 script = ExtResource("5_7jxfx")
-actor_motion = NodePath("../../ActorMotion")
 actor_detector = NodePath("../../ActorDetector")
+body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
 
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion", "motion_raycast", "direction_animation_player")]
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion_raycast", "body", "direction_animation_player")]
 script = ExtResource("15_cry4e")
-motion = NodePath("../../ActorMotion")
 motion_raycast = NodePath("../../MotionRaycast")
+body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 
-[node name="SteeringMotion" type="Node" parent="StateMachine/Chase" node_paths=PackedStringArray("motion")]
+[node name="SteeringMotion" type="Node" parent="StateMachine/Chase"]
 script = ExtResource("16_6ivwi")
-motion = NodePath("../../../ActorMotion")
 debug_draw = true
 
 [node name="FollowEnemyBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
@@ -353,25 +345,13 @@ actor_detector = NodePath("../../../../ActorDetector")
 script = ExtResource("19_72vx6")
 motion_raycast = NodePath("../../../../MotionRaycast")
 
-[node name="StrafeAroundEnemyBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body", "motion")]
+[node name="StrafeAroundEnemyBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
 script = ExtResource("20_kull7")
 body = NodePath("../../../..")
-motion = NodePath("../../../../ActorMotion")
 
-[node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("footstep_sounds", "actor_motion", "nav_agent", "attack_range", "direction_animation_player")]
-script = ExtResource("14_2fo3n")
-footstep_sounds = NodePath("../../FootstepSoundPlayer2D")
-actor_motion = NodePath("../../ActorMotion")
-nav_agent = NodePath("../../NavigationAgent2D")
-attack_range = NodePath("../../AttackRange")
-direction_animation_player = NodePath("../../DirectionAnimationPlayer")
-direction_anim_set = &"move"
-
-[node name="TargetUpdateTimer" type="Timer" parent="StateMachine/Pathfind"]
-
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("body", "direction_animation_player")]
 script = ExtResource("15_i5qj0")
-actor_motion = NodePath("../../ActorMotion")
+body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"attack"
 

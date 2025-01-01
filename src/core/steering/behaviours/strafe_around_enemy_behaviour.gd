@@ -1,18 +1,17 @@
 class_name StrafeAroundEnemyBehaviour
 extends SteeringBehaviour
 
-@export var body: Node2D
-@export var motion: ActorMotion
+@export var body: CharacterBody2D
 
 
 func _fill_context_map(context_map: SteeringContextMap, _delta: float) -> void:
 	var target_vector := _get_vector_to_target().normalized()
 
 	var left := Vector2(-target_vector.y, target_vector.x)
-	var left_dot := left.dot(motion.velocity.normalized())
+	var left_dot := left.dot(body.velocity.normalized())
 
 	var right := Vector2(target_vector.y, -target_vector.x)
-	var right_dot := right.dot(motion.velocity.normalized())
+	var right_dot := right.dot(body.velocity.normalized())
 
 	var left_bias := 1.0
 	var right_bias := 1.0
