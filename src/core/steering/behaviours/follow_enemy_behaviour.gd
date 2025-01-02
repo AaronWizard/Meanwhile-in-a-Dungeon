@@ -6,10 +6,7 @@ extends SteeringBehaviour
 ## Distance to follow target at in pixels. Will move away if closer.
 @export_range(0.0, 1.0, 1.0, "or_greater") var follow_radius := 0.0
 
-## In pixels per second squared.
-@export var acceleration := 1000.0
-
-@export var body: Node2D
+@export var body: Actor
 
 @export var debug_draw := false
 
@@ -35,7 +32,7 @@ func _fill_context_map(context_map: SteeringContextMap, delta: float) -> void:
 	if follow_radius > 0.0:
 		weight = clampf(diff / follow_radius, -1, 1)
 	else:
-		weight = clampf(diff / (acceleration * delta), 0, 1)
+		weight = clampf(diff / (body.acceleration * delta), 0, 1)
 
 	context_map.assign_interest_vector(direction * weight)
 

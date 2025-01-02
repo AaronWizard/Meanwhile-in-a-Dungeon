@@ -192,6 +192,8 @@ radius = 180.0
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_oe0ch")
+max_speed = 100.0
+acceleration = 1000.0
 metadata/_edit_group_ = true
 
 [node name="ActorShadow" type="Sprite2D" parent="."]
@@ -390,6 +392,7 @@ script = ExtResource("21_3ymqc")
 shape = SubResource("CircleShape2D_2q55o")
 debug_color = Color(0, 0.6, 0.701961, 0)
 
-[node name="MotionRaycast" type="RayCast2D" parent="."]
+[node name="MotionRaycast" type="RayCast2D" parent="." node_paths=PackedStringArray("body")]
 enabled = false
 script = ExtResource("28_5wyrl")
+body = NodePath("..")

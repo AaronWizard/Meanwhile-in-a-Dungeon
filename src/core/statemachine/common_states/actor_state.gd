@@ -1,7 +1,7 @@
 class_name ActorState
 extends State
 
-@export var body: CharacterBody2D
+@export var body: Actor
 @export var direction_animation_player: DirectionAnimationPlayer
 @export var direction_anim_set := &""
 
@@ -11,7 +11,6 @@ func enter() -> void:
 		direction_animation_player.set_animation_set(direction_anim_set)
 
 
-func _move_body(velocity: Vector2) -> void:
-	body.velocity = velocity
-	body.move_and_slide()
+func _move_body(heading: Vector2, delta: float) -> void:
+	body.move_and_slide_towards_heading(heading, delta)
 	direction_animation_player.direction = body.velocity

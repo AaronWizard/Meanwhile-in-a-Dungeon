@@ -5,11 +5,6 @@ extends ActorState
 @export var anim_set_motion := &"move"
 @export var anim_set_idle := &"idle"
 
-## In pixels per second.
-@export var max_speed := 100.0
-## In pixels per second squared.
-@export var acceleration := 1000.0
-
 @onready var _steering_motion := $SteeringMotion as SteeringMotion
 
 
@@ -24,11 +19,7 @@ func exit() -> void:
 
 func physics_process(delta: float) -> StringName:
 	var motion_vector := _steering_motion.get_velocity(delta)
-	_move_body(
-		body.velocity.move_toward(
-			motion_vector * max_speed, acceleration * delta
-		)
-	)
+	_move_body(motion_vector, delta)
 
 	if body.velocity.is_zero_approx():
 		direction_animation_player.set_animation_set(anim_set_idle)

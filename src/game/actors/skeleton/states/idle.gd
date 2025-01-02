@@ -1,9 +1,5 @@
 extends ActorState
 
-@export_group("Motion")
-## In pixels per second squared.
-@export var deceleration := 1000.0
-
 @export_group("Pursuit")
 @export var actor_detector: ActorDetector
 @export var chase_state := &"Chase"
@@ -22,7 +18,5 @@ func process(_delta: float) -> StringName:
 
 
 func physics_process(delta: float) -> StringName:
-	_move_body(
-		body.velocity.move_toward(Vector2.ZERO, deceleration * delta)
-	)
+	_move_body(Vector2.ZERO, delta)
 	return &""

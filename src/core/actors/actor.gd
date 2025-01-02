@@ -2,6 +2,11 @@
 class_name Actor
 extends CharacterBody2D
 
+## In pixels per second.
+@export_range(1, 1, 1, "or_greater") var max_speed := 1.0
+## In pixels per second squared.
+@export_range(0, 1, 1, "or_greater") var acceleration := 0.0
+
 
 var map: Map:
 	get:
@@ -50,3 +55,13 @@ func _enter_tree() -> void:
 
 func _exit_tree() -> void:
 	_current_map = null
+
+
+func move_and_slide_towards_heading(heading: Vector2, delta: float) -> void:
+	if is_zero_approx(acceleration):
+		velocity = heading.limit_length() * max_speed
+	else:
+		velocity = velocity.move_toward(
+			heading.limit_length() * max_speed, acceleration * delta
+		)
+	move_and_slide()

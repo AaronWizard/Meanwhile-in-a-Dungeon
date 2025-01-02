@@ -3,9 +3,6 @@ extends ActorState
 
 @export var next_state := &"Idle"
 
-## In pixels per second squared.
-@export var deceleration := 1000.0
-
 var anim_running := false
 
 
@@ -21,9 +18,7 @@ func enter() -> void:
 
 
 func physics_process(delta: float) -> StringName:
-	_move_body(
-		body.velocity.move_toward(Vector2.ZERO, deceleration * delta)
-	)
+	_move_body(Vector2.ZERO, delta)
 	if not anim_running:
 		return next_state
 	return &""

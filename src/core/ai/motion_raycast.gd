@@ -1,17 +1,15 @@
 class_name MotionRaycast
 extends RayCast2D
 
-
+@export var body: Actor
 @export var base_radius := 16.0
-## In pixels per second.
-@export var max_speed := 100.0
 
 
 ## [param delta] is in seconds.
 func get_collision_weight(angle: float, delta: float) -> float:
 	var result := 0.0
 
-	var distance := base_radius + (max_speed * delta)
+	var distance := base_radius + (body.max_speed * delta)
 	target_position = Vector2.RIGHT.rotated(angle) * distance
 	force_raycast_update()
 	if is_colliding():
