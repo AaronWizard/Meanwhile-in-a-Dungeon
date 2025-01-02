@@ -7,10 +7,17 @@ extends ActorState
 
 @onready var _steering_motion := $SteeringMotion as SteeringMotion
 
+@onready var _approach_target \
+		:= $SteeringMotion/ApproachTargetBehaviour as ApproachTargetBehaviour
+@onready var _strafe := $SteeringMotion/StrafeAroundTargetBehaviour \
+		as StrafeAroundTargetBehaviour
+
 
 func enter() -> void:
 	super()
 	motion_raycast.enabled = true
+	_approach_target.radius = randf_range(32, 64)
+	_strafe.strafe_scale = randf_range(-1, 1)
 
 
 func exit() -> void:
@@ -18,6 +25,9 @@ func exit() -> void:
 
 
 func physics_process(delta: float) -> StringName:
+	_approach_target.target_global_pos = Globals.player.global_position
+	_strafe.target_global_pos = Globals.player.global_position
+
 	var motion_vector := _steering_motion.get_velocity(delta)
 	_move_body(motion_vector, delta)
 

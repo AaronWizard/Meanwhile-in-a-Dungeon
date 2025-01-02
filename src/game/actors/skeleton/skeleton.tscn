@@ -16,14 +16,14 @@
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="15_cry4e"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
 [ext_resource type="Script" path="res://src/core/steering/steering_motion.gd" id="16_6ivwi"]
+[ext_resource type="Script" path="res://src/core/steering/behaviours/approach_target_behaviour.gd" id="16_qf8we"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="17_6xgcv"]
-[ext_resource type="Script" path="res://src/core/steering/behaviours/follow_enemy_behaviour.gd" id="17_7wi7l"]
 [ext_resource type="Script" path="res://src/core/steering/behaviours/avoid_ally_overlap_behaviour.gd" id="18_4jlib"]
 [ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://assets/audio/hit_skeleton.wav" id="18_hg4fm"]
 [ext_resource type="Script" path="res://src/core/steering/behaviours/avoid_terrain_behaviour.gd" id="19_72vx6"]
 [ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://assets/audio/falling_bones.wav" id="19_bqgiw"]
 [ext_resource type="Script" path="res://src/core/actors/effects/footstep_sound_player_2d.gd" id="19_l6obh"]
-[ext_resource type="Script" path="res://src/core/steering/behaviours/strafe_around_enemy_behaviour.gd" id="20_kull7"]
+[ext_resource type="Script" path="res://src/core/steering/behaviours/strafe_around_target_behaviour.gd" id="19_ywtjl"]
 [ext_resource type="Script" path="res://src/core/ai/actor_detector.gd" id="21_3ymqc"]
 [ext_resource type="Script" path="res://src/core/ai/motion_raycast.gd" id="28_5wyrl"]
 
@@ -332,9 +332,8 @@ direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 script = ExtResource("16_6ivwi")
 debug_draw = true
 
-[node name="FollowEnemyBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
-script = ExtResource("17_7wi7l")
-follow_radius = 16.0
+[node name="ApproachTargetBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
+script = ExtResource("16_qf8we")
 body = NodePath("../../../..")
 
 [node name="AvoidAllyOverlapBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body", "actor_detector")]
@@ -347,8 +346,8 @@ actor_detector = NodePath("../../../../ActorDetector")
 script = ExtResource("19_72vx6")
 motion_raycast = NodePath("../../../../MotionRaycast")
 
-[node name="StrafeAroundEnemyBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
-script = ExtResource("20_kull7")
+[node name="StrafeAroundTargetBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
+script = ExtResource("19_ywtjl")
 body = NodePath("../../../..")
 
 [node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("body", "direction_animation_player")]
