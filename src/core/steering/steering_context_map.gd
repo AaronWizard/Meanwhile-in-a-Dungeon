@@ -71,21 +71,11 @@ func combine_with(other: SteeringContextMap) -> void:
 
 ## Gets a vector whose length is between 0 and 1.
 func get_vector() -> Vector2:
-	var result := Vector2.ZERO
-
 	var combined_heading := Vector2.ZERO
 	for i in resolution:
-		var new_heading = _heading_directions[i] \
+		combined_heading += _heading_directions[i] \
 				* clampf(_interests[i] - _dangers[i], 0.0, 1.0)
-		if not new_heading.is_zero_approx():
-			combined_heading += new_heading
-
-	var length := combined_heading.length()
-	if not is_zero_approx(length):
-		var direction := combined_heading / length
-		result = direction * clampf(length, 0, 1)
-
-	return result
+	return combined_heading.limit_length()
 
 
 func _init_heading_directions() -> void:
