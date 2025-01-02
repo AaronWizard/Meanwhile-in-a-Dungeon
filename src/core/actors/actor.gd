@@ -58,10 +58,9 @@ func _exit_tree() -> void:
 
 
 func move_and_slide_towards_heading(heading: Vector2, delta: float) -> void:
+	var new_velocity := heading.limit_length() * max_speed
 	if is_zero_approx(acceleration):
-		velocity = heading.limit_length() * max_speed
+		velocity = new_velocity
 	else:
-		velocity = velocity.move_toward(
-			heading.limit_length() * max_speed, acceleration * delta
-		)
+		velocity = velocity.move_toward(new_velocity, acceleration * delta)
 	move_and_slide()
