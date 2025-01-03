@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=38 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://assets/graphics/actors/skeleton.png" id="1_t3vwc"]
@@ -18,7 +18,6 @@
 [ext_resource type="Script" path="res://src/core/steering/steering_motion.gd" id="16_6ivwi"]
 [ext_resource type="Script" path="res://src/core/steering/behaviours/approach_target_behaviour.gd" id="16_qf8we"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="17_6xgcv"]
-[ext_resource type="Script" path="res://src/core/steering/behaviours/avoid_ally_overlap_behaviour.gd" id="18_4jlib"]
 [ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://assets/audio/hit_skeleton.wav" id="18_hg4fm"]
 [ext_resource type="Script" path="res://src/core/steering/behaviours/avoid_terrain_behaviour.gd" id="19_72vx6"]
 [ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://assets/audio/falling_bones.wav" id="19_bqgiw"]
@@ -336,15 +335,10 @@ debug_draw = true
 script = ExtResource("16_qf8we")
 body = NodePath("../../../..")
 
-[node name="AvoidAllyOverlapBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body", "actor_detector")]
-script = ExtResource("18_4jlib")
-body = NodePath("../../../..")
-avoid_radius = 24.0
-actor_detector = NodePath("../../../../ActorDetector")
-
 [node name="AvoidTerrainBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("motion_raycast")]
 script = ExtResource("19_72vx6")
 motion_raycast = NodePath("../../../../MotionRaycast")
+mult = 5.0
 
 [node name="StrafeAroundTargetBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
 script = ExtResource("19_ywtjl")
@@ -393,5 +387,6 @@ debug_color = Color(0, 0.6, 0.701961, 0)
 
 [node name="MotionRaycast" type="RayCast2D" parent="." node_paths=PackedStringArray("body")]
 enabled = false
+collision_mask = 3
 script = ExtResource("28_5wyrl")
 body = NodePath("..")
