@@ -58,17 +58,6 @@ func assign_danger_vector(vector: Vector2) -> void:
 	_assign_vector_weight(_dangers, vector)
 
 
-func combine_with(other: SteeringContextMap) -> void:
-	if resolution != other.resolution:
-		push_error("Context maps have different resolutions: %d, %d" \
-				% [resolution, other.resolution])
-		return
-
-	for h in range(resolution):
-		assign_interest(h, other.get_interest(h))
-		assign_danger(h, other.get_danger(h))
-
-
 ## Gets a vector whose length is between 0 and 1.
 func get_vector() -> Vector2:
 	var combined_heading := Vector2.ZERO
@@ -85,7 +74,6 @@ func _init_heading_directions() -> void:
 
 
 func _assign_weight(map: Array[float], heading: int, weight: float) -> void:
-	# Negative values will not be assigned.
 	if not is_zero_approx(weight) and (map[heading] < weight):
 		map[heading] = weight
 

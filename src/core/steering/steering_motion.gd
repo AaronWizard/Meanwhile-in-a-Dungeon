@@ -26,9 +26,6 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	for b in _get_behaviours():
-		b.resolution = behaviour_resolution
-
 	if debug_draw and (owner is Node2D):
 		(owner as Node2D).draw.connect(_debug_draw)
 
@@ -49,11 +46,10 @@ func get_velocity(delta: float) -> Vector2:
 
 
 func _get_combined_context_map(delta: float) -> SteeringContextMap:
-	var combined_map := SteeringContextMap.new(behaviour_resolution)
+	var context_map := SteeringContextMap.new(behaviour_resolution)
 	for behaviour in _get_behaviours():
-		var new_map := behaviour.get_context_map(delta)
-		combined_map.combine_with(new_map)
-	return combined_map
+		behaviour.fill_context_map(context_map, delta)
+	return context_map
 
 
 func _get_behaviours() -> Array[SteeringBehaviour]:
