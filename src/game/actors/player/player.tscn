@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=29 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://assets/graphics/actors/warrior.png" id="1_a74gn"]
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_ocde1"]
@@ -8,9 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://dbeyckwyrbw3p" path="res://assets/graphics/effects/actor_shadow.png" id="2_mccpm"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/move.gd" id="4_81ai4"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/idle.gd" id="4_axnin"]
-[ext_resource type="Script" path="res://src/core/components/direction_animation_player.gd" id="5_epgbh"]
-[ext_resource type="Script" path="res://src/core/components/direction_animation_set.gd" id="6_5bme3"]
-[ext_resource type="Script" path="res://src/core/components/actor_motion.gd" id="7_l23td"]
+[ext_resource type="Script" path="res://src/core/actors/effects/direction_animation_player.gd" id="5_epgbh"]
+[ext_resource type="Script" path="res://src/core/actors/effects/direction_animation_set.gd" id="6_5bme3"]
 [ext_resource type="Script" path="res://src/core/components/actor_hp.gd" id="9_1tnh4"]
 [ext_resource type="Script" path="res://src/core/components/death_handler.gd" id="10_fwo7g"]
 [ext_resource type="Script" path="res://src/core/components/hurtbox.gd" id="10_psy01"]
@@ -19,7 +18,7 @@
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="16_7cnic"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="18_gjgig"]
 [ext_resource type="AudioStream" uid="uid://diyrmih4wecow" path="res://assets/audio/hit_player.wav" id="19_8u5fn"]
-[ext_resource type="Script" path="res://src/core/components/footstep_sound_player_2d.gd" id="19_ulel1"]
+[ext_resource type="Script" path="res://src/core/actors/effects/footstep_sound_player_2d.gd" id="19_ulel1"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -143,6 +142,8 @@ size = Vector2(50, 25.75)
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_ocde1")
+max_speed = 128.0
+acceleration = 1280.0
 
 [node name="ActorShadow" type="Sprite2D" parent="."]
 position = Vector2(0, -1)
@@ -166,13 +167,9 @@ libraries = {
 "animlib_warrior": ExtResource("2_f55i4")
 }
 
-[node name="ActorMotion" type="Node" parent="."]
-script = ExtResource("7_l23td")
-
-[node name="DirectionAnimationPlayer" type="Node" parent="." node_paths=PackedStringArray("animation_player", "motion")]
+[node name="DirectionAnimationPlayer" type="Node" parent="." node_paths=PackedStringArray("animation_player")]
 script = ExtResource("5_epgbh")
 animation_player = NodePath("../AnimationPlayer")
-motion = NodePath("../ActorMotion")
 animation_sets = Array[ExtResource("6_5bme3")]([SubResource("Resource_sbhni"), SubResource("Resource_1d58d"), SubResource("Resource_rjn5e"), SubResource("Resource_d4lr3")])
 
 [node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("hit_sound_2d")]
@@ -210,9 +207,8 @@ max_hp = 5
 current_hp = 5
 hurtbox = NodePath("../Hurtbox")
 
-[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("actor_motion", "hurtbox", "state_machine", "direction_animation_player")]
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "state_machine", "direction_animation_player")]
 script = ExtResource("12_sb0s8")
-actor_motion = NodePath("../ActorMotion")
 hurtbox = NodePath("../Hurtbox")
 state_machine = NodePath("../StateMachine")
 direction_animation_player = NodePath("../DirectionAnimationPlayer")
@@ -234,24 +230,24 @@ script = ExtResource("2_jafpg")
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_i32bm")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "direction_animation_player")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "body", "direction_animation_player")]
 script = ExtResource("4_axnin")
 player_input = NodePath("../../PlayerInput")
-actor_motion = NodePath("../../ActorMotion")
+body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
 
-[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "actor_motion", "footstep_sounds", "direction_animation_player")]
+[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("player_input", "footstep_sounds", "body", "direction_animation_player")]
 script = ExtResource("4_81ai4")
 player_input = NodePath("../../PlayerInput")
-actor_motion = NodePath("../../ActorMotion")
 footstep_sounds = NodePath("../../FootstepSoundPlayer2D")
+body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"move"
 
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_motion", "direction_animation_player")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("body", "direction_animation_player")]
 script = ExtResource("16_7cnic")
-actor_motion = NodePath("../../ActorMotion")
+body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"attack"
 

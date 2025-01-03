@@ -40,7 +40,7 @@ func _unhandled_input(_event: InputEvent) -> void:
 	_move_vector = Input.get_vector(
 			"move_west", "move_east", "move_north", "move_south")
 
-	if move_vector.length_squared() > 0:
+	if not move_vector.is_zero_approx():
 		all_desired_states.append(STATE_MOVE)
 
 	if Input.is_action_pressed("attack"):
