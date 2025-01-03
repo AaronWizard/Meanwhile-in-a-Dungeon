@@ -4,8 +4,8 @@ extends CharacterBody2D
 
 ## In pixels per second.
 @export_range(1, 1, 1, "or_greater") var max_speed := 1.0
-## In pixels per second squared.
-@export_range(0, 1, 1, "or_greater") var acceleration := 0.0
+## In seconds.
+@export_range(0, 1, 0.001, "or_greater") var time_to_max_speed := 0.1
 
 
 var map: Map:
@@ -20,7 +20,6 @@ var hp: ActorHP:
 
 var _current_map: Map = null
 var _hp: ActorHP
-
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var result := PackedStringArray()
@@ -59,8 +58,11 @@ func _exit_tree() -> void:
 
 func move_and_slide_towards_heading(heading: Vector2, delta: float) -> void:
 	var new_velocity := heading.limit_length() * max_speed
-	if is_zero_approx(acceleration):
+	if is_zero_approx(time_to_max_speed):
 		velocity = new_velocity
 	else:
-		velocity = velocity.move_toward(new_velocity, acceleration * delta)
+		velocity = velocity.move_toward(
+			new_velocity,
+			(max_speed / time_to_max_speed) * delta
+		)
 	move_and_slide()

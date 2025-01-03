@@ -192,7 +192,6 @@ collision_layer = 2
 motion_mode = 1
 script = ExtResource("1_oe0ch")
 max_speed = 100.0
-acceleration = 1000.0
 metadata/_edit_group_ = true
 
 [node name="ActorShadow" type="Sprite2D" parent="."]

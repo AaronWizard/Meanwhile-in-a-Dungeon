@@ -18,7 +18,7 @@ func _fill_context_map(context_map: SteeringContextMap, delta: float) -> void:
 
 	var diff := distance - radius
 
-	var weight := diff / ((body.max_speed + body.acceleration) * delta)
+	var weight := diff / (body.max_speed * delta)
 	weight = clampf(weight, -1, 1)
 
 	context_map.assign_interest_vector(direction * weight)
