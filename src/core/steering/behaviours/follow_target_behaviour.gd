@@ -1,7 +1,9 @@
-class_name ApproachTargetBehaviour
+class_name FollowTargetBehaviour
 extends SteeringBehaviour
 
 ## Follows an enemy at a certain range.
+
+const _WEIGHT_THRESHOLD := 0.01
 
 @export var target_global_pos := Vector2.ZERO
 
@@ -18,8 +20,12 @@ func _fill_context_map(context_map: SteeringContextMap, delta: float) -> void:
 
 	var diff := distance - radius
 
-	var weight := diff / (body.max_speed * delta)
+	var slide_distance := (body.max_speed / body.time_to_max_speed) * delta
+
+	var weight := diff / ((body.max_speed * delta) + slide_distance)
 	weight = clampf(weight, -1, 1)
+	if absf(weight) < _WEIGHT_THRESHOLD:
+		weight = 0.0
 
 	context_map.assign_interest_vector(direction * weight)
 

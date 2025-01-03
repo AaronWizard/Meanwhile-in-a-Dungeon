@@ -16,7 +16,7 @@
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="15_cry4e"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
 [ext_resource type="Script" path="res://src/core/steering/steering_motion.gd" id="16_6ivwi"]
-[ext_resource type="Script" path="res://src/core/steering/behaviours/approach_target_behaviour.gd" id="16_qf8we"]
+[ext_resource type="Script" path="res://src/core/steering/behaviours/follow_target_behaviour.gd" id="16_qf8we"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="17_6xgcv"]
 [ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://assets/audio/hit_skeleton.wav" id="18_hg4fm"]
 [ext_resource type="Script" path="res://src/core/steering/behaviours/avoid_terrain_behaviour.gd" id="19_72vx6"]
@@ -281,6 +281,7 @@ debug_color = Color(0, 0.6, 0.701961, 0)
 [node name="AttackRange" type="Area2D" parent="."]
 collision_layer = 0
 collision_mask = 2
+monitoring = false
 monitorable = false
 
 [node name="CollisionShapeNorth" type="CollisionShape2D" parent="AttackRange"]
@@ -320,18 +321,20 @@ body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
 
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion_raycast", "body", "direction_animation_player")]
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion_raycast", "attack_range", "attack_timer", "body", "direction_animation_player")]
 script = ExtResource("15_cry4e")
 motion_raycast = NodePath("../../MotionRaycast")
+attack_range = NodePath("../../AttackRange")
+attack_timer = NodePath("../../AttackTimer")
 body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 
 [node name="SteeringMotion" type="Node" parent="StateMachine/Chase"]
 script = ExtResource("16_6ivwi")
-debug_draw = true
 
-[node name="ApproachTargetBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
+[node name="FollowTargetBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
 script = ExtResource("16_qf8we")
+radius = 64.0
 body = NodePath("../../../..")
 
 [node name="AvoidTerrainBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("motion_raycast")]
@@ -342,12 +345,17 @@ mult = 5.0
 [node name="StrafeAroundTargetBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
 script = ExtResource("19_ywtjl")
 body = NodePath("../../../..")
+active = false
 
 [node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("body", "direction_animation_player")]
 script = ExtResource("15_i5qj0")
 body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"attack"
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
 
 [node name="SwordSwingSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("17_6xgcv")
