@@ -8,7 +8,7 @@ extends ActorState
 @export var attack_range: Area2D
 @export var attack_state := &"Attack"
 
-@export var attack_timer: Timer
+#@export var attack_timer: Timer
 
 var _in_attack_range := false
 

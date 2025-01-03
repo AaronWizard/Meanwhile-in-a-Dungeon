@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=39 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://assets/graphics/actors/skeleton.png" id="1_t3vwc"]
@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://src/core/components/death_handler.gd" id="9_jpx7g"]
 [ext_resource type="Script" path="res://src/core/components/hitbox.gd" id="10_wn1oe"]
 [ext_resource type="Script" path="res://src/core/components/knockback.gd" id="11_runtd"]
+[ext_resource type="Script" path="res://src/game/actors/skeleton/states/pathfind.gd" id="14_b0w0s"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="15_cry4e"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
 [ext_resource type="Script" path="res://src/core/steering/steering_motion.gd" id="16_6ivwi"]
@@ -317,15 +318,26 @@ script = ExtResource("4_5f16l")
 [node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_detector", "body", "direction_animation_player")]
 script = ExtResource("5_7jxfx")
 actor_detector = NodePath("../../ActorDetector")
+chase_state = &"Pathfind"
 body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
 
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion_raycast", "attack_range", "attack_timer", "body", "direction_animation_player")]
+[node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("nav_agent", "attack_range", "body", "direction_animation_player")]
+script = ExtResource("14_b0w0s")
+nav_agent = NodePath("../../NavigationAgent2D")
+attack_range = NodePath("../../AttackRange")
+body = NodePath("../..")
+direction_animation_player = NodePath("../../DirectionAnimationPlayer")
+
+[node name="AttackTimer" type="Timer" parent="StateMachine/Pathfind"]
+wait_time = 1.5
+one_shot = true
+
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion_raycast", "attack_range", "body", "direction_animation_player")]
 script = ExtResource("15_cry4e")
 motion_raycast = NodePath("../../MotionRaycast")
 attack_range = NodePath("../../AttackRange")
-attack_timer = NodePath("../../AttackTimer")
 body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 
@@ -352,10 +364,6 @@ script = ExtResource("15_i5qj0")
 body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"attack"
-
-[node name="AttackTimer" type="Timer" parent="."]
-wait_time = 10.0
-one_shot = true
 
 [node name="SwordSwingSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("17_6xgcv")
