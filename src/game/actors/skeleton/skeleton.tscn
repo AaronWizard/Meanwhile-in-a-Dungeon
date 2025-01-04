@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=33 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://assets/graphics/actors/skeleton.png" id="1_t3vwc"]
@@ -14,18 +14,12 @@
 [ext_resource type="Script" path="res://src/core/components/hitbox.gd" id="10_wn1oe"]
 [ext_resource type="Script" path="res://src/core/components/knockback.gd" id="11_runtd"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/pathfind.gd" id="14_b0w0s"]
-[ext_resource type="Script" path="res://src/game/actors/skeleton/states/chase.gd" id="15_cry4e"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
-[ext_resource type="Script" path="res://src/core/steering/steering_motion.gd" id="16_6ivwi"]
-[ext_resource type="Script" path="res://src/core/steering/behaviours/follow_target_behaviour.gd" id="16_qf8we"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="17_6xgcv"]
 [ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://assets/audio/hit_skeleton.wav" id="18_hg4fm"]
-[ext_resource type="Script" path="res://src/core/steering/behaviours/avoid_terrain_behaviour.gd" id="19_72vx6"]
 [ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://assets/audio/falling_bones.wav" id="19_bqgiw"]
 [ext_resource type="Script" path="res://src/core/actors/effects/footstep_sound_player_2d.gd" id="19_l6obh"]
-[ext_resource type="Script" path="res://src/core/steering/behaviours/strafe_around_target_behaviour.gd" id="19_ywtjl"]
 [ext_resource type="Script" path="res://src/core/ai/actor_detector.gd" id="21_3ymqc"]
-[ext_resource type="Script" path="res://src/core/ai/motion_raycast.gd" id="28_5wyrl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
@@ -207,6 +201,7 @@ vframes = 17
 frame = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_huaup")
 
@@ -289,28 +284,30 @@ monitorable = false
 position = Vector2(0, -30)
 shape = SubResource("CircleShape2D_jhnuw")
 disabled = true
-debug_color = Color(0.701961, 0.34902, 0.34902, 0)
+debug_color = Color(0.701961, 0, 0, 0.203922)
 
 [node name="CollisionShapeEast" type="CollisionShape2D" parent="AttackRange"]
 position = Vector2(11, -4)
 shape = SubResource("CircleShape2D_jhnuw")
 disabled = true
-debug_color = Color(0.701961, 0.34902, 0.34902, 0)
+debug_color = Color(0.701961, 0, 0, 0.203922)
 
 [node name="CollisionShapeSouth" type="CollisionShape2D" parent="AttackRange"]
 position = Vector2(0, 10)
 shape = SubResource("CircleShape2D_jhnuw")
 disabled = true
-debug_color = Color(0.701961, 0.34902, 0.34902, 0)
+debug_color = Color(0.701961, 0, 0, 0.203922)
 
 [node name="CollisionShapeWest" type="CollisionShape2D" parent="AttackRange"]
 position = Vector2(-11, -4)
 shape = SubResource("CircleShape2D_jhnuw")
 disabled = true
-debug_color = Color(0.701961, 0.34902, 0.34902, 0)
+debug_color = Color(0.701961, 0, 0, 0.203922)
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
+radius = 16.0
+debug_enabled = true
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_5f16l")
@@ -333,31 +330,6 @@ direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 [node name="AttackTimer" type="Timer" parent="StateMachine/Pathfind"]
 wait_time = 1.5
 one_shot = true
-
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("motion_raycast", "attack_range", "body", "direction_animation_player")]
-script = ExtResource("15_cry4e")
-motion_raycast = NodePath("../../MotionRaycast")
-attack_range = NodePath("../../AttackRange")
-body = NodePath("../..")
-direction_animation_player = NodePath("../../DirectionAnimationPlayer")
-
-[node name="SteeringMotion" type="Node" parent="StateMachine/Chase"]
-script = ExtResource("16_6ivwi")
-
-[node name="FollowTargetBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
-script = ExtResource("16_qf8we")
-radius = 64.0
-body = NodePath("../../../..")
-
-[node name="AvoidTerrainBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("motion_raycast")]
-script = ExtResource("19_72vx6")
-motion_raycast = NodePath("../../../../MotionRaycast")
-mult = 5.0
-
-[node name="StrafeAroundTargetBehaviour" type="Node" parent="StateMachine/Chase/SteeringMotion" node_paths=PackedStringArray("body")]
-script = ExtResource("19_ywtjl")
-body = NodePath("../../../..")
-active = false
 
 [node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("body", "direction_animation_player")]
 script = ExtResource("15_i5qj0")
@@ -391,6 +363,7 @@ area_mask = 0
 script = ExtResource("19_l6obh")
 
 [node name="ActorDetector" type="Area2D" parent="."]
+visible = false
 collision_layer = 0
 collision_mask = 2
 monitorable = false
@@ -399,9 +372,3 @@ script = ExtResource("21_3ymqc")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ActorDetector"]
 shape = SubResource("CircleShape2D_2q55o")
 debug_color = Color(0, 0.6, 0.701961, 0)
-
-[node name="MotionRaycast" type="RayCast2D" parent="." node_paths=PackedStringArray("body")]
-enabled = false
-collision_mask = 3
-script = ExtResource("28_5wyrl")
-body = NodePath("..")

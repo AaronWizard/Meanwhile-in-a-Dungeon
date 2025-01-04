@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=31 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://assets/graphics/actors/warrior.png" id="1_a74gn"]
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_ocde1"]
@@ -19,6 +19,7 @@
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="18_gjgig"]
 [ext_resource type="AudioStream" uid="uid://diyrmih4wecow" path="res://assets/audio/hit_player.wav" id="19_8u5fn"]
 [ext_resource type="Script" path="res://src/core/actors/effects/footstep_sound_player_2d.gd" id="19_ulel1"]
+[ext_resource type="PackedScene" uid="uid://0wqvn30y7kjx" path="res://src/core/ai/melee_enagement_area.tscn" id="20_6regb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -138,6 +139,9 @@ height = 24.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c58g1"]
 size = Vector2(50, 25.75)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_s6djq"]
+radius = 6.0
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 motion_mode = 1
@@ -156,7 +160,6 @@ vframes = 17
 frame = 88
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, -3)
 shape = SubResource("CircleShape2D_5v3fb")
 
@@ -174,9 +177,11 @@ animation_sets = Array[ExtResource("6_5bme3")]([SubResource("Resource_sbhni"), S
 [node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("hit_sound_2d")]
 collision_layer = 0
 collision_mask = 4
+monitoring = false
 monitorable = false
 script = ExtResource("10_psy01")
 faction = 1
+invincible = true
 hit_sound_2d = NodePath("../HitSound")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
@@ -185,6 +190,7 @@ shape = SubResource("CapsuleShape2D_wgk2m")
 debug_color = Color(1, 1, 0, 0)
 
 [node name="Hitbox" type="Area2D" parent="."]
+visible = false
 rotation = -1.57079
 collision_layer = 4
 collision_mask = 0
@@ -268,3 +274,8 @@ max_distance = 450.0
 bus = &"SoundFX"
 area_mask = 0
 script = ExtResource("19_ulel1")
+
+[node name="MeleeEnagementArea" parent="." instance=ExtResource("20_6regb")]
+position = Vector2(0, -3)
+radius = 20
+slot_shape = SubResource("CircleShape2D_s6djq")

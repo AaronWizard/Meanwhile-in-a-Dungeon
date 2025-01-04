@@ -11,12 +11,16 @@ extends ActorState
 @export var attack_state := &"Attack"
 
 var _is_active := false
+
+var _claimed_melee_slot := -1
+
 var _in_attack_range := false
 
 @onready var _attack_timer := $AttackTimer as Timer
 
 
 func _ready() -> void:
+	nav_agent.max_speed = body.max_speed
 	nav_agent.velocity_computed.connect(_on_nav_agent_velocity_computed)
 	attack_range.body_entered.connect(_on_attack_range_body_entered)
 	attack_range.body_exited.connect(_on_attack_range_body_exited)
@@ -44,17 +48,26 @@ func physics_process(_delta: float) -> StringName:
 
 	_set_target()
 
-	var has_valid_nav_map := NavigationServer2D.map_get_iteration_id(
-		nav_agent.get_navigation_map()) != 0
+	if NavigationServer2D.map_get_iteration_id(
+			nav_agent.get_navigation_map()) == 0:
+		return &""
 
-	if has_valid_nav_map and not nav_agent.is_navigation_finished():
-		var next_pos := nav_agent.get_next_path_position()
-		var new_velocity \
-				:= body.global_position.direction_to(next_pos) * body.max_speed
-		if nav_agent.avoidance_enabled:
-			nav_agent.set_velocity(new_velocity)
+	if nav_agent.is_navigation_finished():
+		direction_animation_player.direction \
+				= Globals.player.global_position - body.global_position
+		if _can_attack():
+			_attack_timer.start()
+			return attack_state
 		else:
-			_on_nav_agent_velocity_computed(new_velocity)
+			return &""
+
+	var next_pos := nav_agent.get_next_path_position()
+	var new_velocity \
+			:= body.global_position.direction_to(next_pos) * body.max_speed
+	if nav_agent.avoidance_enabled:
+		nav_agent.set_velocity(new_velocity)
+	else:
+		_on_nav_agent_velocity_computed(new_velocity)
 
 	if body.velocity.is_zero_approx():
 		direction_animation_player.set_animation_set(anim_set_idle)
@@ -65,7 +78,22 @@ func physics_process(_delta: float) -> StringName:
 
 
 func _set_target() -> void:
-	nav_agent.target_position = Globals.player.global_position
+	if _claimed_melee_slot < 0:
+		var open_slots := Globals.player.melee_engagement_area.get_open_slots()
+		if not open_slots.is_empty():
+			var min_dist_sqr := -1.0
+			for index in open_slots:
+				var slot_pos := Globals.player.melee_engagement_area \
+						.get_slot_global_position(index)
+				var dist_sqr := body.global_position.distance_squared_to(slot_pos)
+				if (min_dist_sqr < 0) or (dist_sqr < min_dist_sqr):
+					_claimed_melee_slot = index
+					min_dist_sqr = dist_sqr
+
+	if _claimed_melee_slot >= 0:
+		Globals.player.melee_engagement_area.claim_slot(_claimed_melee_slot)
+		nav_agent.target_position = Globals.player.melee_engagement_area \
+				.get_slot_global_position(_claimed_melee_slot)
 
 
 func _on_nav_agent_velocity_computed(safe_velocity: Vector2) -> void:

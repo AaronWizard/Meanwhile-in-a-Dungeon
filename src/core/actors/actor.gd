@@ -18,8 +18,14 @@ var hp: ActorHP:
 		return _hp
 
 
+var melee_engagement_area: MeleeEnagementArea:
+	get:
+		return _melee_engagement_area
+
+
 var _current_map: Map = null
 var _hp: ActorHP
+var _melee_engagement_area: MeleeEnagementArea
 
 func _get_configuration_warnings() -> PackedStringArray:
 	var result := PackedStringArray()
@@ -39,7 +45,12 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	_hp = get_children().filter(func (c): return c is ActorHP)[0] as ActorHP
+	_hp = get_children().filter(
+		func (c): return c is ActorHP
+	).front() as ActorHP
+	_melee_engagement_area = get_children().filter(
+		func (c): return c is MeleeEnagementArea
+	).front() as MeleeEnagementArea
 
 
 func _enter_tree() -> void:

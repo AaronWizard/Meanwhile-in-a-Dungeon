@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://0wqvn30y7kjx"]
+
+[ext_resource type="Script" path="res://src/core/ai/melee_enagement_area.gd" id="1_3i0y8"]
+
+[node name="MeleeEnagementArea" type="Node2D"]
+script = ExtResource("1_3i0y8")
+metadata/_edit_group_ = true
+
+[node name="SlotPivotN" type="Node2D" parent="."]
+metadata/_edit_lock_ = true
+
+[node name="Slot" type="Area2D" parent="SlotPivotN"]
+position = Vector2(16, 0)
+collision_layer = 0
+collision_mask = 3
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlotPivotN/Slot"]
+metadata/_edit_lock_ = true
+
+[node name="SlotPivotE" type="Node2D" parent="."]
+rotation = 1.5708
+metadata/_edit_lock_ = true
+
+[node name="Slot" type="Area2D" parent="SlotPivotE"]
+position = Vector2(16, 0)
+collision_layer = 0
+collision_mask = 3
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlotPivotE/Slot"]
+metadata/_edit_lock_ = true
+
+[node name="SlotPivotS" type="Node2D" parent="."]
+rotation = 3.14159
+metadata/_edit_lock_ = true
+
+[node name="Slot" type="Area2D" parent="SlotPivotS"]
+position = Vector2(16, 0)
+collision_layer = 0
+collision_mask = 3
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlotPivotS/Slot"]
+metadata/_edit_lock_ = true
+
+[node name="SlotPivotW" type="Node2D" parent="."]
+rotation = 4.71239
+metadata/_edit_lock_ = true
+
+[node name="Slot" type="Area2D" parent="SlotPivotW"]
+position = Vector2(16, 0)
+collision_layer = 0
+collision_mask = 3
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SlotPivotW/Slot"]
+metadata/_edit_lock_ = true
