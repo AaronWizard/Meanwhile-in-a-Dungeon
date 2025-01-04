@@ -48,7 +48,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 
-	hurtbox.was_hit.connect(_was_hit)
+	#hurtbox.was_hit.connect(_was_hit)
 
 
 func _was_hit(damage: int, _direction: Vector2) -> void:

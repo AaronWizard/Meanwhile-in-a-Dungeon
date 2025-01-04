@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=25 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://assets/graphics/actors/warrior.png" id="1_a74gn"]
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_ocde1"]
@@ -12,14 +12,11 @@
 [ext_resource type="Script" path="res://src/core/actors/effects/direction_animation_set.gd" id="6_5bme3"]
 [ext_resource type="Script" path="res://src/core/components/actor_hp.gd" id="9_1tnh4"]
 [ext_resource type="Script" path="res://src/core/components/death_handler.gd" id="10_fwo7g"]
-[ext_resource type="Script" path="res://src/core/components/hurtbox.gd" id="10_psy01"]
-[ext_resource type="Script" path="res://src/core/components/hitbox.gd" id="11_7igt0"]
 [ext_resource type="Script" path="res://src/core/components/knockback.gd" id="12_sb0s8"]
 [ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="16_7cnic"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="18_gjgig"]
 [ext_resource type="AudioStream" uid="uid://diyrmih4wecow" path="res://assets/audio/hit_player.wav" id="19_8u5fn"]
 [ext_resource type="Script" path="res://src/core/actors/effects/footstep_sound_player_2d.gd" id="19_ulel1"]
-[ext_resource type="PackedScene" uid="uid://0wqvn30y7kjx" path="res://src/core/ai/melee_enagement_area.tscn" id="20_6regb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
@@ -29,58 +26,22 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Hitbox:active")
+tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [false]
+"values": [88]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Hitbox/CollisionShape2D:position")
+tracks/1/path = NodePath("Sprite2D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-3, 1.88231e-05)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Hitbox/CollisionShape2D:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [-1.57079]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Sprite2D:frame")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [88]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Sprite2D:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -132,16 +93,6 @@ anim_south = "north"
 anim_west = "east"
 change_with_direction = false
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wgk2m"]
-radius = 4.0
-height = 24.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_c58g1"]
-size = Vector2(50, 25.75)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_s6djq"]
-radius = 6.0
-
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
 motion_mode = 1
@@ -174,47 +125,13 @@ script = ExtResource("5_epgbh")
 animation_player = NodePath("../AnimationPlayer")
 animation_sets = Array[ExtResource("6_5bme3")]([SubResource("Resource_sbhni"), SubResource("Resource_1d58d"), SubResource("Resource_rjn5e"), SubResource("Resource_d4lr3")])
 
-[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("hit_sound_2d")]
-collision_layer = 0
-collision_mask = 4
-monitoring = false
-monitorable = false
-script = ExtResource("10_psy01")
-faction = 1
-invincible = true
-hit_sound_2d = NodePath("../HitSound")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, -14)
-shape = SubResource("CapsuleShape2D_wgk2m")
-debug_color = Color(1, 1, 0, 0)
-
-[node name="Hitbox" type="Area2D" parent="."]
-visible = false
-rotation = -1.57079
-collision_layer = 4
-collision_mask = 0
-monitoring = false
-monitorable = false
-script = ExtResource("11_7igt0")
-faction = 1
-metadata/_edit_lock_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(-3, 1.88231e-05)
-rotation = -1.57079
-shape = SubResource("RectangleShape2D_c58g1")
-debug_color = Color(0.701961, 0, 0, 0)
-
-[node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
+[node name="ActorHP" type="Node" parent="."]
 script = ExtResource("9_1tnh4")
 max_hp = 5
 current_hp = 5
-hurtbox = NodePath("../Hurtbox")
 
-[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "state_machine", "direction_animation_player")]
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("state_machine", "direction_animation_player")]
 script = ExtResource("12_sb0s8")
-hurtbox = NodePath("../Hurtbox")
 state_machine = NodePath("../StateMachine")
 direction_animation_player = NodePath("../DirectionAnimationPlayer")
 flying_anim_set = &"knockback"
@@ -222,7 +139,7 @@ flying_anim_set = &"knockback"
 [node name="DeathHandler" type="Node" parent="." node_paths=PackedStringArray("hp", "collisions_to_disable", "state_machine", "anim_player", "knockback")]
 script = ExtResource("10_fwo7g")
 hp = NodePath("../ActorHP")
-collisions_to_disable = [NodePath("../Hurtbox/CollisionShape2D"), NodePath("../Hitbox/CollisionShape2D")]
+collisions_to_disable = [null, null]
 remove_owner_on_death = false
 state_machine = NodePath("../StateMachine")
 anim_player = NodePath("../AnimationPlayer")
@@ -274,8 +191,3 @@ max_distance = 450.0
 bus = &"SoundFX"
 area_mask = 0
 script = ExtResource("19_ulel1")
-
-[node name="MeleeEnagementArea" parent="." instance=ExtResource("20_6regb")]
-position = Vector2(0, -3)
-radius = 20
-slot_shape = SubResource("CircleShape2D_s6djq")

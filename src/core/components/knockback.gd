@@ -62,7 +62,7 @@ func _ready() -> void:
 	if not _body:
 		push_error("'%s' is not a child of a CharacterBody2D" % name)
 
-	hurtbox.was_hit.connect(_was_hit)
+	#hurtbox.was_hit.connect(_was_hit)
 
 	# Formula for initial velocity is:
 	#

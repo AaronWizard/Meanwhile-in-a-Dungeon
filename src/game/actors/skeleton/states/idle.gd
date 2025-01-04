@@ -12,8 +12,8 @@ func _ready() -> void:
 
 
 func process(_delta: float) -> StringName:
-	if Globals.player in actor_detector.visible_actors:
-		return chase_state
+	#if Globals.player in actor_detector.visible_actors:
+		#return chase_state
 	return &""
 
 

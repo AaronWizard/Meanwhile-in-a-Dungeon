@@ -1,6 +1,5 @@
-[gd_scene load_steps=9 format=3 uid="uid://dss2pluiyserd"]
+[gd_scene load_steps=8 format=3 uid="uid://dss2pluiyserd"]
 
-[ext_resource type="Script" path="res://src/core/components/hurtbox.gd" id="2_r01nx"]
 [ext_resource type="Script" path="res://src/core/components/death_handler.gd" id="3_3ri4u"]
 [ext_resource type="Script" path="res://src/core/components/actor_hp.gd" id="4_fod1u"]
 [ext_resource type="Script" path="res://src/core/actors/effects/sprite_damage.gd" id="4_luwlm"]
@@ -54,18 +53,7 @@ debug_color = Color(0, 0.595, 0.7, 0)
 
 [node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
 script = ExtResource("4_fod1u")
-hurtbox = NodePath("../Hurtbox")
-
-[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("hit_sound_2d")]
-collision_layer = 0
-collision_mask = 4
-monitorable = false
-script = ExtResource("2_r01nx")
-check_for_faction = false
-hit_sound_2d = NodePath("../HitSound")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-debug_color = Color(0.618333, 0.7, 0, 0)
+hurtbox = NodePath("")
 
 [node name="SpriteDamage" type="Node" parent="." node_paths=PackedStringArray("sprite", "hp")]
 script = ExtResource("4_luwlm")
@@ -75,7 +63,7 @@ hp = NodePath("../ActorHP")
 [node name="DeathHandler" type="Node" parent="." node_paths=PackedStringArray("hp", "collisions_to_disable", "anim_player", "sound")]
 script = ExtResource("3_3ri4u")
 hp = NodePath("../ActorHP")
-collisions_to_disable = [NodePath("../Hurtbox/CollisionShape2D")]
+collisions_to_disable = [NodePath("")]
 remove_owner_on_death = false
 anim_player = NodePath("../AnimationPlayer")
 anim_name = &"explode"

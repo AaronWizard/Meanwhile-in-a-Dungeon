@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=23 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://assets/graphics/actors/skeleton.png" id="1_t3vwc"]
@@ -9,17 +9,12 @@
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/idle.gd" id="5_7jxfx"]
 [ext_resource type="Script" path="res://src/core/actors/effects/direction_animation_set.gd" id="6_fq8rw"]
 [ext_resource type="Script" path="res://src/core/components/actor_hp.gd" id="8_mqaob"]
-[ext_resource type="Script" path="res://src/core/components/hurtbox.gd" id="9_77twk"]
 [ext_resource type="Script" path="res://src/core/components/death_handler.gd" id="9_jpx7g"]
-[ext_resource type="Script" path="res://src/core/components/hitbox.gd" id="10_wn1oe"]
 [ext_resource type="Script" path="res://src/core/components/knockback.gd" id="11_runtd"]
-[ext_resource type="Script" path="res://src/game/actors/skeleton/states/pathfind.gd" id="14_b0w0s"]
-[ext_resource type="Script" path="res://src/core/statemachine/common_states/actor_directional_attack_state.gd" id="15_i5qj0"]
 [ext_resource type="AudioStream" uid="uid://b060ngmwjtycq" path="res://src/resources/audiostreamrandomizer_swordswings.tres" id="17_6xgcv"]
 [ext_resource type="AudioStream" uid="uid://b7fb2y8vcf77q" path="res://assets/audio/hit_skeleton.wav" id="18_hg4fm"]
 [ext_resource type="AudioStream" uid="uid://bb44d7hh7nixr" path="res://assets/audio/falling_bones.wav" id="19_bqgiw"]
 [ext_resource type="Script" path="res://src/core/actors/effects/footstep_sound_player_2d.gd" id="19_l6obh"]
-[ext_resource type="Script" path="res://src/core/ai/actor_detector.gd" id="21_3ymqc"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
@@ -33,90 +28,6 @@ tracks/0/path = NodePath("Sprite2D:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Hitbox:active")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Hitbox/CollisionShape2D:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, -3)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hitbox/CollisionShape2D:rotation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("AttackRange/CollisionShapeNorth:disabled")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("AttackRange/CollisionShapeEast:disabled")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("AttackRange/CollisionShapeSouth:disabled")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("AttackRange/CollisionShapeWest:disabled")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
@@ -168,20 +79,6 @@ anim_south = "north"
 anim_west = "east"
 change_with_direction = false
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_etk8g"]
-radius = 7.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fj0jy"]
-size = Vector2(28, 12)
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_n18uu"]
-radius = 225.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_jhnuw"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_2q55o"]
-radius = 180.0
-
 [node name="Skeleton" type="CharacterBody2D"]
 collision_layer = 2
 motion_mode = 1
@@ -194,14 +91,13 @@ position = Vector2(0, -1)
 texture = ExtResource("2_cg4ro")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -17)
+position = Vector2(0, -16)
 texture = ExtResource("1_t3vwc")
 hframes = 8
 vframes = 17
-frame = 88
+frame = 40
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_huaup")
 
@@ -216,40 +112,13 @@ script = ExtResource("5_1ab50")
 animation_player = NodePath("../AnimationPlayer")
 animation_sets = Array[ExtResource("6_fq8rw")]([SubResource("Resource_q7tla"), SubResource("Resource_emtur"), SubResource("Resource_m08n0"), SubResource("Resource_vnx8u")])
 
-[node name="Hurtbox" type="Area2D" parent="." node_paths=PackedStringArray("hit_sound_2d")]
-visible = false
-collision_layer = 0
-collision_mask = 4
-monitorable = false
-script = ExtResource("9_77twk")
-hit_sound_2d = NodePath("../HitSound")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, -15)
-shape = SubResource("CapsuleShape2D_etk8g")
-debug_color = Color(1, 1, 0, 0.419608)
-
-[node name="Hitbox" type="Area2D" parent="."]
-collision_layer = 4
-collision_mask = 0
-monitoring = false
-monitorable = false
-script = ExtResource("10_wn1oe")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(0, -3)
-shape = SubResource("RectangleShape2D_fj0jy")
-debug_color = Color(0.701961, 0, 0, 0.419608)
-
-[node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
+[node name="ActorHP" type="Node" parent="."]
 script = ExtResource("8_mqaob")
 max_hp = 2
 current_hp = 2
-hurtbox = NodePath("../Hurtbox")
 
-[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "state_machine", "direction_animation_player")]
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("state_machine", "direction_animation_player")]
 script = ExtResource("11_runtd")
-hurtbox = NodePath("../Hurtbox")
 state_machine = NodePath("../StateMachine")
 direction_animation_player = NodePath("../DirectionAnimationPlayer")
 flying_anim_set = &"knockback"
@@ -257,54 +126,14 @@ flying_anim_set = &"knockback"
 [node name="DeathHandler" type="Node" parent="." node_paths=PackedStringArray("hp", "collisions_to_disable", "state_machine", "anim_player", "knockback")]
 script = ExtResource("9_jpx7g")
 hp = NodePath("../ActorHP")
-collisions_to_disable = [NodePath("../Hurtbox/CollisionShape2D"), NodePath("../Hitbox/CollisionShape2D")]
+collisions_to_disable = [null, null]
 state_machine = NodePath("../StateMachine")
 anim_player = NodePath("../AnimationPlayer")
 anim_name = &"animlib_skeleton/death"
 knockback = NodePath("../Knockback")
 
-[node name="EnemyDetector" type="Area2D" parent="."]
-visible = false
-collision_layer = 0
-collision_mask = 2
-monitoring = false
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyDetector"]
-shape = SubResource("CircleShape2D_n18uu")
-debug_color = Color(0, 0.6, 0.701961, 0)
-
-[node name="AttackRange" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 2
-monitoring = false
-monitorable = false
-
-[node name="CollisionShapeNorth" type="CollisionShape2D" parent="AttackRange"]
-position = Vector2(0, -30)
-shape = SubResource("CircleShape2D_jhnuw")
-disabled = true
-debug_color = Color(0.701961, 0, 0, 0.203922)
-
-[node name="CollisionShapeEast" type="CollisionShape2D" parent="AttackRange"]
-position = Vector2(11, -4)
-shape = SubResource("CircleShape2D_jhnuw")
-disabled = true
-debug_color = Color(0.701961, 0, 0, 0.203922)
-
-[node name="CollisionShapeSouth" type="CollisionShape2D" parent="AttackRange"]
-position = Vector2(0, 10)
-shape = SubResource("CircleShape2D_jhnuw")
-disabled = true
-debug_color = Color(0.701961, 0, 0, 0.203922)
-
-[node name="CollisionShapeWest" type="CollisionShape2D" parent="AttackRange"]
-position = Vector2(-11, -4)
-shape = SubResource("CircleShape2D_jhnuw")
-disabled = true
-debug_color = Color(0.701961, 0, 0, 0.203922)
-
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+target_desired_distance = 5.0
 avoidance_enabled = true
 radius = 16.0
 debug_enabled = true
@@ -312,30 +141,12 @@ debug_enabled = true
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_5f16l")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("actor_detector", "body", "direction_animation_player")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("body", "direction_animation_player")]
 script = ExtResource("5_7jxfx")
-actor_detector = NodePath("../../ActorDetector")
 chase_state = &"Pathfind"
 body = NodePath("../..")
 direction_animation_player = NodePath("../../DirectionAnimationPlayer")
 direction_anim_set = &"idle"
-
-[node name="Pathfind" type="Node" parent="StateMachine" node_paths=PackedStringArray("nav_agent", "attack_range", "body", "direction_animation_player")]
-script = ExtResource("14_b0w0s")
-nav_agent = NodePath("../../NavigationAgent2D")
-attack_range = NodePath("../../AttackRange")
-body = NodePath("../..")
-direction_animation_player = NodePath("../../DirectionAnimationPlayer")
-
-[node name="AttackTimer" type="Timer" parent="StateMachine/Pathfind"]
-wait_time = 1.5
-one_shot = true
-
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("body", "direction_animation_player")]
-script = ExtResource("15_i5qj0")
-body = NodePath("../..")
-direction_animation_player = NodePath("../../DirectionAnimationPlayer")
-direction_anim_set = &"attack"
 
 [node name="SwordSwingSound" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("17_6xgcv")
@@ -361,14 +172,3 @@ max_distance = 450.0
 bus = &"SoundFX"
 area_mask = 0
 script = ExtResource("19_l6obh")
-
-[node name="ActorDetector" type="Area2D" parent="."]
-visible = false
-collision_layer = 0
-collision_mask = 2
-monitorable = false
-script = ExtResource("21_3ymqc")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ActorDetector"]
-shape = SubResource("CircleShape2D_2q55o")
-debug_color = Color(0, 0.6, 0.701961, 0)

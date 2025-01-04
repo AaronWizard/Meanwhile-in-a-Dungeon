@@ -48,9 +48,9 @@ func _ready() -> void:
 	_hp = get_children().filter(
 		func (c): return c is ActorHP
 	).front() as ActorHP
-	_melee_engagement_area = get_children().filter(
-		func (c): return c is MeleeEnagementArea
-	).front() as MeleeEnagementArea
+	#_melee_engagement_area = get_children().filter(
+		#func (c): return c is MeleeEnagementArea
+	#).front() as MeleeEnagementArea
 
 
 func _enter_tree() -> void:
