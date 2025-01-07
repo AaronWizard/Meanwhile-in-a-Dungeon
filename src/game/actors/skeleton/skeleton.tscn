@@ -80,7 +80,8 @@ anim_west = "east"
 change_with_direction = false
 
 [node name="Skeleton" type="CharacterBody2D"]
-collision_layer = 2
+collision_layer = 4
+collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_oe0ch")
 max_speed = 100.0
