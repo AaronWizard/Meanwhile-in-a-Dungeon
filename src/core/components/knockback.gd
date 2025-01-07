@@ -62,7 +62,7 @@ func _ready() -> void:
 	if not _body:
 		push_error("'%s' is not a child of a CharacterBody2D" % name)
 
-	#hurtbox.was_hit.connect(_was_hit)
+	hurtbox.was_hit.connect(_was_hit)
 
 	# Formula for initial velocity is:
 	#
@@ -105,7 +105,7 @@ func _was_hit(_damage: int, direction: Vector2) -> void:
 		direction_animation_player.direction = direction
 		direction_animation_player.set_animation_set(flying_anim_set)
 
-	hurtbox.monitoring = false
+	hurtbox.set_deferred("monitoring", false)
 	_current_velocity = direction * _initial_speed
 
 
