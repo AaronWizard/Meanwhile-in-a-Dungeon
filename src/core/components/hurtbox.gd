@@ -1,4 +1,3 @@
-@tool
 class_name Hurtbox
 extends Area2D
 
@@ -6,9 +5,9 @@ extends Area2D
 
 signal was_hit(damage: int, direction: Vector2)
 
+
 func _ready() -> void:
-	if not Engine.is_editor_hint():
-		area_entered.connect(_hitbox_entered)
+	area_entered.connect(_hitbox_entered)
 
 
 func _hitbox_entered(hitbox: Hitbox) -> void:
