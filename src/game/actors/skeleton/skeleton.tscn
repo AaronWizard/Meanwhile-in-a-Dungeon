@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://dqht7pif72evs"]
+[gd_scene load_steps=25 format=3 uid="uid://dqht7pif72evs"]
 
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_oe0ch"]
 [ext_resource type="Texture2D" uid="uid://bymnrb16m8spw" path="res://assets/graphics/actors/skeleton.png" id="1_t3vwc"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" path="res://src/core/statemachine/state_machine.gd" id="4_5f16l"]
 [ext_resource type="Script" path="res://src/core/actors/effects/direction_animation_player.gd" id="5_1ab50"]
 [ext_resource type="Script" path="res://src/game/actors/skeleton/states/idle.gd" id="5_7jxfx"]
+[ext_resource type="PackedScene" uid="uid://bven64kjwia15" path="res://src/core/components/hurtbox_enemy.tscn" id="5_o6182"]
 [ext_resource type="Script" path="res://src/core/actors/effects/direction_animation_set.gd" id="6_fq8rw"]
 [ext_resource type="Script" path="res://src/core/components/actor_hp.gd" id="8_mqaob"]
 [ext_resource type="Script" path="res://src/core/components/death_handler.gd" id="9_jpx7g"]
@@ -18,6 +19,10 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_huaup"]
 radius = 6.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_csoka"]
+radius = 6.0
+height = 28.0
 
 [sub_resource type="Animation" id="Animation_i8kjr"]
 length = 0.001
@@ -54,7 +59,7 @@ tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
+"update": 1,
 "values": [Vector2(0, -17)]
 }
 tracks/3/type = "value"
@@ -68,6 +73,18 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Hurtbox/CollisionShape2D:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0, -15)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_5st4j"]
@@ -121,7 +138,6 @@ collision_mask = 3
 motion_mode = 1
 script = ExtResource("1_oe0ch")
 max_speed = 100.0
-metadata/_edit_group_ = true
 
 [node name="ActorShadow" type="Sprite2D" parent="."]
 position = Vector2(0, -1)
@@ -138,6 +154,13 @@ frame = 88
 position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_huaup")
 
+[node name="Hurtbox" parent="." instance=ExtResource("5_o6182")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -15)
+shape = SubResource("CapsuleShape2D_csoka")
+debug_color = Color(1, 1, 0.266667, 0.207843)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_5st4j"),
@@ -149,24 +172,27 @@ script = ExtResource("5_1ab50")
 animation_player = NodePath("../AnimationPlayer")
 animation_sets = Array[ExtResource("6_fq8rw")]([SubResource("Resource_q7tla"), SubResource("Resource_emtur"), SubResource("Resource_m08n0"), SubResource("Resource_vnx8u")])
 
-[node name="ActorHP" type="Node" parent="."]
+[node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
 script = ExtResource("8_mqaob")
 max_hp = 2
 current_hp = 2
+hurtbox = NodePath("../Hurtbox")
 
-[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("state_machine", "direction_animation_player")]
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "state_machine", "direction_animation_player")]
 script = ExtResource("11_runtd")
+hurtbox = NodePath("../Hurtbox")
 state_machine = NodePath("../StateMachine")
 direction_animation_player = NodePath("../DirectionAnimationPlayer")
 flying_anim_set = &"knockback"
 
-[node name="DeathHandler" type="Node" parent="." node_paths=PackedStringArray("hp", "collisions_to_disable", "state_machine", "anim_player", "knockback")]
+[node name="DeathHandler" type="Node" parent="." node_paths=PackedStringArray("hp", "collisions_to_disable", "state_machine", "anim_player", "sound", "knockback")]
 script = ExtResource("9_jpx7g")
 hp = NodePath("../ActorHP")
-collisions_to_disable = [null, null]
+collisions_to_disable = [NodePath("../CollisionShape2D"), NodePath("../Hurtbox/CollisionShape2D")]
 state_machine = NodePath("../StateMachine")
 anim_player = NodePath("../AnimationPlayer")
 anim_name = &"animlib_skeleton/death"
+sound = NodePath("../DeathSound")
 knockback = NodePath("../Knockback")
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]

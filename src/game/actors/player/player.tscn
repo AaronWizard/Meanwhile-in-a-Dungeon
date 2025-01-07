@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bkt17j2t2gujw"]
+[gd_scene load_steps=27 format=3 uid="uid://bkt17j2t2gujw"]
 
 [ext_resource type="Texture2D" uid="uid://bykr1e12a8spy" path="res://assets/graphics/actors/warrior.png" id="1_a74gn"]
 [ext_resource type="Script" path="res://src/core/actors/actor.gd" id="1_ocde1"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://src/core/statemachine/state_machine.gd" id="2_i32bm"]
 [ext_resource type="Script" path="res://src/game/actors/player/player_input.gd" id="2_jafpg"]
 [ext_resource type="Texture2D" uid="uid://dbeyckwyrbw3p" path="res://assets/graphics/effects/actor_shadow.png" id="2_mccpm"]
+[ext_resource type="PackedScene" uid="uid://bbdilf0pjtbjs" path="res://src/core/components/hurtbox_player.tscn" id="4_5thcs"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/move.gd" id="4_81ai4"]
 [ext_resource type="Script" path="res://src/game/actors/player/states/idle.gd" id="4_axnin"]
 [ext_resource type="Script" path="res://src/core/actors/effects/direction_animation_player.gd" id="5_epgbh"]
@@ -20,6 +21,10 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5v3fb"]
 radius = 6.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dtnjr"]
+radius = 4.0
+height = 28.0
 
 [sub_resource type="Animation" id="Animation_susgg"]
 length = 0.001
@@ -44,8 +49,20 @@ tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
+"update": 1,
 "values": [Vector2(0, -15)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Hurtbox/CollisionShape2D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [Vector2(0, -16)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_s482b"]
@@ -115,6 +132,13 @@ frame = 88
 position = Vector2(0, -3)
 shape = SubResource("CircleShape2D_5v3fb")
 
+[node name="Hurtbox" parent="." instance=ExtResource("4_5thcs")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -16)
+shape = SubResource("CapsuleShape2D_dtnjr")
+debug_color = Color(1, 1, 0.266667, 0.207843)
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_s482b"),
@@ -126,13 +150,15 @@ script = ExtResource("5_epgbh")
 animation_player = NodePath("../AnimationPlayer")
 animation_sets = Array[ExtResource("6_5bme3")]([SubResource("Resource_sbhni"), SubResource("Resource_1d58d"), SubResource("Resource_rjn5e"), SubResource("Resource_d4lr3")])
 
-[node name="ActorHP" type="Node" parent="."]
+[node name="ActorHP" type="Node" parent="." node_paths=PackedStringArray("hurtbox")]
 script = ExtResource("9_1tnh4")
 max_hp = 5
 current_hp = 5
+hurtbox = NodePath("../Hurtbox")
 
-[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("state_machine", "direction_animation_player")]
+[node name="Knockback" type="Node" parent="." node_paths=PackedStringArray("hurtbox", "state_machine", "direction_animation_player")]
 script = ExtResource("12_sb0s8")
+hurtbox = NodePath("../Hurtbox")
 state_machine = NodePath("../StateMachine")
 direction_animation_player = NodePath("../DirectionAnimationPlayer")
 flying_anim_set = &"knockback"
@@ -140,7 +166,7 @@ flying_anim_set = &"knockback"
 [node name="DeathHandler" type="Node" parent="." node_paths=PackedStringArray("hp", "collisions_to_disable", "state_machine", "anim_player", "knockback")]
 script = ExtResource("10_fwo7g")
 hp = NodePath("../ActorHP")
-collisions_to_disable = [null, null]
+collisions_to_disable = [NodePath("../CollisionShape2D"), NodePath("../Hurtbox/CollisionShape2D")]
 remove_owner_on_death = false
 state_machine = NodePath("../StateMachine")
 anim_player = NodePath("../AnimationPlayer")
