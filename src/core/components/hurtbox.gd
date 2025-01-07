@@ -6,72 +6,12 @@ extends Area2D
 
 signal was_hit(damage: int, direction: Vector2)
 
-@export_group("Detection")
-@export var check_for_faction := true
-@export var faction := 0
-
-
-@export_group("Damage")
-@export var invincible := false:
-	get:
-		return not monitoring
-	set(value):
-		set_deferred("monitoring", not value)
-		if value:
-			_colliding_hitboxes.clear()
-
-
-## In seconds.
-@export var continuing_damage_interval := 1.0
-
-@export_group("Effects")
-@export var hit_sound_2d: AudioStreamPlayer2D
-
-var _colliding_hitboxes := {}
-var _current_damage_interval := 0.0
-
-
 func _ready() -> void:
-	collision_layer = 0
-	collision_mask = 0
-	set_collision_mask_value(Hitbox.HITBOX_LAYER, true)
-
-	monitorable = false
-	invincible = invincible
-
 	if not Engine.is_editor_hint():
 		area_entered.connect(_hitbox_entered)
-		area_exited.connect(_hitbox_exited)
-
-
-func _process(delta: float) -> void:
-	if not _colliding_hitboxes.is_empty():
-		_current_damage_interval += delta
-		if _current_damage_interval >= continuing_damage_interval:
-			_current_damage_interval -= continuing_damage_interval
-			for h in _colliding_hitboxes.keys():
-				_get_hit(h)
 
 
 func _hitbox_entered(hitbox: Hitbox) -> void:
-	if not hitbox:
-		return
-	if check_for_faction and (hitbox.faction == faction):
-		return
-
-	_colliding_hitboxes[hitbox] = true
-	_get_hit(hitbox)
-
-
-func _hitbox_exited(hitbox: Hitbox) -> void:
 	if hitbox:
-		_colliding_hitboxes.erase(hitbox)
-		if _colliding_hitboxes.is_empty():
-			_current_damage_interval = 0.0
-
-
-func _get_hit(hitbox: Hitbox) -> void:
-	var direction := (global_position - hitbox.global_position).normalized()
-	was_hit.emit(hitbox.damage, direction)
-	if hit_sound_2d:
-		hit_sound_2d.play()
+		var direction := (global_position - hitbox.global_position).normalized()
+		was_hit.emit(hitbox.damage, direction)
