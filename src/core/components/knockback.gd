@@ -105,13 +105,13 @@ func _was_hit(_damage: int, direction: Vector2) -> void:
 		direction_animation_player.direction = direction
 		direction_animation_player.set_animation_set(flying_anim_set)
 
-	hurtbox.invincible = true
+	hurtbox.monitoring = false
 	_current_velocity = direction * _initial_speed
 
 
 func _stop_knockback() -> void:
 	_current_velocity = Vector2.ZERO
-	hurtbox.invincible = false
+	hurtbox.monitoring = true
 
 	if direction_animation_player and not stop_anim_set.is_empty():
 		direction_animation_player.direction *= -1
