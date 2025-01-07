@@ -251,7 +251,8 @@ frame = 88
 position = Vector2(0, -4)
 shape = SubResource("CircleShape2D_huaup")
 
-[node name="Hurtbox" parent="." instance=ExtResource("5_o6182")]
+[node name="Hurtbox" parent="." node_paths=PackedStringArray("hit_sound_2d") instance=ExtResource("5_o6182")]
+hit_sound_2d = NodePath("../HitSound")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, -15)
